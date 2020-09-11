@@ -13,11 +13,11 @@ use victor\training\oo\structural\adapter\external\LdapUserWebServiceClient;
 
 foreach (glob("../external/*.php") as $filename) require_once $filename;
 include "User.php";
-include "LdapUserWSAdapter.php"; // SOLUTION
+//include "LdapUserWSAdapter.php"; // SOLUTION
 
 class UserService
 {
-    private $wsClient;
+    private LdapUserWebServiceClient $wsClient;
 
     public function __construct(LdapUserWebServiceClient $wsClient)
     {
