@@ -29,3 +29,9 @@ printf("Hm....\n");
 $childOne->playWith($factory);
 
 printf("Good Night!\n");
+
+$legoCube = (new LegoFactory())->createCube();
+$megaCube = (new MegaBlockFactory())->createCube();
+
+
+$legoCube->stackOnto($megaCube);

@@ -10,15 +10,17 @@ namespace victor\training\oo\structural\decorator;
 
 include "ExpensiveMath.php";
 
- function testItAndIfPrimeGetNextOne(int $n, ExpensiveMath $math) {
+function testItAndIfPrimeGetNextOne(int $n, ExpensiveMath $math)
+{
 
-        $isPrime = $math->isPrime($n);
-    printf("isPrime(" . $n . "): " . ($isPrime ? "Yes" : "No")."\n");
+    $isPrime = $math->isPrime($n);
+    printf("isPrime(" . $n . "): " . ($isPrime ? "Yes" : "No") . "\n");
     if ($isPrime) {
-        printf("next prime after ".$n.": " . $math->getNextPrimeAfter($n + 1)."\n");
+        printf("next prime after " . $n . ": " . $math->getNextPrimeAfter($n + 1) . "\n");
     }
 
 }
+
 $math = new ExpensiveMath();
 printf("Start... \n");
 testItAndIfPrimeGetNextOne(179426549, $math);

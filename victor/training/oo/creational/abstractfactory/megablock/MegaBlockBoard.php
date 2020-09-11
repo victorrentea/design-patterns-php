@@ -1,26 +1,18 @@
-<?php // SOLUTION
-/**
- * Created by IntelliJ IDEA.
- * User: VictorRentea
- * Date: 9/19/2017
- * Time: 12:08 PM
- */
+<?php
+
 
 namespace victor\training\oo\creational\abstractfactory\megablock;
 
 
 use victor\training\oo\creational\abstractfactory\spi\Board;
+use victor\training\oo\creational\abstractfactory\spi\Cube;
 
-class MegaBlockBoard
-//{} // INITIAL
-// SOLUTION (
-    implements Board
+class MegaBlockBoard implements Board
 {
 
 
     function __toString()
     {
-        return "MegaBlock Board";
+        return "Mega Board";
     }
 }
-// SOLUTION )

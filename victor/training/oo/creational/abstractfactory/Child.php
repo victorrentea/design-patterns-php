@@ -21,6 +21,8 @@ class Child
         $previousCube = $cutie->createCube();
         printf("Sticking first cube ${previousCube} in the board ${board}\n");
 
+        $previousCube->stickIn($board);
+
         for ($i = 2; $i <= 10; $i++) {
             $cube = $cutie->createCube();
             printf("\"Asez cubul ${cube} si il pun peste ${previousCube}\n");

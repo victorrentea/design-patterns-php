@@ -1,10 +1,5 @@
-<?php // SOLUTION
-/**
- * Created by IntelliJ IDEA.
- * User: VictorRentea
- * Date: 9/19/2017
- * Time: 12:06 PM
- */
+<?php
+
 
 namespace victor\training\oo\creational\abstractfactory\megablock;
 
@@ -12,25 +7,25 @@ namespace victor\training\oo\creational\abstractfactory\megablock;
 use victor\training\oo\creational\abstractfactory\spi\Board;
 use victor\training\oo\creational\abstractfactory\spi\Cube;
 
-class MegaBlockCube
-//{} // INITIAL
-// SOLUTION (
-    implements Cube
+class MegaBlockCube implements Cube
 {
+
+    public function __construct()
+    {
+    }
 
     function stackOnto(Cube $cube)
     {
-        echo "Stacking onto cube " . $cube;
+        // TODO: Implement stackOnto() method.
     }
 
     function stickIn(Board $board)
     {
-        echo "Stickin into board " . $board;
+        // TODO: Implement stickIn() method.
     }
 
     function __toString()
     {
-        return "MegaBlock Cube";
+        return "Mega Cube";
     }
 }
-// SOLUTION )
