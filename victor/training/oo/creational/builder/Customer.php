@@ -42,9 +42,10 @@ class Customer
     /**
      * @param String $name
      */
-    public function setName(String $name): void
+    public function setName(String $name): Customer
     {
         $this->name = $name;
+        return $this;
     }
 
     /**
@@ -90,9 +91,10 @@ class Customer
     /**
      * @param Address $address
      */
-    public function setAddress(Address $address): void
+    public function setAddress(Address $address): Customer
     {
         $this->address = $address;
+        return $this;
     }
 
     /**
@@ -109,6 +111,12 @@ class Customer
     public function setCreateDate(\DateTime $createDate): void
     {
         $this->createDate = $createDate;
+    }
+
+    public function addLabel(string $string): Customer
+    {
+        $this->labels[]=$string;
+        return $this;
     }
 
 }
