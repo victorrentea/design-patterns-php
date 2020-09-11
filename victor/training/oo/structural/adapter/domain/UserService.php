@@ -20,16 +20,16 @@ include "User.php";
 // Asta e in gradina ta sacra (Domain module)
 class UserService
 {
-    private LdapUserWebServiceClient $wsClient;
+    private LdapUserAdapter $adapter;
 
-    public function __construct(LdapUserWebServiceClient $wsClient)
+    public function __construct(LdapUserAdapter $adapter)
     {
-        $this->wsClient = $wsClient;
+        $this->adapter = $adapter;
     }
 
     public function importUserFromLdap(string $username)
     {
-        $list = $this->searchByUsername($username);
+        $list = $this->adapter->searchByUsername($username);
         if (count($list) !== 1)
         {
             throw new \Exception('There is no single user matching username ' . $username);
@@ -44,40 +44,13 @@ class UserService
     }
 
     public function searchUserInLdap(string $username) {
-        return $this->searchByUsername($username);
+        return $this->adapter->searchByUsername($username);
     }
+
+
 
     /// -------------------------------- o linie ------------------------------
 
-
-    /**
-     * @param string $username
-     * @return User[]
-     */
-    private function searchByUsername(string $username): array
-    {
-        $ldapUsers = $this->wsClient->search(strtoupper($username), null, null);
-        $results = [];
-        foreach ($ldapUsers as $ldapUser) {
-            $results[] = $this->convert($ldapUser);
-        }
-        return $results;
-    }
-
-    private function composeFullName(LdapUser $ldapUser): string
-    {
-        return $ldapUser->getfName() . ' ' . strtoupper($ldapUser->getlName());
-    }
-
-    private function convert(LdapUser $ldapUser): User
-    {
-        $fullName = $this->composeFullName($ldapUser);
-        $user = new User();
-        $user->setUsername($ldapUser->getUId());
-        $user->setFullName($fullName);
-        $user->setWorkEmail($ldapUser->getWorkEmail());
-        return $user;
-    }
 
 }
 
