@@ -8,28 +8,9 @@
 
 namespace victor\training\oo\structural\decorator;
 
-class ExpensiveMath
+class ExpensiveMath implements IExpensiveMath
 {
-    function getNextPrimeAfter(int $number): int {
-        $n = $number;
-        while(!$this->isPrime($n)) {
-            $n ++;
-        }
-        return $n;
-    }
-
-    private array $cache = [];
-
-    function isPrime(int $number): bool
-    {
-        if (array_key_exists($number, $this->cache)) {
-            return $this->cache[$number];
-        }
-        $isPrime = $this->isPrime_($number);
-        $this->cache[$number] = $isPrime;
-        return $isPrime;
-    }
-    private function isPrime_(int $number): bool {
+    function isPrime(int $number): bool {
         if ($number  <= 2) {
             return true;
         }
@@ -42,5 +23,13 @@ class ExpensiveMath
             }
         }
 		return true;
+    }
+
+    function getNextPrimeAfter(int $number): int {
+        $n = $number;
+        while(!$this->isPrime($n)) {
+            $n ++;
+        }
+        return $n;
     }
 }

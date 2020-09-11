@@ -8,9 +8,11 @@
 
 namespace victor\training\oo\structural\decorator;
 
+include "IExpensiveMath.php";
 include "ExpensiveMath.php";
+include "ExpensiveMathCuCash.php";
 
-function testItAndIfPrimeGetNextOne(int $n, ExpensiveMath $math)
+function testItAndIfPrimeGetNextOne(int $n, IExpensiveMath $math)
 {
 
     $isPrime = $math->isPrime($n);
@@ -21,7 +23,7 @@ function testItAndIfPrimeGetNextOne(int $n, ExpensiveMath $math)
 
 }
 
-$math = new ExpensiveMath();
+$math = new ExpensiveMathCuCash(new ExpensiveMath());
 printf("Start... \n");
 testItAndIfPrimeGetNextOne(179426549, $math);
 testItAndIfPrimeGetNextOne(179426549, $math);
