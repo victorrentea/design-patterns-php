@@ -35,7 +35,7 @@ class UserService
             throw new \Exception('There is no single user matching username ' . $username);
         }
 
-        $user = $this->convert($list[0]);
+        $user = $list[0];
 
         if ($user->getWorkEmail() !== null) {
             printf('Send welcome email to ' . $user->getWorkEmail() . "\n");
@@ -44,12 +44,7 @@ class UserService
     }
 
     public function searchUserInLdap(string $username) {
-        $list = $this->searchByUsername($username);
-        $results = array();
-        foreach ($list as $ldapUser) {
-            $results[] = $this->convert($ldapUser);
-        }
-        return $results;
+        return $this->searchByUsername($username);
     }
 
     /// -------------------------------- o linie ------------------------------
@@ -57,12 +52,16 @@ class UserService
 
     /**
      * @param string $username
-     * @return LdapUser[]
+     * @return User[]
      */
     private function searchByUsername(string $username): array
     {
-        $list = $this->wsClient->search(strtoupper($username), null, null);
-        return $list;
+        $ldapUsers = $this->wsClient->search(strtoupper($username), null, null);
+        $results = [];
+        foreach ($ldapUsers as $ldapUser) {
+            $results[] = $this->convert($ldapUser);
+        }
+        return $results;
     }
 
     private function composeFullName(LdapUser $ldapUser): string
