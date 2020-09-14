@@ -13,13 +13,29 @@ class CustomsService
 
     public function computeAddedCustomsTax(string $originCountry, float $tobaccoValue, float $otherValue): float { // UGLY API we CANNOT change
         switch ($originCountry) {
-            case 'UK': return $tobaccoValue/2 + $otherValue/2;
-            case 'CH': return $tobaccoValue + $otherValue;
+            case 'UK': return $this->computeUKTax($tobaccoValue, $otherValue);
+            case 'CH': return $this->computeChinaTax($tobaccoValue, $otherValue);
             case 'FR':
             case 'ES': // other EU country codes...
-            case 'RO': return $tobaccoValue/3;
-            default: throw new \RuntimeException("Not a valid country ISO2 code: {$originCountry}");
+            case 'RO': return $this->computeEUTax($tobaccoValue);
+            default: throw new \RuntimeException("JDD: Not a valid country ISO2 code: {$originCountry}");
         }
+    }
+
+    private function computeUKTax(float $tobaccoValue, float $otherValue): float
+    {
+        // 5-10 linii
+        return $tobaccoValue / 2 + $otherValue / 2;
+    }
+
+    private function computeChinaTax(float $tobaccoValue, float $otherValue): float
+    {
+        return $tobaccoValue + $otherValue;
+    }
+
+    private function computeEUTax(float $tobaccoValue): float
+    {
+        return $tobaccoValue / 3;
     }
 
 }
