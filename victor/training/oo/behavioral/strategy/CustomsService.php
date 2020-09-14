@@ -11,34 +11,40 @@ namespace victor\training\oo\behavioral\strategy;
 class CustomsService
 {
 
+    // Switch vs Polymorphism
     public function computeAddedCustomsTax(string $originCountry, float $tobaccoValue, float $otherValue): float { // UGLY API we CANNOT change
         switch ($originCountry) {
-            case 'UK': return (new UKTaxComputer())->computeUKTax($tobaccoValue, $otherValue);
-            case 'CH': return (new ChinaTaxComputer())->computeChinaTax($tobaccoValue, $otherValue);
+            case 'UK': $computer = new UKTaxComputer();break;
+            case 'CH': $computer = new ChinaTaxComputer();break;
             case 'FR':
             case 'ES': // other EU country codes...
-            case 'RO': return (new EUTaxComputer())->computeEUTax($tobaccoValue);
+            case 'RO': $computer = new EUTaxComputer();break;
             default: throw new \RuntimeException("JDD: Not a valid country ISO2 code: {$originCountry}");
         }
+        return $computer->compute($tobaccoValue, $otherValue);
     }
 
 }
+interface TaxComputer {
+    public function compute(float $tobaccoValue, float $otherValue): float;
+}
 
-class UKTaxComputer {
-    public function computeUKTax(float $tobaccoValue, float $otherValue): float
+class UKTaxComputer implements TaxComputer {
+    public function compute(float $tobaccoValue, float $otherValue): float
     {
         // 50-100 linii
         return $tobaccoValue / 2 + $otherValue / 2;
     }
 }
-class ChinaTaxComputer {
-    public function computeChinaTax(float $tobaccoValue, float $otherValue): float
+class ChinaTaxComputer implements TaxComputer {
+    public function compute(float $tobaccoValue, float $otherValue): float
     {
         return $tobaccoValue + $otherValue;
     }
 }
-class EUTaxComputer {
-    public function computeEUTax(float $tobaccoValue): float
+class EUTaxComputer implements TaxComputer {
+    public function compute(float $tobaccoValue, float $otherValueDegeaba): float
+        // am pierdut specificicitate incercand sa ma supun majoritatii.
     {
         return $tobaccoValue / 3;
     }
