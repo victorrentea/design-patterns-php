@@ -13,9 +13,16 @@ use phpDocumentor\Reflection\Types\Callable_;
 include "Email.php";
 include "EmailContext.php";
 
-abstract class AbstractEmailSender
+class EmailSender
 {
     private const MAX_RETRIES = 3;
+    private EmailComposer $composer;
+
+    public function __construct(EmailComposer $composer)
+    {
+        $this->composer = $composer;
+    }
+
 
     public function send(string $emailAddress): void
     {
@@ -25,25 +32,28 @@ abstract class AbstractEmailSender
             $email->setSender('noreply@corp.com');
             $email->setReplyTo('/dev/null');
             $email->setTo($emailAddress);
-            $this->composeEmail($email);
+            $this->composer->composeEmail($email);
             $success = $context->send($email);
             if ($success) break;
         }
     }
-    protected abstract function composeEmail(Email $email): void;
+}
+interface EmailComposer {
+
+    public function composeEmail(Email $email): void;
 }
 
-class OrderReceivedEmailSender extends AbstractEmailSender
+class OrderReceivedEmailComposer implements EmailComposer
 {
-    protected function composeEmail(Email $email): void
+    public function composeEmail(Email $email): void
     {
         $email->setSubject('Order Received');
         $email->setBody('Thank you for your order');
     }
 }
 
-class OrderShippedEmailSender extends AbstractEmailSender {
-    protected function composeEmail(Email $email): void
+class OrderShippedEmailComposer implements EmailComposer {
+    public function composeEmail(Email $email): void
     {
         $email->setSubject('Order Shipped');
         $email->setBody('Ti-am trimis. Speram sa ajunga (de data asta)');
@@ -51,7 +61,7 @@ class OrderShippedEmailSender extends AbstractEmailSender {
 }
 
 //cod existent
-(new OrderReceivedEmailSender())->send('a@b.com');
+(new EmailSender(new OrderReceivedEmailComposer()))->send('a@b.com');
 
 //CHANGE request: implement sendOrderShippedEmail
-(new OrderShippedEmailSender())->send('a@b.com');
+(new EmailSender(new OrderShippedEmailComposer()))->send('a@b.com');
