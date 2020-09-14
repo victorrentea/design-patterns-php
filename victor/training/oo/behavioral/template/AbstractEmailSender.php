@@ -13,11 +13,11 @@ use phpDocumentor\Reflection\Types\Callable_;
 include "Email.php";
 include "EmailContext.php";
 
-abstract class EmailService
+abstract class AbstractEmailSender
 {
     private const MAX_RETRIES = 3;
 
-    public function sendOrderReceivedEmail(string $emailAddress, bool $cr323): void
+    public function send(string $emailAddress): void
     {
         $context = new EmailContext(/*smtpConfig,etc*/);
         for ($i = 0; $i < self::MAX_RETRIES; $i++) {
@@ -33,7 +33,7 @@ abstract class EmailService
     protected abstract function composeEmail(Email $email): void;
 }
 
-class EmailService1 extends EmailService
+class OrderReceivedEmailSender extends AbstractEmailSender
 {
     protected function composeEmail(Email $email): void
     {
@@ -42,7 +42,7 @@ class EmailService1 extends EmailService
     }
 }
 
-class EmailService2 extends EmailService {
+class OrderShippedEmailSender extends AbstractEmailSender {
     protected function composeEmail(Email $email): void
     {
         $email->setSubject('Order Shipped');
@@ -51,7 +51,7 @@ class EmailService2 extends EmailService {
 }
 
 //cod existent
-(new EmailService1())->sendOrderReceivedEmail('a@b.com', false);
+(new OrderReceivedEmailSender())->send('a@b.com');
 
 //CHANGE request: implement sendOrderShippedEmail
-(new EmailService2())->sendOrderReceivedEmail('a@b.com', true);
+(new OrderShippedEmailSender())->send('a@b.com');
