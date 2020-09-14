@@ -14,6 +14,7 @@ class LdapUserAdapter
     public function __construct(LdapUserWebServiceClient $wsClient)
     {
         $this->wsClient = $wsClient;
+
     }
 
 
