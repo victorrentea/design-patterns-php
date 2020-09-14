@@ -13,15 +13,20 @@ class CustomsService
 
     // Switch vs Polymorphism
     public function computeAddedCustomsTax(string $originCountry, float $tobaccoValue, float $otherValue): float { // UGLY API we CANNOT change
+        $computer = $this->selectTaxCompute($originCountry);
+        return $computer->compute($tobaccoValue, $otherValue);
+    }
+
+    private function selectTaxCompute(string $originCountry): TaxComputer
+    {
         switch ($originCountry) {
-            case 'UK': $computer = new UKTaxComputer();break;
-            case 'CH': $computer = new ChinaTaxComputer();break;
+            case 'UK': return new UKTaxComputer();
+            case 'CH': return new ChinaTaxComputer();
             case 'FR':
             case 'ES': // other EU country codes...
-            case 'RO': $computer = new EUTaxComputer();break;
+            case 'RO': return new EUTaxComputer();
             default: throw new \RuntimeException("JDD: Not a valid country ISO2 code: {$originCountry}");
         }
-        return $computer->compute($tobaccoValue, $otherValue);
     }
 
 }
