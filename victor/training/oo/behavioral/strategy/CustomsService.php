@@ -45,3 +45,17 @@ $customsService = new CustomsService();
 printf('Tax for (RO,100,100) = ' . $customsService->computeAddedCustomsTax("RO", 100, 100) . '\n');
 printf('Tax for (CH,100,100) = ' . $customsService->computeAddedCustomsTax("CH", 100, 100) . '\n');
 printf('Tax for (UK,100,100) = ' . $customsService->computeAddedCustomsTax("UK", 100, 100) . '\n');
+
+
+$th = 0.1/3;
+$th /= 7;
+//printf('Tax for (UK,100,100) = ' . );
+
+$sum = 0;
+for ($i = 0; $i < 10000; $i++) {
+    $sum += 0.1;
+}
+var_dump($sum);
+
+
+
