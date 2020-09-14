@@ -19,14 +19,17 @@ class CustomsService
 
     private function selectTaxCompute(string $originCountry): TaxComputer
     {
-        switch ($originCountry) {
-            case 'UK': return new UKTaxComputer();
-            case 'CH': return new ChinaTaxComputer();
-            case 'FR':
-            case 'ES': // other EU country codes...
-            case 'RO': return new EUTaxComputer();
-            default: throw new \RuntimeException("JDD: Not a valid country ISO2 code: {$originCountry}");
+        $map = [ // astea pot fi citite dintr-un JSON/yaml
+            "UK" => UKTaxComputer::class,
+            "CH" => ChinaTaxComputer::class,
+            "FR" => EUTaxComputer::class,
+            "ES" => EUTaxComputer::class,
+            "RO" => EUTaxComputer::class
+        ];
+        if (!array_key_exists($originCountry, $map)) {
+            throw new \RuntimeException("JDD: Not a valid country ISO2 code: {$originCountry}");
         }
+        return new $map[$originCountry]();
     }
 
 }
