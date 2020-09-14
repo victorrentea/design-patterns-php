@@ -17,13 +17,18 @@ class CustomsService
         return $computer->compute($tobaccoValue, $otherValue);
     }
 
+
+
+
     private function selectTaxCompute(string $originCountry): TaxComputer
     {
 
-        $taxComputers = [new UKTaxComputer(), new EUTaxComputer(), new ChinaTaxComputer()];
+        /** @var TaxComputer[] $taxComputers */
+        $taxComputers = [new UKTaxComputer(), new EUTaxComputer(), new ChinaTaxComputer()]; // pot fi luate dintr-un yaml
+        // sau chiar detectate automat
 
         foreach ($taxComputers as $taxComputer) {
-            if (in_array($originCountry, $taxComputer->getSupportedIsoCodes())) {
+            if ($taxComputer->supportsCountry($originCountry)) {
                 return $taxComputer;
             }
         }
@@ -31,8 +36,7 @@ class CustomsService
     }
 }
 interface TaxComputer {
-    /** @returns string[] */
-    public function getSupportedIsoCodes() : array;
+    public function supportsCountry(string $countryIso) : bool; // OOP: tell don't ask : functiile unui Obiect intorc cat mai putine informatii
     public function compute(float $tobaccoValue, float $otherValue): float;
 }
 
@@ -43,9 +47,9 @@ class UKTaxComputer implements TaxComputer {
         return $tobaccoValue / 2 + $otherValue / 2;
     }
 
-    public function getSupportedIsoCodes(): array
+    public function supportsCountry(string $countryIso): bool
     {
-        return ["UK"];
+        return "UK" === $countryIso;
     }
 }
 class ChinaTaxComputer implements TaxComputer {
@@ -53,9 +57,9 @@ class ChinaTaxComputer implements TaxComputer {
     {
         return $tobaccoValue + $otherValue;
     }
-    public function getSupportedIsoCodes(): array
+    public function supportsCountry(string $countryIso): bool
     {
-        return ["CH"];
+        return "CH" === $countryIso;
     }
 }
 class EUTaxComputer implements TaxComputer {
@@ -64,9 +68,9 @@ class EUTaxComputer implements TaxComputer {
     {
         return $tobaccoValue / 3;
     }
-    public function getSupportedIsoCodes(): array
+    public function supportsCountry(string $countryIso): bool
     {
-        return ["RO",'ES','FR'];
+        return in_array($countryIso, ["RO",'ES','FR']);
     }
 }
 
