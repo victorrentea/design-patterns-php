@@ -1,13 +1,14 @@
 <?php
 
 
-namespace victor\training\oo\structural\adapter\domain;
+namespace victor\training\oo\structural\adapter\external;
 
 
+use victor\training\oo\structural\adapter\domain\ExternalUserService;
 use victor\training\oo\structural\adapter\external\LdapUser;
 use victor\training\oo\structural\adapter\external\LdapUserWebServiceClient;
 
-class LdapUserAdapter
+class LdapUserAdapter implements ExternalUserService
 {
     private LdapUserWebServiceClient $wsClient;
 

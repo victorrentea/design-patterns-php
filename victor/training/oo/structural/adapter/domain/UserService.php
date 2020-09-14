@@ -10,8 +10,10 @@ namespace victor\training\oo\structural\adapter\domain;
 
 
 use victor\training\oo\structural\adapter\external\LdapUser;
+use victor\training\oo\structural\adapter\external\LdapUserAdapter;
 use victor\training\oo\structural\adapter\external\LdapUserWebServiceClient;
 
+include "ExternalUserService.php";
 foreach (glob("../external/*.php") as $filename) require_once $filename;
 include "User.php";
 //include "LdapUserWSAdapter.php"; // SOLUTION
@@ -20,9 +22,9 @@ include "User.php";
 // Asta e in gradina ta sacra (Domain module)
 class UserService
 {
-    private LdapUserAdapter $adapter;
+    private ExternalUserService $adapter;
 
-    public function __construct(LdapUserAdapter $adapter)
+    public function __construct(ExternalUserService $adapter)
     {
         $this->adapter = $adapter;
     }
@@ -54,7 +56,7 @@ class UserService
 
 }
 
-$userService = new UserService(new LdapUserWebServiceClient()); // INITIAL
+$userService = new UserService(new LdapUserAdapter(new LdapUserWebServiceClient())); // INITIAL
 
 printf(implode(",",$userService->searchUserInLdap("jdoe")) . "\n");
 $userService->importUserFromLdap('jdoe');
