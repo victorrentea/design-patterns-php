@@ -12,17 +12,17 @@ class CustomsService
 {
 
     // Switch vs Polymorphism
-    public function computeAddedCustomsTax(string $originCountry, float $tobaccoValue, float $otherValue): float { // UGLY API we CANNOT change
-        $computer = $this->selectTaxCompute($originCountry);
+    public function computeAddedCustomsTax(string $originCountry, float $tobaccoValue, float $otherValue): float
+    { // UGLY API we CANNOT change
+        $computer = TaxComputers::selectTaxCompute($originCountry);
         return $computer->compute($tobaccoValue, $otherValue);
     }
+}
 
 
-
-
-    private function selectTaxCompute(string $originCountry): TaxComputer
+class TaxComputers {
+    public static function selectTaxCompute(string $originCountry): TaxComputer
     {
-
         /** @var TaxComputer[] $taxComputers */
         $taxComputers = [new UKTaxComputer(), new EUTaxComputer(), new ChinaTaxComputer()]; // pot fi luate dintr-un yaml
         // sau chiar detectate automat
