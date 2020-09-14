@@ -25,23 +25,27 @@ class EmailService
             $email->setSender('noreply@corp.com');
             $email->setReplyTo('/dev/null');
             $email->setTo($emailAddress);
-            if (!$cr323) {
-                $email->setSubject('Order Received');
-                $email->setBody('Thank you for your order');
-            } else {
-                $email->setSubject('Order Shipped');
-                $email->setBody('Ti-am trimis. Speram sa ajunga (de data asta)');
-            }
+            $this->composeEmail($email);
             $success = $context->send($email);
             if ($success) break;
         }
     }
-
+    protected function composeEmail(Email $email): void
+    {
+        $email->setSubject('Order Received');
+        $email->setBody('Thank you for your order');
+    }
+}
+class EmailService2 extends EmailService {
+    protected function composeEmail(Email $email): void
+    {
+        $email->setSubject('Order Shipped');
+        $email->setBody('Ti-am trimis. Speram sa ajunga (de data asta)');
+    }
 }
 
-$emailService = new EmailService();
 //cod existent
-$emailService->sendOrderReceivedEmail('a@b.com', false);
+(new EmailService())->sendOrderReceivedEmail('a@b.com', false);
 
 //CHANGE request: implement sendOrderShippedEmail
-$emailService->sendOrderReceivedEmail('a@b.com', true);
+(new EmailService2())->sendOrderReceivedEmail('a@b.com', true);
