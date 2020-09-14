@@ -19,21 +19,20 @@ class CustomsService
 
     private function selectTaxCompute(string $originCountry): TaxComputer
     {
-        $map = [ // astea pot fi citite dintr-un JSON/yaml
-            "UK" => UKTaxComputer::class,
-            "CH" => ChinaTaxComputer::class,
-            "FR" => EUTaxComputer::class,
-            "ES" => EUTaxComputer::class,
-            "RO" => EUTaxComputer::class
-        ];
-        if (!array_key_exists($originCountry, $map)) {
-            throw new \RuntimeException("JDD: Not a valid country ISO2 code: {$originCountry}");
-        }
-        return new $map[$originCountry]();
-    }
 
+        $taxComputers = [new UKTaxComputer(), new EUTaxComputer(), new ChinaTaxComputer()];
+
+        foreach ($taxComputers as $taxComputer) {
+            if (in_array($originCountry, $taxComputer->getSupportedIsoCodes())) {
+                return $taxComputer;
+            }
+        }
+        throw new \RuntimeException("JDD: Not a valid country ISO2 code: {$originCountry}");
+    }
 }
 interface TaxComputer {
+    /** @returns string[] */
+    public function getSupportedIsoCodes() : array;
     public function compute(float $tobaccoValue, float $otherValue): float;
 }
 
@@ -43,11 +42,20 @@ class UKTaxComputer implements TaxComputer {
         // 50-100 linii
         return $tobaccoValue / 2 + $otherValue / 2;
     }
+
+    public function getSupportedIsoCodes(): array
+    {
+        return ["UK"];
+    }
 }
 class ChinaTaxComputer implements TaxComputer {
     public function compute(float $tobaccoValue, float $otherValue): float
     {
         return $tobaccoValue + $otherValue;
+    }
+    public function getSupportedIsoCodes(): array
+    {
+        return ["CH"];
     }
 }
 class EUTaxComputer implements TaxComputer {
@@ -55,6 +63,10 @@ class EUTaxComputer implements TaxComputer {
         // am pierdut specificicitate incercand sa ma supun majoritatii.
     {
         return $tobaccoValue / 3;
+    }
+    public function getSupportedIsoCodes(): array
+    {
+        return ["RO",'ES','FR'];
     }
 }
 
