@@ -7,7 +7,6 @@ namespace victor\training\oo\creational\singleton;
 
 class ClasaDeTestat
 {
-    /** @var B b */
     private $b;
 
     public function __construct(B $b)
@@ -51,7 +50,10 @@ class Testul {
     /** @test */
     public function test1() {
 //        ServiceLocator::$mockedClassesFromTESTS["\victor\training\oo\creational\singleton\B"] = mock(B::class);
-        new ClasaDeTestat(mock(B)) -- < astazi
+//        new ClasaDeTestat(mock(B)) -- < astazi
+
+        (new B) -> met();
+        (new B) -> met();
     }
 }
 
