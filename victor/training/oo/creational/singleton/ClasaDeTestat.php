@@ -7,23 +7,23 @@ namespace victor\training\oo\creational\singleton;
 
 class ClasaDeTestat
 {
-//    /** @var B b */
-//    private $b;
-//
-//    public function __construct(B $b)
-//    {
-//        $this->b = $b;
-//    }
+    /** @var B b */
+    private $b;
+
+    public function __construct(B $b)
+    {
+        $this->b = $b;
+    }
 
     public function metDeBiz() {
         // logica de aici
 //        (new B())->met(); // 15 in urma
 
         /** @var B $b */
-        $b = ServiceLocator::getObject(B::class);
-        $b->met();
+//        $b = ServiceLocator::getObject(B::class);
+//        $b->met();
 
-//        $this->b->met(); // acum
+        $this->b->met(); // acum
     }
 }
 
@@ -50,7 +50,8 @@ class ServiceLocator {
 class Testul {
     /** @test */
     public function test1() {
-        ServiceLocator::$mockedClassesFromTESTS["\victor\training\oo\creational\singleton\B"] = mock(B::class);
+//        ServiceLocator::$mockedClassesFromTESTS["\victor\training\oo\creational\singleton\B"] = mock(B::class);
+        new ClasaDeTestat(mock(B)) -- < astazi
     }
 }
 
