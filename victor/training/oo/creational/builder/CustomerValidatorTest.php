@@ -7,72 +7,55 @@
  */
 
 namespace training\oo\creational\builder;
+use PHPUnit\Framework\TestCase;
+
 include "Customer.php";
 include "Address.php";
 include "CustomerValidator.php";
 
-class CustomerValidatorTest extends \PHPUnit\Framework\TestCase
+class CustomerValidatorTest extends TestCase
 {
-    // SOLUTION (
-    /* @var Customer */
-    private $validCustomer;
     /* @var CustomerValidator*/
     private $validator;
 
-    protected function setUp()
+    protected function setUp():void
     {
         $this->validator = new CustomerValidator();
-        $this->validCustomer = (new Customer())
-            ->setName("John Doe")
-            ->setAddress((new Address())
-                ->setCity("Bucharest"));
     }
 
-    /** @test
-     * @throws \Exception
-     */
-    public function aValidCustomer_OK() {
-        $this->validator->validate($this->validCustomer); // SOLUTION
-        self::assertTrue(true); // SOLUTION
-    }
-    // SOLUTION )
-
-    /** @test
-     * @throws \Exception
-     */
-    public function aValidCustomer_OK1() {
-        $customer = new Customer();
-        $customer->setName("John Doe");
-        $address = new Address();
-        $address->setCity("Bucharest");
-        $customer->setAddress($address);
-        $validator = new CustomerValidator();
-        $validator->validate($customer);
+    public function testAValidCustomer_OK() {
+        $customer = $this->aValidCustomer();
+        $this->validator->validate($customer);
         self::assertTrue(true);
     }
 
-
-
-    /**
-     * @test
-     * @expectedException \Exception
-     */
-    public function aCustomerWithoutName_Fails() {
-        $this->validator->validate($this->validCustomer->setName("")); // SOLUTION
+    public function testThrowsForCustomerWithEmptyName() {
+        $this->expectException(\Exception::class);
+        $customer = $this->aValidCustomer()->setName("");
+        $this->validator->validate($customer);
+        self::assertTrue(true);
     }
 
-    /**
-     * @test
-     * @expectedException \Exception
-     */
-    public function aCustomerAddressWithoutCity_Fails() {
-        // SOLUTION (
-        $this->validator->validate(
-            $this->validCustomer
-                ->setAddress($this->validCustomer->getAddress()
-                    ->setCity("")
-                ));
-        // SOLUTION )
+    public function testThrowsForCustomerWithEmptyAddressCity() {
+        $this->expectException(\Exception::class);
+        $customer = $this->aValidCustomer()
+            ->setAddress($this->aValidAddress()->setCity(""));
+        $this->validator->validate($customer);
+        self::assertTrue(true);
+    }
+
+    private function aValidCustomer(): Customer
+    {
+        return (new Customer())
+            ->setName("John Doe")
+            ->setPhone("0000000000")
+            ->setAddress($this->aValidAddress());
+    }
+
+    private function aValidAddress(): Address
+    {
+        return (new Address())
+            ->setCity("Bucharest");
     }
 
 }

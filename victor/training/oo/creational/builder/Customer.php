@@ -26,7 +26,8 @@ class Customer
     /* @var \DateTime */
     private $createDate;
 
-    public function __construct()
+    public function __construct(
+    )
     {
         $this->labels = [];
     }
@@ -34,33 +35,37 @@ class Customer
     /**
      * @return String
      */
-    public function getName(): String
+    public function getName(): string
     {
         return $this->name;
     }
 
     /**
      * @param String $name
+     * @return Customer
      */
-    public function setName(String $name): void
+    public function setName(string $name): Customer
     {
         $this->name = $name;
+        return $this;
     }
 
     /**
      * @return String
      */
-    public function getPhone(): String
+    public function getPhone(): string
     {
         return $this->phone;
     }
 
     /**
      * @param String $phone
+     * @return Customer
      */
-    public function setPhone(String $phone): void
+    public function setPhone(string $phone): Customer
     {
         $this->phone = $phone;
+        return $this;
     }
 
     /**
@@ -73,10 +78,17 @@ class Customer
 
     /**
      * @param String[] $labels
+     * @return Customer
      */
-    public function setLabels(array $labels): void
+    public function setLabels(array $labels): Customer
     {
         $this->labels = $labels;
+        return $this;
+    }
+
+    public function addLabels(string ...$newLabels) :Customer {
+        $this->labels = array_merge($this->labels, $newLabels);
+        return $this;
     }
 
     /**
@@ -89,10 +101,12 @@ class Customer
 
     /**
      * @param Address $address
+     * @return Customer
      */
-    public function setAddress(Address $address): void
+    public function setAddress(Address $address): Customer
     {
         $this->address = $address;
+        return $this;
     }
 
     /**
@@ -105,10 +119,12 @@ class Customer
 
     /**
      * @param \DateTime $createDate
+     * @return Customer
      */
-    public function setCreateDate(\DateTime $createDate): void
+    public function setCreateDate(\DateTime $createDate): Customer
     {
         $this->createDate = $createDate;
+        return $this;
     }
 
 }

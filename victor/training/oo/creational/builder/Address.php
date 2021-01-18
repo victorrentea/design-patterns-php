@@ -26,17 +26,19 @@ class Address
     /**
      * @return String
      */
-    public function getStreetName(): String
+    public function getStreetName(): string
     {
         return $this->streetName;
     }
 
     /**
      * @param String $streetName
+     * @return Address
      */
-    public function setStreetName(String $streetName): void
+    public function setStreetName(string $streetName): Address
     {
         $this->streetName = $streetName;
+        return $this;
     }
 
     /**
@@ -49,43 +51,50 @@ class Address
 
     /**
      * @param int $streetNumber
+     * @return Address
      */
-    public function setStreetNumber(int $streetNumber): void
+    public function setStreetNumber(int $streetNumber): Address
     {
         $this->streetNumber = $streetNumber;
+        return $this;
     }
 
     /**
      * @return String
      */
-    public function getCity(): String
+    public function getCity(): string
     {
         return $this->city;
     }
 
     /**
      * @param String $city
+     * @return Address
      */
-    public function setCity(String $city): void
+    public function setCity(string $city): Address
     {
         $this->city = $city;
+        return $this;
     }
 
     /**
      * @return String
      */
-    public function getCountry(): String
+    public function getCountry(): string
     {
         return $this->country;
     }
 
     /**
      * @param String $country
+     * @return Address
      */
-    public function setCountry(String $country): void
+    public function setCountry(string $country): Address
     {
         $this->country = $country;
+        return $this;
     }
+
 
 
 

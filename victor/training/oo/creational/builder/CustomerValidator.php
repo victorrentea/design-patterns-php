@@ -18,6 +18,9 @@ class CustomerValidator
         if ($customer->getName() === '') {
             throw new \Exception('Missing customer name');
         }
+//        if ($customer->getPhone() === '') {
+//            throw new \Exception('Missing customer phone');
+//        }
 
         $this->validateAddress($customer->getAddress());
         //etc ...

@@ -11,12 +11,24 @@ namespace victor\training\oo\behavioral\singleton;
 
 class AppConfiguration
 {
-    public function __construct()
+    // old-school programatic singleton (antique)
+
+    private static ?AppConfiguration $INSTANCE = null;
+
+    public static function getInstance():AppConfiguration
+    {
+        if (static::$INSTANCE == null) {
+            static::$INSTANCE = new self();
+        }
+        return self::$INSTANCE;
+    }
+
+    private function __construct()
 	{
         printf("Creating singleton instance\n");
         $this->properties = $this->readConfiguration();
     }
-	
+
     private $properties;
 
     private function readConfiguration(): array {
