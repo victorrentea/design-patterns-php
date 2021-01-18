@@ -7,9 +7,9 @@ namespace victor\training\oo\creational\singleton;
 
 class ClasaDeTestat
 {
-    private $b;
+    private IB $b;
 
-    public function __construct(B $b)
+    public function __construct(IB $b)
     {
         $this->b = $b;
     }
@@ -28,8 +28,8 @@ class ClasaDeTestat
 
 class ServiceLocator {
 
-    static private $registry = [];
-    static public $mockedClassesFromTESTS = []; // in productie ramane gol
+    static private array $registry = [];
+    static public array $mockedClassesFromTESTS = []; // in productie ramane gol
 
     public static function getObject(string $class)
     {
@@ -54,14 +54,32 @@ class Testul {
 
         (new B) -> met();
         (new B) -> met();
+        new ClasaDeTestat(new BRO());
+        new ClasaDeTestat(new BHU());
+//        (new BRO()) ->
     }
 }
 
 
-class B {
+interface IB {
+    function met();
+}
 
+class BRO implements IB {
     public function met()
     {
-        // ceva cu fisiere/ DB/ REST/ gherkin/rabbit
+       // tip Romanica
+        $this->f();
+    }
+
+    private function f()
+    {
+    }
+
+}
+class BHU implements IB {
+    public function met()
+    {
+       // a la Hungarica
     }
 }

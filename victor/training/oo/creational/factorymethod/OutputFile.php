@@ -15,7 +15,7 @@ class OutputFile
     private $extension;
     private $separator;
 
-    public function __construct(string $baseName, string $extension = "csv", string $separator = ";")
+    public function __construct(string $baseName, string $extension , string $separator )
     {
         $this->baseName = $baseName;
         $this->extension = $extension;
@@ -23,7 +23,7 @@ class OutputFile
     }
 
     public static function createCsvWithSemicolonSeparator(string $baseName): OutputFile {
-        return new OutputFile($baseName);
+        return new OutputFile($baseName,".csv",";");
     }
 
     public function getFileName(): string {

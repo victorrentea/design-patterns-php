@@ -5,13 +5,17 @@ include "Customer.php";
 include "Address.php";
 
 
-$customer = new Customer();
-$customer->setName('John Doe');
-$labels = [];
-$labels []= 'Label1';
-$customer->setLabels($labels);
-$address = new Address();
-$address->setStreetName('Viorele');
-$address->setStreetNumber(4);
-$address->setCity('Bucharest');
+$customer = (new CustomerBuilder())
+->withName('John Doe')
+    //->withLabels(['Label1']);
+    ->withAddress((new AddressBuilder())
+        ->withStreetName("Viorele")
+        ->withStreetNumber(4)
+        ->withCity(4)
+        ->build()
+    )
+    ->build();
+;
+
+
 $customer->setAddress($address);

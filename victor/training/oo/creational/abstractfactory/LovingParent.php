@@ -9,12 +9,18 @@
 namespace victor\training\oo\creational\abstractfactory;
 
 use victor\training\oo\creational\abstractfactory\lego\LegoFactory;
+use victor\training\oo\creational\abstractfactory\megablock\MegaBlockBoard;
 use victor\training\oo\creational\abstractfactory\megablock\MegaBlockFactory;
 
 foreach (glob("*.php") as $filename) require_once $filename;
 foreach (glob("spi/*.php") as $filename) require_once $filename;
 foreach (glob("lego/*.php") as $filename) require_once $filename;
 foreach (glob("megablock/*.php") as $filename) require_once $filename;
+
+
+
+
+
 
 
 
@@ -29,3 +35,10 @@ printf("Hm....\n");
 $childOne->playWith($factory);
 
 printf("Good Night!\n");
+
+
+$legoCube = (new LegoFactory())->createCube();
+$megaCube = (new MegaBlockFactory())->createCube();
+
+
+$legoCube->stackOnto($megaCube);

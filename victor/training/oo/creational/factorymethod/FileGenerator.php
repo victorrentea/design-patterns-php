@@ -13,21 +13,9 @@ class FileGenerator
 {
     public static function createAnafFile()
     {
-
+//        $outputFile = new OutputFile("anaf", separator:",");
+//        $outputFile->writeCsv("sdsadas")
         $outputFile = OutputFile::createCsvWithSemicolonSeparator("anaf");
-        $file = fopen($outputFile->getFileName(), "w");
-        printf("writing to file " . $outputFile->getFileName(). "\n");
-        // write to file...
-        fclose($file);
-    }
-
-    public static function createRCFile()
-    {
-        $outputFile = new OutputFile("rc", "txt", "|");
-        $file = fopen($outputFile->getFileName(), "w");
-        printf("writing to file " . $outputFile->getFileName() .  "\n");
-        // write to file...
-        fclose($file);
     }
 }
 
