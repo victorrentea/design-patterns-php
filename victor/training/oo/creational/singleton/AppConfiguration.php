@@ -9,7 +9,7 @@
 namespace victor\training\oo\behavioral\singleton;
 
 
-class AppConfiguration
+class SeAppConfiguration
 {
     // old-school programatic singleton (antique)
 
