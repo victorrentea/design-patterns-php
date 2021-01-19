@@ -8,8 +8,14 @@
 
 namespace victor\training\oo\structural\decorator;
 
+interface IExpensiveMath {
 
-class ExpensiveMathCuCache
+    function getNextPrimeAfter(int $number): int;
+
+    function isPrime(int $number): bool;
+}
+
+class ExpensiveMathCuCache implements  IExpensiveMath
 {
     private ExpensiveMath $delegate;
     private $primes = [];
@@ -34,7 +40,7 @@ class ExpensiveMathCuCache
         return $this->delegate->getNextPrimeAfter($number);
     }
 }
-class ExpensiveMath
+class ExpensiveMath implements  IExpensiveMath
 {
 
     function getNextPrimeAfter(int $number): int {

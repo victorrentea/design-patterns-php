@@ -5,11 +5,20 @@ namespace victor\training\oo\creational;
 
 
 
-class Person {
+/** @Entity */
+class Person {   // ---->tabela PERSON(ID, FIRST_NAME, LAST_NAME)
+
+
+    /** @Id */
+    private int $id;
+
+    /** @Embedded(class = "FullName") */
+    private FullName $fullName;
 
 }
 
 
+/** @Embeddable */
 class FullName
 {
     private string $firstName;
@@ -20,7 +29,6 @@ class FullName
         $this->firstName = $firstName;
         $this->lastName = $lastName;
     }
-
 
     public function getFirstName(): string
     {

@@ -10,7 +10,7 @@ namespace victor\training\oo\structural\decorator;
 
 include "ExpensiveMath.php";
 
-function testItAndIfPrimeGetNextOne(int $n, ExpensiveMathCuCache $math)
+function testItAndIfPrimeGetNextOne(int $n, IExpensiveMath $math)
 {
 
     $isPrime = $math->isPrime($n);
@@ -22,7 +22,8 @@ function testItAndIfPrimeGetNextOne(int $n, ExpensiveMathCuCache $math)
 }
 
 
-$math = new ExpensiveMathCuCache(new ExpensiveMath());
+$math = new ExpensiveMath();
+//$math = new ExpensiveMathCuCache(new ExpensiveMath());
 printf("Start... \n");
 testItAndIfPrimeGetNextOne(179426549*179426549, $math);
 
