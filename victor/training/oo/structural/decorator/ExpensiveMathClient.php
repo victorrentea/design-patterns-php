@@ -10,18 +10,19 @@ namespace victor\training\oo\structural\decorator;
 
 include "ExpensiveMath.php";
 
-function testItAndIfPrimeGetNextOne(int $n, ExpensiveMath $math)
+function testItAndIfPrimeGetNextOne(int $n, ExpensiveMathCuCache $math)
 {
 
     $isPrime = $math->isPrime($n);
     printf("isPrime(" . $n . "): " . ($isPrime ? "Yes" : "No") . "\n");
-    if ($isPrime) {
-        printf("next prime after " . $n . ": " . $math->getNextPrimeAfter($n + 1) . "\n");
-    }
+//    if ($isPrime) {
+//        printf("next prime after " . $n . ": " . $math->getNextPrimeAfter($n + 1) . "\n");
+//    }
 
 }
 
-$math = new ExpensiveMath();
+
+$math = new ExpensiveMathCuCache(new ExpensiveMath());
 printf("Start... \n");
 testItAndIfPrimeGetNextOne(179426549*179426549, $math);
 

@@ -8,10 +8,34 @@
 
 namespace victor\training\oo\structural\decorator;
 
-class ExpensiveMath
+
+class ExpensiveMathCuCache
 {
+    private ExpensiveMath $delegate;
     private $primes = [];
 
+    public function __construct(ExpensiveMath $delegate)
+    {
+        $this->delegate = $delegate;
+    }
+
+    function isPrime(int $number): bool
+    {
+        if (isset($this->primes[$number])) {
+            return $this->primes[$number];
+        }
+        $result = $this->delegate->isPrime($number);
+        $this->primes[$number] = $result;
+        return $result;
+    }
+
+    function getNextPrimeAfter(int $number): int
+    {
+        return $this->delegate->getNextPrimeAfter($number);
+    }
+}
+class ExpensiveMath
+{
 
     function getNextPrimeAfter(int $number): int {
         $n = $number;
@@ -22,28 +46,18 @@ class ExpensiveMath
     }
 
 
-//    function isPrime(int $number): bool {
-//
-//    }
     function isPrime(int $number): bool {
-        if (isset($this->primes[$number])) {
-            return $this->primes[$number];
-        }
         if ($number  <= 2) {
-            $this->primes[$number] = true;
             return true;
         }
         if ($number % 2 === 0) {
-            $this->primes[$number] = false;
             return false;
         }
         for ($d = 3; $d < $number/2; $d += 2) {
             if ($number % $d === 0) {
-                $this->primes[$number] = false;
                 return false;
             }
         }
-        $this->primes[$number] = true;
 		return true;
     }
 }
