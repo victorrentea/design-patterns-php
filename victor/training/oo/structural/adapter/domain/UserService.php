@@ -9,12 +9,10 @@
 namespace victor\training\oo\structural\adapter\domain;
 
 
-use victor\training\oo\structural\adapter\external\LdapUser;
-use victor\training\oo\structural\adapter\external\LdapUserWebServiceClient;
 
 foreach (glob("../external/*.php") as $filename) require_once $filename;
 include "User.php";
-//include "LdapUserWSAdapter.php"; // SOLUTION
+include "LdapUserServiceAdapter.php"; // SOLUTION
 
 
 
@@ -22,23 +20,23 @@ include "User.php";
 // vrei sa aperi codul asta de dusmanu, de exterior
 class UserService // 100- 500 linii
 {
-    private LdapUserWebServiceClient $wsClient;
+    private ExternalUserServiceAdapter $adapter;
 
-    public function __construct(LdapUserWebServiceClient $wsClient)
+    public function __construct(ExternalUserServiceAdapter $adapter)
     {
-        $this->wsClient = $wsClient;
+        $this->adapter = $adapter;
     }
+
 
     public function importUserFromLdap(string $username)
     {
-        $list = $this->findUserInLdapByUsername($username);
+        $list = $this->adapter->findUserByUsername($username);
         if (count($list) !== 1)
         {
             throw new \Exception('There is no single user matching username ' . $username);
         }
 
-        $ldapUser = $list[0];
-        $user = $this->convertUser($ldapUser);
+        $user = $list[0];
 
         if ($user->getWorkEmail() !== null) {
             printf('Send welcome email to ' . $user->getWorkEmail() . "\n");
@@ -47,34 +45,18 @@ class UserService // 100- 500 linii
     }
 
     public function searchUserInLdap(string $username) {
-        $list = $this->wsClient->search(strtoupper($username), null, null);
-        $results = array();
-        foreach ($list as $ldapUser) {
-            $results[] = $this->convertUser($ldapUser);
-        }
-        return $results;
+        return $this->adapter->findUserByUsername($username);
     }
 
 
-    /**
-     * @return LdapUser[]
-     */
-    private function findUserInLdapByUsername(string $username): array
-    {
-        return $this->wsClient->search(strtoupper($username), null, null);
-    }
+    // deasupra liniei : cod frumos
+    // -- o linie ------------------------------------------------------------------------------------
+    // sub linie: gunoi. haos. jale.
 
-    private function convertUser(LdapUser $ldapUser): User
-    {
-        $fullName = $ldapUser->getfName() . ' ' . strtoupper($ldapUser->getlName());
-        $user = new User();
-        $user->setUsername($ldapUser->getUId());
-        $user->setFullName($fullName);
-        $user->setWorkEmail($ldapUser->getWorkEmail());
-        return $user;
-    }
+
 
 }
+
 
 $userService = new UserService(new LdapUserWebServiceClient()); // INITIAL
 
