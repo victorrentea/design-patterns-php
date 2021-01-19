@@ -14,9 +14,9 @@ class PizzaMan
 
     public function bakePizza(string $pizzaType, string $crustType)
     {
-        printf(" Baking pizza " . $pizzaType . " with crust " . $crustType . " ...");
+        printf(" Baking pizza " . $pizzaType . " with crust " . $crustType . " ...   ");
         sleep(1);
-        printf("Done!");
+        printf("Done!\n");
     }
 
 }

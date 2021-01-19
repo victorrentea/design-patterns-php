@@ -8,37 +8,35 @@
 
 namespace victor\training\oo\behavioral\command;
 
+include "Barman.php";
 include "PizzaMan.php";
-include "Waitress.php";
-include "PizzaCommand.php";
+// include "Waitress.php";
+// include "PizzaCommand.php";
 
 class Customer
 {
-    /** @var  Waitress */
-    private $waitress;
+    private Barman $barman;
+    private PizzaMan $pizzaMan;
 
-    /**
-     * Customer constructor.
-     * @param $waitress
-     */
-    public function __construct($waitress)
+    public function __construct(Barman $barman, PizzaMan $pizzaMan)
     {
-        $this->waitress = $waitress;
+        $this->barman = $barman;
+        $this->pizzaMan = $pizzaMan;
     }
 
 
     public function act() {
-        printf("Shouting for a pizza!\n");
-		$this->waitress->orderPizza("Capriciosa", "thin");
+        printf("Shouting for a pizza and beer!\n");
+		$this->pizzaMan->bakePizza("Capriciosa", "thin");
+		$this->barman->pourBeer("Tuborg");
 	}
 
 }
 
-$waitress = new Waitress(new PizzaMan());
-$customer = new Customer($waitress);
+$pizzaMan = new PizzaMan();
+$barman = new Barman();
+$customer = new Customer($barman, $pizzaMan);
 $customer->act();
 $customer->act();
 $customer->act();
 $customer->act();
-
-$waitress->flushOrders();
