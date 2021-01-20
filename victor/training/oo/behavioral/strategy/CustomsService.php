@@ -8,20 +8,48 @@
 
 namespace victor\training\oo\behavioral\strategy;
 
+
+
 class CustomsService
 {
 
     public function computeAddedCustomsTax(string $originCountry, float $tobaccoValue, float $otherValue): float { // UGLY API we CANNOT change
         switch ($originCountry) {
-            case 'UK': return $tobaccoValue/2 + $otherValue/2;
-            case 'CH': return $tobaccoValue + $otherValue;
+            case 'UK': $computer = new BrexitTaxComputer();break;
+            case 'CH': $computer = new ChinaTaxComputer();break;
             case 'FR':
             case 'ES': // other EU country codes...
-            case 'RO': return $tobaccoValue/3;
+            case 'RO': $computer = new EUTaxComputer();break;
             default: throw new \RuntimeException("Not a valid country ISO2 code: {$originCountry}");
         }
-    }
 
+        return $computer->compute($tobaccoValue, $otherValue);
+    }
+}
+interface TaxComputerInterface {
+    function compute(float $tobaccoValue, float $otherValue): float;
+}
+
+class EUTaxComputer implements TaxComputerInterface  {
+    public function compute(float $tobaccoValue, float $otherValueDEGEABA): float
+    {
+        return $tobaccoValue / 3;
+    }
+}
+class ChinaTaxComputer implements TaxComputerInterface  {
+    public function compute(float $tobaccoValue, float $otherValue): float
+    {
+        return $tobaccoValue + $otherValue;
+    }
+}
+class BrexitTaxComputer implements TaxComputerInterface  {
+    public function compute(float $tobaccoValue, float $otherValue): float
+    {
+        echo "Logica lu marcel";
+        echo "Logica lu marcel";
+        echo "Logica lu Maria";
+        return $tobaccoValue / 2 + $otherValue / 2;
+    }
 }
 
 

@@ -34,6 +34,15 @@ class LdapUserServiceAdapter implements ExternalUserServiceAdapter
         $user->setUsername($ldapUser->getUId());
         $user->setFullName($fullName);
         $user->setWorkEmail($ldapUser->getWorkEmail());
+
+        // $this->killIt(new Square())
         return $user;
+
+
     }
+
+    // function killIt(Rectangle $r)
+    // {
+
+    // }
 }
