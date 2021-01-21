@@ -16,6 +16,11 @@ include "EmailContext.php";
 
 class EmailSender {
     private const MAX_RETRIES = 3;
+
+    /**
+     * @param string $emailAddress
+     * @param callable $composerFn a function that take Email and fills subject and body
+     */
     public function sendEmail(string $emailAddress, callable $composerFn): void {
         $context = new EmailContext(/*smtpConfig,etc*/);
         for ($i = 0; $i < self::MAX_RETRIES; $i++) {
