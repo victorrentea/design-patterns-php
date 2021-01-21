@@ -38,11 +38,20 @@ class CustomsService
         'FR' => EUTaxComputer::class
     ];
 
+    function aaaaia() {
+        echo "Whiskey";
+    }
+
 
     private function taxCalculatorFactory(string $originCountry): TaxComputerInterface
     {
         // $this->container->getObject($this->countryCalculator[$originCountry]);
 // TEaser: php8 :)
+
+        // new $originCountry . "TaxCalculator";
+
+        // $functionName = "aaa". "aia";
+        // $this->$functionName();
         return new $this->countryCalculator[$originCountry];
         //
         // $computer = match ($originCountry) {
@@ -111,4 +120,22 @@ $customsService = new CustomsService();
 printf('Tax for (RO,100,100) = ' . $customsService->computeAddedCustomsTax("RO", 100, 100) . '\n');
 printf('Tax for (CH,100,100) = ' . $customsService->computeAddedCustomsTax("CH", 100, 100) . '\n');
 printf('Tax for (UK,100,100) = ' . $customsService->computeAddedCustomsTax("UK", 100, 100) . '\n');
-printf('Tax for (UK,100,100) = ' . $customsService->computeAddedCustomsTax("TU", 100, 100) . '\n');
+// printf('Tax for (UK,100,100) = ' . $customsService->computeAddedCustomsTax("TU", 100, 100) . '\n');
+
+
+f(1, true);
+f(1, cr324:true);
+
+function f(int $i, bool $cr323 = false, bool $cr324 = false )
+{
+    //logica
+    if ($cr323) {
+
+    }
+    if ($cr324) {
+
+    }
+    if ($cr323) {
+
+    }
+}
