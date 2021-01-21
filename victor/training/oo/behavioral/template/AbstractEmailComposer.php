@@ -44,15 +44,26 @@ class EmailSender {
 // $a = new A();
 // $a(1);
 
-interface EmailComposerInterface {
-    function __invoke(Email $email): void;
-}
+// interface EmailComposerInterface {
+//     function __invoke(Email $email): void;
+// }
+//
+// class OrderReceivedEmailComposer implements EmailComposerInterface
+// {
+//     function __invoke(Email $email): void
+//     {
+//         $email->setSubject('Order Received');
+//         $email->setBody('Thank you for your order');
+//     }
+// }
+
+
 class Emails {
-    public static function composeOrderReceived(Email $email): void {
+    public function composeOrderReceived(Email $email): void {
         $email->setSubject('Order Received');
         $email->setBody('Thank you for your order');
     }
-    public static function composeOrderShipped(Email $email): void {
+    public function composeOrderShipped(Email $email): void {
         $email->setSubject('Order Shipped');
         $email->setBody('Ti-am trimis. Speram sa ajunga (de data asta).');
     }
@@ -72,8 +83,10 @@ $sender = new EmailSender();
 // cam miroase a anonymous stuff. Dac e multa logica, merita o functie. 
 
 
-($sender)->sendEmail("a@b.com", [Emails::class, "composeOrderReceived"]);
-($sender)->sendEmail("a@b.com", [Emails::class, "composeOrderShipped"]);
+$emails = new Emails();
+
+($sender)->sendEmail("a@b.com", [$emails, "composeOrderReceived"]);
+($sender)->sendEmail("a@b.com", [$emails, "composeOrderShipped"]);
 
 
 // class CodClient {
