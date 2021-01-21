@@ -8,66 +8,83 @@
 
 namespace victor\training\oo\behavioral\template;
 
-use phpDocumentor\Reflection\Types\Callable_;
-
 include "Email.php";
 include "EmailContext.php";
 
 
-class EmailSender {
+abstract class EmailSender
+{
     private const MAX_RETRIES = 3;
 
     /**
      * @param string $emailAddress
-     * @param callable $composerFn a function that take Email and fills subject and body
+     * @param callable $composer a function that take Email and fills subject and body
      */
-    public function sendEmail(string $emailAddress, callable $composerFn): void {
+    public function sendEmail(string $emailAddress): void
+    {
         $context = new EmailContext(/*smtpConfig,etc*/);
         for ($i = 0; $i < self::MAX_RETRIES; $i++) {
             $email = new Email();
             $email->setSender('noreply@emag.ro');
             $email->setReplyTo('/dev/null');
             $email->setTo($emailAddress);
-            $composerFn($email);
+            $this->compose($email);
             $success = $context->send($email);
             if ($success) break;
         }
         // persit in db
     }
+
+    protected abstract function compose(Email $email): void;
+
+    protected function escapeTitle(string $string): string
+    {
+        return strtoupper($string);
+    }
 }
 
-// class A  {
-//     function __invoke(int $ceva) {
-//         echo "PANICA!";
-//     }
-// }
-// $a = new A();
-// $a(1);
-
-// interface EmailComposerInterface {
-//     function __invoke(Email $email): void;
-// }
-//
-// class OrderReceivedEmailComposer implements EmailComposerInterface
-// {
-//     function __invoke(Email $email): void
-//     {
-//         $email->setSubject('Order Received');
-//         $email->setBody('Thank you for your order');
-//     }
-// }
-
-
-class Emails {
-    public function composeOrderReceived(Email $email): void {
-        $email->setSubject('Order Received');
+class OSEC extends EmailSender
+{
+    public function compose(Email $email): void
+    {
+        $email->setSubject($this->escapeTitle('Order <script Received'));
         $email->setBody('Thank you for your order');
     }
-    public function composeOrderShipped(Email $email): void {
-        $email->setSubject('Order Shipped');
-        $email->setBody('Ti-am trimis. Speram sa ajunga (de data asta).');
-    }
 }
+
+class OREC extends EmailSender
+{
+    public function compose(Email $email): void
+    {
+        $email->setSubject($this->escapeTitle('Order Shipped'));
+        // multa logica
+        $email->setBody('Ti-am trimis. Speram sa ajunga (de data asta).');
+        // aici scrii export data pe fisierul primit parametru
+    }
+
+}
+
+// class A
+// {
+//     private ABC $abc;
+//     private D $d;
+//
+//     /**
+//      * @param ABC $abc
+//      */
+//     public function setAbc(ABC $abc): void
+//     {
+//         $this->abc = $abc;
+//     }
+//
+//     /**
+//      * @param D $d
+//      */
+//     public function setD(D $d): void
+//     {
+//         $this->d = $d;
+//     }
+// }
 
 // new EmailSender()->send(orderEmail)
 
