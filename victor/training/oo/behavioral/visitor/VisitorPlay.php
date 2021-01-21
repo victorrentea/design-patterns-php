@@ -19,6 +19,23 @@ $shapes = [new Square(2), new Circle(2)];
 
 
 
+class PerimeterVisitor implements ShapeVisitor {
+
+    function visitCircle(Circle $circle)
+    {
+        // TODO: Implement visitCircle() method.
+    }
+
+    function visitSquare(Square $circle)
+    {
+        // TODO: Implement visitSquare() method.
+    }
+
+    function visitElipsa(Elipsa $param)
+    {
+        // TODO: Implement visitElipsa() method.
+    }
+}
 class AreaVisitor implements ShapeVisitor
 {
     private float $totalArea = 0;
