@@ -9,6 +9,8 @@
 namespace victor\training\oo\behavioral\visitor\model;
 
 
+use victor\training\oo\behavioral\visitor\ShapeVisitor;
+
 class Square implements Shape
 {
     private int $edge;
@@ -23,8 +25,15 @@ class Square implements Shape
         return $this->edge;
     }
 
-    public function computeArea(): float
+    // public function computeArea(): float
+    // {
+    //     // LOGICA COMUNA
+    //     // LOGICA COMUNA
+    //     // LOGICA COMUNA
+    //     return $this->getEdge() * $this->getEdge();
+    // }
+    function accept(ShapeVisitor $visitor): void
     {
-        return $this->getEdge() * $this->getEdge();
+        $visitor->visitSquare($this);
     }
 }
