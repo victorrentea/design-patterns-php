@@ -22,6 +22,7 @@ email.sender.received:
     arguments:
         - "@order.received.email.composer"
 
+
 email.sender.shipped:
     public: false
     class: MS\ExamplePHP\ProxyPattern\Service\EmailSender
