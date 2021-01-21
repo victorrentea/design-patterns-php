@@ -9,10 +9,11 @@
 namespace victor\training\oo\behavioral\visitor\model;
 
 
+use JetBrains\PhpStorm\Pure;
+
 class Circle implements Shape
 {
-    /** @var  int */
-    private $radius;
+    private int $radius;
 
     public function __construct(int $radius)
     {
@@ -24,5 +25,10 @@ class Circle implements Shape
         return $this->radius;
     }
 
+    public function computeArea(): float
+    {
+        // Pure = nu side effects + se poate inlocui cu rezultatul apelului ei
+        return $this->getRadius() * $this->getRadius() * pi();
+    }
 
 }

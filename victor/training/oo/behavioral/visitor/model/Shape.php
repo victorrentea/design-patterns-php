@@ -11,5 +11,5 @@ namespace victor\training\oo\behavioral\visitor\model;
 
 interface Shape
 {
-
+    public function computeArea(): float;
 }
