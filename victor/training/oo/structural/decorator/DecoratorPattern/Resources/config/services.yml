@@ -15,3 +15,25 @@ order.service.with.logger:
     arguments:
         - "@order.service.with.logger.inner"
         - "@logger"
+
+email.sender.received:
+    public: false
+    class: MS\ExamplePHP\ProxyPattern\Service\EmailSender
+    arguments:
+        - "@order.received.email.composer"
+
+email.sender.shipped:
+    public: false
+    class: MS\ExamplePHP\ProxyPattern\Service\EmailSender
+    arguments:
+        - "@order.shipped.email.composer"
+
+
+place.order.service:
+    arguments:
+        - "@email.sender.received"
+
+ship.order.service:
+    arguments:
+        - "@email.sender.shipped"
+

@@ -22,6 +22,7 @@ class EmailSender
 {
     private const MAX_RETRIES = 3;
     private EmailSenderInterface $composer;
+    private EmailClient $client;
 
     public function __construct(EmailSenderInterface $composer)
     {
