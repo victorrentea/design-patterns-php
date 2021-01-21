@@ -16,31 +16,38 @@ include "EmailContext.php";
 
 class EmailSender {
     private const MAX_RETRIES = 3;
-    public function sendEmail(string $emailAddress, EmailComposerInterface $composer): void {
+    public function sendEmail(string $emailAddress, callable $composerFn): void {
         $context = new EmailContext(/*smtpConfig,etc*/);
         for ($i = 0; $i < self::MAX_RETRIES; $i++) {
             $email = new Email();
             $email->setSender('noreply@emag.ro');
             $email->setReplyTo('/dev/null');
             $email->setTo($emailAddress);
-            $composer->compose($email);
+            $composerFn($email);
             $success = $context->send($email);
             if ($success) break;
         }
         // persit in db
     }
 }
+
+// class A  {
+//     function __invoke(int $ceva) {
+//         echo "PANICA!";
+//     }
+// }
+// $a = new A();
+// $a(1);
+
 interface EmailComposerInterface {
-    function compose(Email $email): void;
+    function __invoke(Email $email): void;
 }
-class OrderReceivedEmailComposer implements  EmailComposerInterface {
-    public function compose(Email $email): void {
+class Emails {
+    public static function composeOrderReceived(Email $email): void {
         $email->setSubject('Order Received');
         $email->setBody('Thank you for your order');
     }
-}
-class OrderShippedEmailComposer implements  EmailComposerInterface {
-    public function compose(Email $email): void {
+    public static function composeOrderShipped(Email $email): void {
         $email->setSubject('Order Shipped');
         $email->setBody('Ti-am trimis. Speram sa ajunga (de data asta).');
     }
@@ -53,8 +60,15 @@ class OrderShippedEmailComposer implements  EmailComposerInterface {
 
 
 $sender = new EmailSender();
-($sender)->sendEmail("a@b.com", new OrderReceivedEmailComposer());
-($sender)->sendEmail("a@b.com", new OrderShippedEmailComposer());
+// ($sender)->sendEmail("a@b.com", function (Email $email): void {
+//     $email->setSubject('Order Received');
+//     $email->setBody('Thank you for your order');
+// });
+// cam miroase a anonymous stuff. Dac e multa logica, merita o functie. 
+
+
+($sender)->sendEmail("a@b.com", [Emails::class, "composeOrderReceived"]);
+($sender)->sendEmail("a@b.com", [Emails::class, "composeOrderShipped"]);
 
 
 // class CodClient {
