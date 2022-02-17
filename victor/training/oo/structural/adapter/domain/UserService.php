@@ -9,8 +9,6 @@
 namespace victor\training\oo\structural\adapter\domain;
 
 
-use victor\training\oo\structural\adapter\external\LdapUserWebServiceClient;
-
 foreach (glob("../external/*.php") as $filename) require_once $filename;
 include "User.php";
 include "LdapUserWSAdapter.php"; // SOLUTION

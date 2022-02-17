@@ -39,12 +39,10 @@ class Customer
         return $this->name;
     }
 
-    /**
-     * @param String $name
-     */
-    public function setName(String $name): void
+    public function setName(String $name): Customer
     {
         $this->name = $name;
+        return $this;
     }
 
     /**
@@ -74,9 +72,10 @@ class Customer
     /**
      * @param String[] $labels
      */
-    public function setLabels(array $labels): void
+    public function setLabels(array $labels): Customer
     {
         $this->labels = $labels;
+        return this;
     }
 
     /**
