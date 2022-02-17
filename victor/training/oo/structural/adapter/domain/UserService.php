@@ -9,7 +9,6 @@
 namespace victor\training\oo\structural\adapter\domain;
 
 
-use victor\training\oo\structural\adapter\external\LdapUserDto;
 use victor\training\oo\structural\adapter\external\LdapUserWebServiceClient;
 
 foreach (glob("../external/*.php") as $filename) require_once $filename;
@@ -21,16 +20,17 @@ include "LdapUserWSAdapter.php"; // SOLUTION
 // cat mai curat mediul acestui Service
 class UserService
 {
-    private LdapUserWebServiceClient $wsClient;
+    private ILdapAdapter $adapter;
 
-    public function __construct(LdapUserWebServiceClient $wsClient)
+    public function __construct(ILdapAdapter $adapter)
     {
-        $this->wsClient = $wsClient;
+        $this->adapter = $adapter;
     }
+
 
     public function importUserFromLdap(string $username)
     {
-        $user = $this->findOneByUsername($username);
+        $user = $this->adapter->findOneByUsername($username);
 
         if ($user->hasWorkEmail()) {
             printf('Send welcome email to ' . $user->getWorkEmail() . "\n");
@@ -42,27 +42,6 @@ class UserService
         // logica de domeniu complicata
         printf("Insert user in my database\n");
     }
-
-    /// raiul : domain
-    ///////////// LINIE IMPORTANTA !
-    /// iadul : infrastructura
-
-    private function findOneByUsername(string $username): User
-    {
-        $list = $this->wsClient->search(strtoupper($username), null, null);
-        if (count($list) !== 1) {
-            throw new \Exception('There is no single user matching username ' . $username);
-        }
-        return $this->fromDto($list[0]);
-    }
-
-    private function fromDto(LdapUserDto $ldapUser): User
-    {
-
-        $fullName = $ldapUser->getfName() . ' ' . strtoupper($ldapUser->getlName());
-        return new User($ldapUser->getUId(), $fullName, $ldapUser->getWorkEmail());
-    }
-
 
 }
 
