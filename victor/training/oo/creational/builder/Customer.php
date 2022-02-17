@@ -97,3 +97,21 @@ class Customer
     }
 
 }
+
+class TestData  { // o forma de Test Data Factory.
+    // Object Mother
+    static function aValidCustomer(): Customer {
+        return (new Customer()); // obiect rezonabil pentru testare.
+            // ->..........
+            // ->..........
+            // ->..........
+            // ->..........
+            // ->..........
+            // ->..........
+    }
+
+}// in teste
+
+// apoi din teste
+
+TestData::aValidCustomer()->setName(null);
