@@ -9,7 +9,7 @@
 namespace victor\training\oo\structural\adapter\external;
 
 
-class LdapUser
+class LdapUserDto
 {
     /* @var string */
     private $fName;
@@ -24,73 +24,45 @@ class LdapUser
     /* @var LdapUserPhone[] */
     private $emailAddresses = array();
 
-    /**
-     * @return string
-     */
     public function getFName(): string
     {
         return $this->fName;
     }
 
-    /**
-     * @param string $fName
-     * @return LdapUser
-     */
-    public function setFName(string $fName): LdapUser
+    public function setFName(string $fName): LdapUserDto
     {
         $this->fName = $fName;
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getLName(): string
     {
         return $this->lName;
     }
 
-    /**
-     * @param string $lName
-     * @return LdapUser
-     */
-    public function setLName(string $lName): LdapUser
+    public function setLName(string $lName): LdapUserDto
     {
         $this->lName = $lName;
         return $this;
     }
 
-    /**
-     * @return \DateTime
-     */
     public function getCreationDate(): \DateTime
     {
         return $this->creationDate;
     }
 
-    /**
-     * @param \DateTime $creationDate
-     * @return LdapUser
-     */
-    public function setCreationDate(\DateTime $creationDate): LdapUser
+    public function setCreationDate(\DateTime $creationDate): LdapUserDto
     {
         $this->creationDate = $creationDate;
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getUId(): string
     {
         return $this->uId;
     }
 
-    /**
-     * @param string $uId
-     * @return LdapUser
-     */
-    public function setUId(string $uId): LdapUser
+    public function setUId(string $uId): LdapUserDto
     {
         $this->uId = $uId;
         return $this;
@@ -106,7 +78,7 @@ class LdapUser
 
     /**
      * @param mixed $workEmail
-     * @return LdapUser
+     * @return LdapUserDto
      */
     public function setWorkEmail($workEmail)
     {
@@ -124,9 +96,9 @@ class LdapUser
 
     /**
      * @param LdapUserPhone[] $emailAddresses
-     * @return LdapUser
+     * @return LdapUserDto
      */
-    public function setEmailAddresses(array $emailAddresses): LdapUser
+    public function setEmailAddresses(array $emailAddresses): LdapUserDto
     {
         $this->emailAddresses = $emailAddresses;
         return $this;

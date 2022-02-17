@@ -9,15 +9,19 @@
 namespace victor\training\oo\structural\adapter\domain;
 
 
+use victor\training\oo\structural\adapter\external\LdapUserDto;
 use victor\training\oo\structural\adapter\external\LdapUserWebServiceClient;
 
 foreach (glob("../external/*.php") as $filename) require_once $filename;
 include "User.php";
 include "LdapUserWSAdapter.php"; // SOLUTION
 
+//Aici e pacea, armonia si ZENul. ying si yang. gradina imparatului.
+// DOMAIN LOGICa ta centrala este implementata in Domain Serviceuri > devine un obiectiv esential sa tii
+// cat mai curat mediul acestui Service
 class UserService
 {
-    private $wsClient;
+    private LdapUserWebServiceClient $wsClient;
 
     public function __construct(LdapUserWebServiceClient $wsClient)
     {
@@ -26,42 +30,42 @@ class UserService
 
     public function importUserFromLdap(string $username)
     {
-        $list = $this->wsClient->search(strtoupper($username), null, null);
-        if (count($list) !== 1)
-        {
-            throw new \Exception('There is no single user matching username ' . $username);
-        }
+        $user = $this->findOneByUsername($username);
 
-        $ldapUser = $list[0];
-        $fullName = $ldapUser->getfName() . ' ' . strtoupper($ldapUser->getlName());
-        $user = new User();
-        $user->setUsername($ldapUser->getUId());
-        $user->setFullName($fullName);
-        $user->setWorkEmail($ldapUser->getWorkEmail());
-
-        if ($user->getWorkEmail() !== null) {
+        if ($user->hasWorkEmail()) {
             printf('Send welcome email to ' . $user->getWorkEmail() . "\n");
         }
+        // logica de domeniu complicata
+        // logica de domeniu complicata
+        // logica de domeniu complicata
+        // logica de domeniu complicata
+        // logica de domeniu complicata
         printf("Insert user in my database\n");
     }
 
-    public function searchUserInLdap(string $username) {
+    /// raiul : domain
+    ///////////// LINIE IMPORTANTA !
+    /// iadul : infrastructura
+
+    private function findOneByUsername(string $username): User
+    {
         $list = $this->wsClient->search(strtoupper($username), null, null);
-        $results = array();
-        foreach ($list as $ldapUser) {
-            $fullName = $ldapUser->getfName() . ' ' . strtoupper($ldapUser->getlName());
-            $user = new User();
-            $user->setUsername($ldapUser->getUId());
-            $user->setFullName($fullName);
-            $user->setWorkEmail($ldapUser->getWorkEmail());
-            $results[] = $user;
+        if (count($list) !== 1) {
+            throw new \Exception('There is no single user matching username ' . $username);
         }
-        return $results;
+        return $this->fromDto($list[0]);
     }
+
+    private function fromDto(LdapUserDto $ldapUser): User
+    {
+
+        $fullName = $ldapUser->getfName() . ' ' . strtoupper($ldapUser->getlName());
+        return new User($ldapUser->getUId(), $fullName, $ldapUser->getWorkEmail());
+    }
+
 
 }
 
 $userService = new UserService(new LdapUserWebServiceClient()); // INITIAL
 
-printf(implode(",",$userService->searchUserInLdap("jdoe")) . "\n");
 $userService->importUserFromLdap('jdoe');

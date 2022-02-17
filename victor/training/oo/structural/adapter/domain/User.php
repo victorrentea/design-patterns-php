@@ -9,49 +9,32 @@
 namespace victor\training\oo\structural\adapter\domain;
 
 
+// parte din domeniu
 class User
 {
-    /* @var string */
-    private $username;
-    /* @var string */
-    private $fullName;
-    /* @var ?string */
-    private $workEmail;
+    private string $username;
+    private string $fullName;
+    private ?string $workEmail;
 
-    /**
-     * @return string
-     */
+    public function __construct(string $username, string $fullName, ?string $workEmail)
+    {
+        if (strlen($username) < 2) {
+            throw new \Exception();
+        }
+        $this->username = $username;
+        $this->fullName = $fullName;
+        $this->workEmail = $workEmail;
+    }
+
     public function getUsername(): string
     {
         return $this->username;
     }
 
-    /**
-     * @param string $username
-     * @return User
-     */
-    public function setUsername(string $username): User
-    {
-        $this->username = $username;
-        return $this;
-    }
 
-    /**
-     * @return string
-     */
     public function getFullName(): string
     {
         return $this->fullName;
-    }
-
-    /**
-     * @param string $fullName
-     * @return User
-     */
-    public function setFullName(string $fullName): User
-    {
-        $this->fullName = $fullName;
-        return $this;
     }
 
     /**
@@ -62,19 +45,15 @@ class User
         return $this->workEmail;
     }
 
-    /**
-     * @param mixed $workEmail
-     * @return User
-     */
-    public function setWorkEmail($workEmail)
-    {
-        $this->workEmail = $workEmail;
-        return $this;
-    }
 
     public function __toString()
     {
         return "User " . $this->username;
+    }
+
+    public function hasWorkEmail(): bool
+    {
+        return $this->workEmail !== null;
     }
 
 
