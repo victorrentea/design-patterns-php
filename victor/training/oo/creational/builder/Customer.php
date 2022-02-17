@@ -7,33 +7,37 @@
  */
 
 namespace training\oo\creational\builder;
-
+//
+// class Builder { // ,mai degrama mapper, converter, transfomer, unmarshaller
+//     function build(array $flatAsocArray) {
+//         return new self(new Address())->setAstat(flatAsocArray['key1'])
+//     }
+// }
 
 class Customer
 {
-    /* @var String */
-    private $name;
-
-    /* @var String */
-    private $phone;
-
+    private string $name;
+    private string $phone;
     /* @var String[] */
-    private $labels = array();
+    private array $labels = array();
+    private Address $address;
+    private \DateTime $createDate;
 
-    /* @var Address */
-    private $address;
-
-    /* @var \DateTime */
-    private $createDate;
-
-    public function __construct()
+    // static function create() {
+    //     new Customer(a,a,);
+    // }
+    public function __construct(string $name, string $phone,
+                                array $labels, Address $address,
+                                \DateTime $createDate)
     {
-        $this->labels = [];
+        $this->name = $name;
+        $this->phone = $phone;
+        $this->labels = $labels;
+        $this->address = $address;
+        $this->createDate = $createDate;
     }
 
-    /**
-     * @return String
-     */
+
     public function getName(): String
     {
         return $this->name;
@@ -45,17 +49,11 @@ class Customer
         return $this;
     }
 
-    /**
-     * @return String
-     */
     public function getPhone(): String
     {
         return $this->phone;
     }
 
-    /**
-     * @param String $phone
-     */
     public function setPhone(String $phone): void
     {
         $this->phone = $phone;
@@ -78,33 +76,21 @@ class Customer
         return this;
     }
 
-    /**
-     * @return Address
-     */
     public function getAddress(): Address
     {
         return $this->address;
     }
 
-    /**
-     * @param Address $address
-     */
     public function setAddress(Address $address): void
     {
         $this->address = $address;
     }
 
-    /**
-     * @return \DateTime
-     */
     public function getCreateDate(): \DateTime
     {
         return $this->createDate;
     }
 
-    /**
-     * @param \DateTime $createDate
-     */
     public function setCreateDate(\DateTime $createDate): void
     {
         $this->createDate = $createDate;
