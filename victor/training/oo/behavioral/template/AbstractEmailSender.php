@@ -13,9 +13,16 @@ use phpDocumentor\Reflection\Types\Callable_;
 include "Email.php";
 include "EmailContext.php";
 
-abstract class AbstractEmailSender
+class EmailSender
 {
+    private EmailComposerInterface $emailComposer;
+
     private const MAX_RETRIES = 3;
+
+    public function __construct(EmailComposerInterface $emailComposer)
+    {
+        $this->emailComposer = $emailComposer;
+    }
 
     public function sendEmail(string $emailAddress, string $emailType): void
     {
@@ -25,34 +32,34 @@ abstract class AbstractEmailSender
             $email->setSender('noreply@corp.com');
             $email->setReplyTo('/dev/null');
             $email->setTo($emailAddress);
-            $this->composeEmail($email);
+          $this->emailComposer->composeEmail($email);
             $success = $context->send($email);
             if ($success) break;
         }
     }
 
-    function templateBody(string $rawBody) {
-        return "HEAD" . $rawBody . "TAIL";
-    }
-    public abstract function composeEmail(Email $email): void;
 }
-class OrderShippedEmailSender extends AbstractEmailSender
+interface EmailComposerInterface {
+    function composeEmail(Email $email): void;
+}
+class OrderShippedEmailComposer implements EmailComposerInterface
 {
     public function composeEmail(Email $email): void
     {
         $email->setSubject('Order Shipped');
-        $email->setBody($this->templateBody('Ti-am trimis, speram s-ajunga de data asta!'));
+        $email->setBody('Ti-am trimis, speram s-ajunga de data asta!');
     }
 }
-class OrderReceivedEmailSender extends AbstractEmailSender
+class OrderReceivedEmailComposer implements EmailComposerInterface
 {
     public function composeEmail(Email $email): void
     {
         $email->setSubject('Order Received');
-        $email->setBody($this->templateBody('Thank you for your order'));
+        $email->setBody('Thank you for your order');
     }
 }
-(new OrderReceivedEmailSender())->sendEmail('a@b.com', 'ORDER_RECEIVED');
-(new OrderShippedEmailSender())->sendEmail('a@b.com', 'ORDER_SHIPPED');
+
+(new EmailSender(new OrderReceivedEmailComposer()))->sendEmail('a@b.com', 'ORDER_RECEIVED');
+(new EmailSender(new OrderShippedEmailComposer()))->sendEmail('a@b.com', 'ORDER_SHIPPED');
 
 //CHANGE request: implement sendOrderShippedEmail
