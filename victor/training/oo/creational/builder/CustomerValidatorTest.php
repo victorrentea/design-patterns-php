@@ -16,8 +16,7 @@ class CustomerValidatorTest extends \PHPUnit\Framework\TestCase
     // SOLUTION (
     /* @var Customer */
     private $validCustomer;
-    /* @var CustomerValidator*/
-    private $validator;
+    private CustomerValidator $validator;
 
     protected function setUp()
     {

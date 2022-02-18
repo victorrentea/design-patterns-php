@@ -6,3 +6,5 @@ order.service:
     arguments:
         - "@event.dispatcher"
         - "@logger"
+#tags:
+#    - { name: kernel.event_listener, event: event-check, method: checkEvent, priority }

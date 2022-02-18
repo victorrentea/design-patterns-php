@@ -11,9 +11,9 @@ namespace victor\training\oo\behavioral\factorymethod;
 
 class OutputFile
 {
-    private $baseName;
-    private $extension;
-    private $separator;
+    private string $baseName;
+    private string $extension;
+    private string $separator;
 
     public function __construct(string $baseName, string $extension = "csv", string $separator = ";")
     {

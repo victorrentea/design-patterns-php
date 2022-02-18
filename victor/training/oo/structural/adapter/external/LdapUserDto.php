@@ -11,18 +11,13 @@ namespace victor\training\oo\structural\adapter\external;
 
 class LdapUserDto
 {
-    /* @var string */
-    private $fName;
-    /* @var string */
-    private $lName;
-    /* @var \DateTime */
-    private $creationDate;
-    /* @var string */
-    private $uId;
-    /* @var ?string */
-    private $workEmail;
+    private string $fName;
+    private string $lName;
+    private \DateTime $creationDate;
+    private string $uId;
+    private ?string $workEmail;
     /* @var LdapUserPhone[] */
-    private $emailAddresses = array();
+    private array $emailAddresses = array();
 
     public function getFName(): string
     {

@@ -11,8 +11,7 @@ namespace victor\training\oo\behavioral\visitor\model;
 
 class Circle implements Shape
 {
-    /** @var  int */
-    private $radius;
+    private int $radius;
 
     public function __construct(int $radius)
     {

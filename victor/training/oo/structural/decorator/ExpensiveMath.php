@@ -12,7 +12,7 @@ namespace victor\training\oo\structural\decorator;
 class CacheDecorator implements  ExpensiveMathInterface{
     private ExpensiveMathInterface $delegate;
 
-    private $cache = [];
+    private array $cache = [];
 
     public function __construct(ExpensiveMathInterface $delegate)
     {
@@ -28,7 +28,7 @@ class CacheDecorator implements  ExpensiveMathInterface{
         return $result;
     }
 
-    private $cache2 = [];
+    private array $cache2 = [];
     function isPrime(int $number): bool
     {
         if (isset($this->cache2[$number])) {

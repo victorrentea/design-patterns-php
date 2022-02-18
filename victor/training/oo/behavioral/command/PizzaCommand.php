@@ -11,14 +11,11 @@ namespace victor\training\oo\behavioral\command;
 
 class PizzaCommand implements Command
 {
-    /** @var  PizzaMan */
-    private $pizzaMan;
+    private PizzaMan $pizzaMan;
 
-    /** @var string */
-    private $pizzaType;
+    private string $pizzaType;
 
-    /** @var string */
-    private $crustType;
+    private string $crustType;
 
     public function __construct(PizzaMan $pizzaMan, string $pizzaType, string $crustType)
     {
@@ -31,25 +28,16 @@ class PizzaCommand implements Command
         $this->pizzaMan->bakePizza($this->pizzaType, $this->crustType);
     }
 
-    /**
-     * @return PizzaMan
-     */
     public function getPizzaMan(): PizzaMan
     {
         return $this->pizzaMan;
     }
 
-    /**
-     * @return string
-     */
     public function getPizzaType(): string
     {
         return $this->pizzaType;
     }
 
-    /**
-     * @return string
-     */
     public function getCrustType(): string
     {
         return $this->crustType;

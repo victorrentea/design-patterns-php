@@ -7,12 +7,8 @@ use Symfony\Component\EventDispatcher\Event;
 
 class OrderCreateEvent extends Event
 {
-    /** @var  Order */
-    protected $order;
+    protected Order $order;
 
-    /**
-     * @param Order $order
-     */
     public function __construct(Order $order)
     {
         $this->order = $order;

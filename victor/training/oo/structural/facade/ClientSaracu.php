@@ -11,10 +11,7 @@ namespace victor\training\oo\structural\facade;
 
 class ClientSaracu
 {
-    /**
-     * @var CustomerFacade
-     */
-    private $myAppFacade;
+    private CustomerFacade $myAppFacade;
 
 
 

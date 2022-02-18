@@ -14,8 +14,7 @@ include "PizzaCommand.php";
 
 class Customer
 {
-    /** @var  Waitress */
-    private $waitress;
+    private Waitress $waitress;
 
     /**
      * Customer constructor.
