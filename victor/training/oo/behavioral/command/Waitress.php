@@ -12,8 +12,8 @@ namespace victor\training\oo\behavioral\command;
 class Waitress
 {
     /** @var Command[] */
-    private $carnetel = array();
-    private $pizzaMan;
+    private array $carnetel = array();
+    private PizzaMan $pizzaMan;
 
     public function __construct(PizzaMan $pizzaMan)
     {

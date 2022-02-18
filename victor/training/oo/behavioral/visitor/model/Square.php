@@ -11,7 +11,7 @@ namespace victor\training\oo\behavioral\visitor\model;
 
 class Square implements Shape
 {
-    private $edge;
+    private int $edge;
 
     public function __construct(int $edge)
     {

@@ -11,53 +11,37 @@ namespace training\oo\creational\builder;
 
 class Customer
 {
-    /* @var String */
-    private $name;
+    private string $name;
 
-    /* @var String */
-    private $phone;
+    private string $phone;
 
     /* @var String[] */
-    private $labels = array();
+    private array $labels = array();
 
-    /* @var Address */
-    private $address;
+    private Address $address;
 
-    /* @var \DateTime */
-    private $createDate;
+    private \DateTime $createDate;
 
     public function __construct()
     {
         $this->labels = [];
     }
 
-    /**
-     * @return String
-     */
     public function getName(): String
     {
         return $this->name;
     }
 
-    /**
-     * @param String $name
-     */
     public function setName(String $name): void
     {
         $this->name = $name;
     }
 
-    /**
-     * @return String
-     */
     public function getPhone(): String
     {
         return $this->phone;
     }
 
-    /**
-     * @param String $phone
-     */
     public function setPhone(String $phone): void
     {
         $this->phone = $phone;
@@ -79,33 +63,21 @@ class Customer
         $this->labels = $labels;
     }
 
-    /**
-     * @return Address
-     */
     public function getAddress(): Address
     {
         return $this->address;
     }
 
-    /**
-     * @param Address $address
-     */
     public function setAddress(Address $address): void
     {
         $this->address = $address;
     }
 
-    /**
-     * @return \DateTime
-     */
     public function getCreateDate(): \DateTime
     {
         return $this->createDate;
     }
 
-    /**
-     * @param \DateTime $createDate
-     */
     public function setCreateDate(\DateTime $createDate): void
     {
         $this->createDate = $createDate;

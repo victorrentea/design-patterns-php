@@ -9,10 +9,20 @@
 namespace victor\training\oo\structural\facade;
 
 
+use victor\training\oo\structural\facade\dto\CustomerSearchResult;
+
 class CustomerRepository
 {
 
-    public function get(int $customerId): Customer
+
+    public function findById(int $customerId):Customer
     {
+    // TODO
+    }
+
+    /** @return CustomerSearchResult[] */
+    public function search(dto\CustomerSearchCriteria $searchCriteria): array
+    {
+        return [] ;// todo
     }
 }

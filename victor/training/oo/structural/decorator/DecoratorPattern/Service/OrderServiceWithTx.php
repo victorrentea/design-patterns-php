@@ -8,16 +8,10 @@ use MS\ExamplePHP\ObserverPattern\Service\OrderServiceInterface;
 
 class OrderServiceWithTx implements OrderServiceInterface
 {
-    /** @var  DefaultOrderService */
-    protected $orderService;
+    protected DefaultOrderService $orderService;
 
-    /** @var  EntityManagerInterface */
-    protected $manager;
+    protected EntityManagerInterface $manager;
 
-    /**
-     * @param DefaultOrderService    $defaultOrderService
-     * @param EntityManagerInterface $manager
-     */
     public function __construct(DefaultOrderService $defaultOrderService, EntityManagerInterface $manager)
     {
         $this->orderService = $defaultOrderService;

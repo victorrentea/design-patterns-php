@@ -17,7 +17,7 @@ class AppConfiguration
         $this->properties = $this->readConfiguration();
     }
 	
-    private $properties;
+    private array $properties;
 
     private function readConfiguration(): array {
         printf("Fetching properties from Tahiti...\n");

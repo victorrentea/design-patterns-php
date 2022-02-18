@@ -11,43 +11,26 @@ namespace victor\training\oo\structural\adapter\domain;
 
 class User
 {
-    /* @var string */
-    private $username;
-    /* @var string */
-    private $fullName;
-    /* @var ?string */
-    private $workEmail;
+    private string $username;
+    private string $fullName;
+    private ?string $workEmail;
 
-    /**
-     * @return string
-     */
     public function getUsername(): string
     {
         return $this->username;
     }
 
-    /**
-     * @param string $username
-     * @return User
-     */
     public function setUsername(string $username): User
     {
         $this->username = $username;
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getFullName(): string
     {
         return $this->fullName;
     }
 
-    /**
-     * @param string $fullName
-     * @return User
-     */
     public function setFullName(string $fullName): User
     {
         $this->fullName = $fullName;

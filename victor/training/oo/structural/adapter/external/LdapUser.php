@@ -11,85 +11,52 @@ namespace victor\training\oo\structural\adapter\external;
 
 class LdapUser
 {
-    /* @var string */
-    private $fName;
-    /* @var string */
-    private $lName;
-    /* @var \DateTime */
-    private $creationDate;
-    /* @var string */
-    private $uId;
-    /* @var ?string */
-    private $workEmail;
+    private string $fName;
+    private string $lName;
+    private \DateTime $creationDate;
+    private string $uId;
+    private ?string $workEmail;
     /* @var LdapUserPhone[] */
-    private $emailAddresses = array();
+    private array $emailAddresses = array();
 
-    /**
-     * @return string
-     */
     public function getFName(): string
     {
         return $this->fName;
     }
 
-    /**
-     * @param string $fName
-     * @return LdapUser
-     */
     public function setFName(string $fName): LdapUser
     {
         $this->fName = $fName;
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getLName(): string
     {
         return $this->lName;
     }
 
-    /**
-     * @param string $lName
-     * @return LdapUser
-     */
     public function setLName(string $lName): LdapUser
     {
         $this->lName = $lName;
         return $this;
     }
 
-    /**
-     * @return \DateTime
-     */
     public function getCreationDate(): \DateTime
     {
         return $this->creationDate;
     }
 
-    /**
-     * @param \DateTime $creationDate
-     * @return LdapUser
-     */
     public function setCreationDate(\DateTime $creationDate): LdapUser
     {
         $this->creationDate = $creationDate;
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getUId(): string
     {
         return $this->uId;
     }
 
-    /**
-     * @param string $uId
-     * @return LdapUser
-     */
     public function setUId(string $uId): LdapUser
     {
         $this->uId = $uId;

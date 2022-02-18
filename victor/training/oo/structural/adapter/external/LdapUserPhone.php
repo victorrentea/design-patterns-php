@@ -11,10 +11,8 @@ namespace victor\training\oo\structural\adapter\external;
 
 class LdapUserPhone
 {
-    /* @var string */
-    private $val;
-    /* @var string */
-    private $type;
+    private string $val;
+    private string $type;
 
     public function __construct(string $val, string $type)
     {
@@ -22,18 +20,12 @@ class LdapUserPhone
         $this->type = $type;
     }
 
-    /**
-     * @return string
-     */
     public
     function getVal(): string
     {
         return $this->val;
     }
 
-    /**
-     * @return string
-     */
     public
     function getType(): string
     {

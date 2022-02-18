@@ -8,20 +8,13 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class OrderService
 {
-    /** @var EventDispatcherInterface  */
-    protected $dispatcher;
+    protected EventDispatcherInterface $dispatcher;
 
-    /**
-     * @param EventDispatcherInterface $dispatcher
-     */
     public function __construct(EventDispatcherInterface $dispatcher)
     {
         $this->dispatcher = $dispatcher;
     }
 
-    /**
-     * @param array $array
-     */
     public function createOrder(array $array)
     {
         $order = new Order();

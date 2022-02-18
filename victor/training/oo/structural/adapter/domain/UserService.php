@@ -17,7 +17,7 @@ include "LdapUserWSAdapter.php"; // SOLUTION
 
 class UserService
 {
-    private $wsClient;
+    private LdapUserWebServiceClient $wsClient;
 
     public function __construct(LdapUserWebServiceClient $wsClient)
     {

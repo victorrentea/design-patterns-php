@@ -10,12 +10,8 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class InvoiceService
 {
-    /** @var EventDispatcherInterface  */
-    protected $dispatcher;
+    protected EventDispatcherInterface $dispatcher;
 
-    /**
-     * @param EventDispatcherInterface $dispatcher
-     */
     public function __construct(EventDispatcherInterface $dispatcher)
     {
         $this->dispatcher = $dispatcher;
@@ -23,18 +19,12 @@ class InvoiceService
         $dispatcher->addListener('order.create', [$this, 'onOrderCreate']);
     }
 
-    /**
-     * @param OrderCreateEvent $event
-     */
     public function onOrderCreate(OrderCreateEvent $event)
     {
         $order = $event->getOrder();
         $this->createInvoice($order);
     }
 
-    /**
-     * @param Order $order
-     */
     public function createInvoice(Order $order)
     {
         $delivery = new Invoice();

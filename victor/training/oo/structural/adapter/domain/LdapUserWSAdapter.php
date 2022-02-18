@@ -14,7 +14,7 @@ use victor\training\oo\structural\adapter\external\LdapUserWebServiceClient;
 class LdapUserWSAdapter
 {
 
-    private $wsClient;
+    private LdapUserWebServiceClient $wsClient;
 
     public function __construct(LdapUserWebServiceClient $wsClient)
     {

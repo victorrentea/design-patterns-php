@@ -9,7 +9,12 @@
 namespace victor\training\oo\structural\facade;
 
 
+use victor\training\oo\structural\facade\dto\CustomerDto;
+
 class NotificationService
 {
-
+    public function sendWelcomeEmail(string $getEmail)
+    {
+        // send email
+    }
 }
