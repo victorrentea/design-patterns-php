@@ -17,7 +17,7 @@ class EmailService
 {
     private const MAX_RETRIES = 3;
 
-    public function sendOrderReceivedEmail(string $emailAddress): void
+    public function sendEmail(string $emailAddress, string $emailType): void
     {
         $context = new EmailContext(/*smtpConfig,etc*/);
         for ($i = 0; $i < self::MAX_RETRIES; $i++) {
@@ -25,8 +25,13 @@ class EmailService
             $email->setSender('noreply@corp.com');
             $email->setReplyTo('/dev/null');
             $email->setTo($emailAddress);
-            $email->setSubject('Order Received');
-            $email->setBody('Thank you for your order');
+            if ($emailType == "ORDER_SHIPPED") {
+                $email->setSubject('Order Shipped');
+                $email->setBody('Ti-am trimis, speram s-ajunga de data asta!');
+            } elseif ($emailType == "ORDER_RECEIVED") {
+                $email->setSubject('Order Received');
+                $email->setBody('Thank you for your order');
+            }
             $success = $context->send($email);
             if ($success) break;
         }
@@ -34,6 +39,7 @@ class EmailService
 }
 
 $emailService = new EmailService();
-$emailService->sendOrderReceivedEmail('a@b.com');
+$emailService->sendEmail('a@b.com', 'ORDER_RECEIVED');
+$emailService->sendEmail('a@b.com', 'ORDER_SHIPPED');
 
 //CHANGE request: implement sendOrderShippedEmail
