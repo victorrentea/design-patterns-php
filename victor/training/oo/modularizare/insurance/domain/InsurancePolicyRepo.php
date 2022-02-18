@@ -1,6 +1,6 @@
 <?php
 
-namespace victor\training\oo\modularizare;
+namespace victor\training\oo\modularizare\insurance\domain;
 
 class InsurancePolicyRepo
 {
