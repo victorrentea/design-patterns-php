@@ -9,7 +9,9 @@
 namespace victor\training\oo\behavioral\visitor\model;
 
 
+use victor\training\oo\behavioral\visitor\ShapeVisitor;
+
 interface Shape
 {
-
+    function accept(ShapeVisitor $visitor);
 }

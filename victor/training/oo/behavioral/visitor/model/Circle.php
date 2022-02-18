@@ -9,6 +9,11 @@
 namespace victor\training\oo\behavioral\visitor\model;
 
 
+use victor\training\oo\behavioral\visitor\ShapeVisitor;
+
+
+
+
 class Circle implements Shape
 {
     private int $radius;
@@ -24,4 +29,8 @@ class Circle implements Shape
     }
 
 
+    function accept(ShapeVisitor $visitor)
+    {
+        $visitor->visitCircle($this);
+    }
 }

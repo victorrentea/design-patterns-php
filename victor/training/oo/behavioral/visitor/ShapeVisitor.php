@@ -9,8 +9,12 @@
 namespace victor\training\oo\behavioral\visitor;
 
 
+use victor\training\oo\behavioral\visitor\model\Circle;
+
 interface ShapeVisitor
 {
-    function visit(Shape $circle);
+    public function visitCircle(Circle $circle);
+
+    public function visitSquare(model\Square $param);
 
 }
