@@ -17,19 +17,34 @@ class CustomsService
 
     function selectTaxCalculator(string $countryCode): TaxCalculator
     {
-        switch ($countryCode) {
-            case 'UK': return new UKCustomsTaxCalculator();
-            case 'CN': return new ChinaCustomsTaxCalculator();
-            case 'FR':
-            case 'ES': // other EU country codes...
-            case 'RO': return new EUCustomsTaxCalculator();
-            default:
-                throw new \RuntimeException("Not a valid country ISO2 code: {$countryCode}");
+        /** @var TaxCalculator[] $CALCULATORS */
+        $CALCULATORS = [
+            new UKCustomsTaxCalculator(), new ChinaCustomsTaxCalculator(), new EUCustomsTaxCalculator(),
+            // new DefaultTaxCalculator() {can true}
+        ];
+
+        foreach ($CALCULATORS as $calculator) {
+            if ($calculator->canCalculate($countryCode)) {
+                return $calculator;
+            }
         }
+        throw new \RuntimeException("Not a valid country ISO2 code: {$countryCode}");
+
+        // php8
+        // return match ($countryCode)  {
+        //     'UK'=>  new UKCustomsTaxCalculator(),
+        //     'CN'=>  new ChinaCustomsTaxCalculator(),
+        //     'FR', 'ES', 'RO'=>  new EUCustomsTaxCalculator()
+        // };
     }
 }
 
+
+
+// yaml file : - UK: UKCustomsTaxCalculator
+
 interface TaxCalculator{
+    function canCalculate(string $countryCode):bool;
     function calculate(float $tobaccoValue, float $otherValue): float;
 }
 
@@ -38,11 +53,28 @@ class ChinaCustomsTaxCalculator implements TaxCalculator{
     {
         return $tobaccoValue + $otherValue;
     }
+
+    function canCalculate(string $countryCode): bool
+    {
+        return "CN" === $countryCode;
+    }
 }
+// class MyRequest {
+//     private ?string $a;
+//     private ?string $b;
+//     private ?string $c;
+//     private ?string $d;
+// }
+
 class EUCustomsTaxCalculator implements TaxCalculator{
     public function calculate(float $tobaccoValue, float $otherValueDegeaba): float // bila neagra
     {
         return $tobaccoValue / 3;
+    }
+
+    function canCalculate(string $countryCode): bool
+    {
+        return in_array($countryCode, ['RO','ES','FR']);
     }
 }
 class UKCustomsTaxCalculator implements TaxCalculator{
@@ -50,6 +82,11 @@ class UKCustomsTaxCalculator implements TaxCalculator{
     {
         echo "Las #sieu un pic de logica aici 3-5-10 liniii, ca e loc.";
         return $tobaccoValue / 2 + $otherValue / 2;
+    }
+
+    function canCalculate(string $countryCode): bool
+    {
+        return $countryCode == "UK";
     }
 }
 
