@@ -8,23 +8,32 @@
 
 namespace victor\training\oo\behavioral\template;
 
-use phpDocumentor\Reflection\Types\Callable_;
-
 include "Email.php";
 include "EmailContext.php";
 
+interface EmailComposerInterface
+{
+    function composeEmail(Email $email): void;
+}
+
 class EmailSender
 {
-    private EmailComposerInterface $emailComposer;
-
     private const MAX_RETRIES = 3;
+    private EmailComposerInterface $emailComposer;
 
     public function __construct(EmailComposerInterface $emailComposer)
     {
         $this->emailComposer = $emailComposer;
     }
 
-    public function sendEmail(string $emailAddress, string $emailType): void
+    // public function sendOrderShippedEmail(string $emailAddress) {
+    //     $this->sendEmail($emailAddress, "Subj1", "Body1");
+    // }
+    // public function sendOrderReceivedEmail(string $emailAddress) {
+    //     $this->sendEmail($emailAddress, "Subj3", "Body3");
+    // }
+
+    public function sendEmail(string $emailAddress/*, string $subject, string $body*/): void
     {
         $context = new EmailContext(/*smtpConfig,etc*/);
         for ($i = 0; $i < self::MAX_RETRIES; $i++) {
@@ -32,16 +41,14 @@ class EmailSender
             $email->setSender('noreply@corp.com');
             $email->setReplyTo('/dev/null');
             $email->setTo($emailAddress);
-          $this->emailComposer->composeEmail($email);
+            $this->emailComposer->composeEmail($email);
             $success = $context->send($email);
             if ($success) break;
         }
     }
 
 }
-interface EmailComposerInterface {
-    function composeEmail(Email $email): void;
-}
+
 class OrderShippedEmailComposer implements EmailComposerInterface
 {
     public function composeEmail(Email $email): void
@@ -50,6 +57,7 @@ class OrderShippedEmailComposer implements EmailComposerInterface
         $email->setBody('Ti-am trimis, speram s-ajunga de data asta!');
     }
 }
+
 class OrderReceivedEmailComposer implements EmailComposerInterface
 {
     public function composeEmail(Email $email): void

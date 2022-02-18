@@ -17,4 +17,6 @@ interface ShapeVisitor
 
     public function visitSquare(model\Square $param);
 
+    public function visitRectangle(model\Rectangle $param);
+
 }

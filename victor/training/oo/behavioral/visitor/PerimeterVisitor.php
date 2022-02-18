@@ -4,7 +4,7 @@ namespace victor\training\oo\behavioral\visitor;
 
 use victor\training\oo\behavioral\visitor\model\Circle;
 
-class AreaVisitor implements ShapeVisitor
+class PerimeterVisitor implements ShapeVisitor
 {
     public float $total=0;
     public function visitCircle(Circle $circle)
@@ -22,3 +22,8 @@ class AreaVisitor implements ShapeVisitor
         // TODO: Implement visitRectangle() method.
     }
 }
+
+
+
+
+
