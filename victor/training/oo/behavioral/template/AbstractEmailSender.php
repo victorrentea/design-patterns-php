@@ -13,7 +13,7 @@ use phpDocumentor\Reflection\Types\Callable_;
 include "Email.php";
 include "EmailContext.php";
 
-class EmailService
+abstract class AbstractEmailSender
 {
     private const MAX_RETRIES = 3;
 
@@ -25,21 +25,31 @@ class EmailService
             $email->setSender('noreply@corp.com');
             $email->setReplyTo('/dev/null');
             $email->setTo($emailAddress);
-            if ($emailType == "ORDER_SHIPPED") {
-                $email->setSubject('Order Shipped');
-                $email->setBody('Ti-am trimis, speram s-ajunga de data asta!');
-            } elseif ($emailType == "ORDER_RECEIVED") {
-                $email->setSubject('Order Received');
-                $email->setBody('Thank you for your order');
-            }
+            $this->composeEmail($email);
             $success = $context->send($email);
             if ($success) break;
         }
     }
-}
 
-$emailService = new EmailService();
-$emailService->sendEmail('a@b.com', 'ORDER_RECEIVED');
-$emailService->sendEmail('a@b.com', 'ORDER_SHIPPED');
+    public abstract function composeEmail(Email $email): void;
+}
+class OrderShippedEmailSender extends AbstractEmailSender
+{
+    public function composeEmail(Email $email): void
+    {
+        $email->setSubject('Order Shipped');
+        $email->setBody('Ti-am trimis, speram s-ajunga de data asta!');
+    }
+}
+class OrderReceivedEmailSender extends AbstractEmailSender
+{
+    public function composeEmail(Email $email): void
+    {
+        $email->setSubject('Order Received');
+        $email->setBody('Thank you for your order');
+    }
+}
+(new OrderReceivedEmailSender())->sendEmail('a@b.com', 'ORDER_RECEIVED');
+(new OrderShippedEmailSender())->sendEmail('a@b.com', 'ORDER_SHIPPED');
 
 //CHANGE request: implement sendOrderShippedEmail
