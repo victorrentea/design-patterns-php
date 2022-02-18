@@ -31,6 +31,9 @@ abstract class AbstractEmailSender
         }
     }
 
+    function templateBody(string $rawBody) {
+        return "HEAD" . $rawBody . "TAIL";
+    }
     public abstract function composeEmail(Email $email): void;
 }
 class OrderShippedEmailSender extends AbstractEmailSender
@@ -38,7 +41,7 @@ class OrderShippedEmailSender extends AbstractEmailSender
     public function composeEmail(Email $email): void
     {
         $email->setSubject('Order Shipped');
-        $email->setBody('Ti-am trimis, speram s-ajunga de data asta!');
+        $email->setBody($this->templateBody('Ti-am trimis, speram s-ajunga de data asta!'));
     }
 }
 class OrderReceivedEmailSender extends AbstractEmailSender
@@ -46,7 +49,7 @@ class OrderReceivedEmailSender extends AbstractEmailSender
     public function composeEmail(Email $email): void
     {
         $email->setSubject('Order Received');
-        $email->setBody('Thank you for your order');
+        $email->setBody($this->templateBody('Thank you for your order'));
     }
 }
 (new OrderReceivedEmailSender())->sendEmail('a@b.com', 'ORDER_RECEIVED');
