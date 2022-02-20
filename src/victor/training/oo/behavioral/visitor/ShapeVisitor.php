@@ -11,6 +11,6 @@ namespace victor\training\oo\behavioral\visitor;
 
 interface ShapeVisitor
 {
-    function visit(Shape $circle);
+    function visit(ShapeVisitor $circle);
 
 }
