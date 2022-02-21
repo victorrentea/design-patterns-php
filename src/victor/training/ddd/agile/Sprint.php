@@ -3,7 +3,6 @@
 namespace victor\training\ddd\agile;
 
 
-use DateTime;
 use DateTimeImmutable;
 use Exception;
 
@@ -92,14 +91,11 @@ class Sprint
 
     public function start(): void
     {
-        if ($this->status !== Sprint::STATUS_CREATED) {
+        if (!in_array($this->status, [Sprint::STATUS_CREATED/*, Sprint::ALT_STATUS*/])) {
             throw new Exception("Illegal State");
         }
-        $this->status=Sprint::STATUS_STARTED;
+        $this->status = Sprint::STATUS_STARTED;
         $this->start = new DateTimeImmutable();
-
-        $this->product->setCurrentIteration(-1);
-
     }
 
     public function end(): void
@@ -109,5 +105,57 @@ class Sprint
         }
         $this->end = new DateTimeImmutable();
         $this->status = Sprint::STATUS_FINISHED;
+    }
+
+    public function addHoursToItem(int $backlogId, int $hours)
+    {
+        if ($this->getStatus() != Sprint::STATUS_STARTED) {
+            throw new Exception("Sprint not started");
+        }
+        $backlogItem = $this->findItemById($backlogId);
+
+        $backlogItem->addHours($hours);
+    }
+
+    public function startItem(int $backlogItemId): void
+    {
+        $backlogItem = $this->findItemById($backlogItemId);
+        if ($this->getStatus() != Sprint::STATUS_STARTED) {
+            throw new Exception("Sprint not started");
+        }
+        $backlogItem->start();
+    }
+
+    private function findItemById(int $backlogId): BacklogItem
+    {
+        $backlogItem = array_filter($this->items,
+            fn(BacklogItem $item) => $item->getId() === $backlogId)[0];
+        return $backlogItem;
+    }
+
+    public function completeItem(int $backlogItemId): void
+    {
+        $backlogItem = $this->findItemById($backlogItemId);
+        if ($this->getStatus() != Sprint::STATUS_STARTED) {
+            throw new Exception("Sprint not started");
+        }
+        $backlogItem->complete();
+
+        // Solutia2: (Domain Events) : permite sa pui MAI MULTA LOGICA in agregate
+        if ($this->allItemsAreDone()) {
+            DomainEvents::publishEvent('sprint.completed.event', $this->id);
+        }
+    }
+    // NICIODATA private MailingListService $mailingListService;// DOAMNEFERESTE de COrder
+
+
+    public function allItemsAreDone(): bool
+    {
+        foreach ($this->items as $backlogItem) {
+            if ($backlogItem->getStatus() !== BacklogItem::STATUS_DONE) {
+                return false;
+            }
+        }
+        return true;
     }
 }

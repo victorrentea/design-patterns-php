@@ -52,8 +52,10 @@ class SprintService
     private EmailService $emailService;
     private MailingListService $mailingListService;
 
-    public function __construct(SprintRepo $sprintRepo, ProductRepo $productRepo, BacklogItemRepo $backlogItemRepo, EmailService $emailService, MailingListService $mailingListService)
+    public function __construct(SprintRepo $sprintRepo, ProductRepo $productRepo, BacklogItemRepo $backlogItemRepo, EmailService $emailService, MailingListService $mailingListService
+    )
     {
+
         $this->sprintRepo = $sprintRepo;
         $this->productRepo = $productRepo;
         $this->backlogItemRepo = $backlogItemRepo;
@@ -142,63 +144,41 @@ class SprintService
         }
         $sprint->addItem($backlogItem);
         $backlogItem->assignToSprint($sprint, $request->fpEstimation);
+
     }
 
     // POST /sprint/{$sprintId}/item/${backlogId}/start
     public function startItem(int $startId, int $backlogId): void
     {
-        $backlogItem = $this->backlogItemRepo->findOneById($backlogId);
-        $this->checkSprintMatchesAndStarted($startId, $backlogItem);
-        if ($backlogItem->getStatus() != BacklogItem::STATUS_CREATED) {
-            throw new Exception("Item already started");
-        }
-        $backlogItem->setStatus(BacklogItem::STATUS_STARTED);
+        $sprint = $this->sprintRepo->findOneById($startId);
+        $sprint->startItem($backlogId);
     }
 
-    private function checkSprintMatchesAndStarted(int $id, BacklogItem $backlogItem): void
+    public function completeItem(int $sprintId, int $backlogId): void
     {
-        if ($backlogItem->getSprint()->getId() !== $id) {
-            throw new Exception("item not in sprint");
-        }
+        $sprint = $this->sprintRepo->findOneById($sprintId);
+        $sprint->completeItem($backlogId);
 
-        $sprint = $this->sprintRepo->findOneById($id);
-        if ($sprint->getStatus() != Sprint::STATUS_STARTED) {
-            throw new Exception("Sprint not started");
-        }
-    }
-
-    public function completeItem(int $id, int $backlogId): void
-    {
-        $backlogItem = $this->backlogItemRepo->findOneById($backlogId);
-        $this->checkSprintMatchesAndStarted($id, $backlogItem);
-        if ($backlogItem->getStatus() != BacklogItem::STATUS_STARTED) {
-            throw new Exception("Cannot complete an Item before starting it");
-        }
-        $backlogItem->setStatus(BacklogItem::STATUS_DONE);
-        $sprint = $this->sprintRepo->findOneById($id);
-
-        $allDone = true;
-        foreach ($sprint->getItems() as $backlogItem) {
-            if ($backlogItem->getStatus() !== BacklogItem::STATUS_DONE) {
-                $allDone = false;
-                break;
-            }
-        }
-        if (!$allDone) {
+        // SOLUTIA1 : oRchestrare din Application Service
+        if ($sprint->allItemsAreDone()) {
             echo "Sending CONGRATS email to team of product " . $sprint->getProduct()->getCode() . ": They finished the items earlier. They have time to refactor! (OMG!)";
             $emails = $this->mailingListService->retrieveEmails($sprint->getProduct()->getTeamMailingList());
             $this->emailService->sendCongratsEmail($emails);
         }
+
+        // $this->sprintRepo->save($sprint)
     }
 
-    public function logHours(int $id, LogHoursRequest $request): void
+    public function logHours(int $sprintId, LogHoursRequest $request): void
     {
-        $backlogItem = $this->backlogItemRepo->findOneById($request->backlogId);
-        $this->checkSprintMatchesAndStarted($id, $backlogItem);
-        if ($backlogItem->getStatus() !== BacklogItem::STATUS_STARTED) {
-            throw new Exception("Item not started");
-        }
-        $backlogItem->addHours($request->hours);
+        // MAINE dispare BacklogItemRepo!!!!!!!
+        // ori de cate ori vrei item, aduci Sprintu parinte care vine cu ai lui 10-20 de copii.
+        // $backlogItem = $this->backlogItemRepo->findOneById($request->backlogId);
+
+        $sprint = $this->sprintRepo->findOneById($sprintId);
+
+        $sprint->addHoursToItem($request->backlogId, $request->hours);
     }
 
 }
+

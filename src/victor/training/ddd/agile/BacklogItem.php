@@ -5,6 +5,8 @@ namespace victor\training\ddd\agile;
 
 
 
+use Exception;
+
 class BacklogItem
 {
     const STATUS_CREATED = 'CREATED';
@@ -25,6 +27,9 @@ class BacklogItem
 
     public function addHours(int $hours)
     {
+        if ($this->status !== BacklogItem::STATUS_STARTED) {
+            throw new Exception("Item not started");
+        }
         $this->hoursConsumed += $hours;
     }
 
@@ -120,5 +125,25 @@ class BacklogItem
     {
         $this->sprint = $sprint;
         $this->fpEstimation = $fpEstimation;
+    }
+
+    /**
+     * @return void
+     * @throws Exception
+     */
+    public function start(): void
+    {
+        if ($this->getStatus() != BacklogItem::STATUS_CREATED) {
+            throw new Exception("Item already started");
+        }
+        $this->setStatus(BacklogItem::STATUS_STARTED);
+    }
+
+    public function complete(): void
+    {
+        if ($this->getStatus() != BacklogItem::STATUS_STARTED) {
+            throw new Exception("Cannot complete an Item before starting it");
+        }
+        $this->setStatus(BacklogItem::STATUS_DONE);
     }
 }
