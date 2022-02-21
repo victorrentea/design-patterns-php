@@ -2,7 +2,7 @@
 
 namespace victor\training\oo\structural\service;
 
-class CustomerService
+class RegisterCustomerService
 { // Domain Service
     public function registerCustomer(Customer $customer): void
     {

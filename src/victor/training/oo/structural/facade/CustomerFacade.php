@@ -12,7 +12,7 @@ namespace victor\training\oo\structural\facade;
 use victor\training\oo\structural\facade\dto\CustomerDto;
 use victor\training\oo\structural\facade\dto\CustomerSearchCriteria;
 use victor\training\oo\structural\facade\dto\CustomerSearchResult;
-use victor\training\oo\structural\service\CustomerService;
+use victor\training\oo\structural\service\RegisterCustomerService;
 
 // class CustomerMapper {
 //     static function toDto(Customer $customer): CustomerDto
@@ -30,13 +30,13 @@ class CustomerFacade // ApplicationService
 {
     private CustomerRepository $customerRepository;
     private NotificationService $notificationService;
-    private CustomerService $customerService;
+    private RegisterCustomerService $registerCustomerService;
 
-    public function __construct(CustomerRepository $customerRepository, NotificationService $notificationService, CustomerService $customerService)
+    public function __construct(CustomerRepository $customerRepository, NotificationService $notificationService, RegisterCustomerService $customerService)
     {
         $this->customerRepository = $customerRepository;
         $this->notificationService = $notificationService;
-        $this->customerService = $customerService;
+        $this->registerCustomerService = $customerService;
     }
 
     /** @return CustomerSearchResult[] */
@@ -69,9 +69,79 @@ class CustomerFacade // ApplicationService
     {
         $customer = $customerDto->toEntity();
 
-        $this->customerService->registerCustomer($customer);
+        $this->registerCustomerService->registerCustomer($customer);
 
         $this->notificationService->sendWelcomeEmail($customer->getEmail());
     }
 }
 
+
+//
+// class OrderFacade {
+//
+//     private OrderService $orderService;
+//     private PlaceOrderService $placeOrderService;
+//
+//     function placeOrder()
+//     {
+//         $order = new COrder();
+//         $this->orderService->functieVeche(new CeAmNevoiePeBune($order));
+//     }
+// }
+// class CeAmNevoiePeBune {
+//     private COrder $COrder;
+//     // functii necesare lui PlaceOrderService
+// }
+//
+// class OrderService  {
+//     private PlaceOrderService $placeOrderService;
+//
+//     // monstru
+//     //Order
+//     public function functieVeche()
+//     {
+//         $this->placeOrderService->fctieNoua();
+//     }
+// }
+//
+// class PlaceOrderService {
+//
+//     public function fctieNoua()
+//     {
+//
+//     }
+// }
+//
+// class CLicense {
+//
+// }
+// class CCustomer implements CCustomerForOrderInterface{
+//
+//     public function logic()
+//     {
+//
+//     }
+// }
+// class CustomerService {
+//
+// }
+//
+// class COrder
+// { // in code
+//     //
+//     private int $id;
+//
+//      // atribute din baza
+//     function renewLicense()
+//     {
+//         // logica de biz
+//         (new CCustomer($this->id))
+//             ->logic();
+//     }
+//
+// }
+//
+// // pas intermediar: logica din renewLicense --> RenewLicenseService (Domain) ,
+// // dar ce era pe CCustomer am lasat acolo, dar am folosit printr-un Adapter.
+//
+// //
