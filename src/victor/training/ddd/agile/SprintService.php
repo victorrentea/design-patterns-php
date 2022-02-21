@@ -166,7 +166,7 @@ class SprintService
             $this->emailService->sendCongratsEmail($emails);
         }
 
-        // $this->sprintRepo->save($sprint)
+        $this->sprintRepo->save($sprint) ;; // IDEE_CREATA: automatic domain events publishing
     }
 
     public function logHours(int $sprintId, LogHoursRequest $request): void

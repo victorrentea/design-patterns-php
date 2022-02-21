@@ -144,6 +144,12 @@ class Sprint
         // Solutia2: (Domain Events) : permite sa pui MAI MULTA LOGICA in agregate
         if ($this->allItemsAreDone()) {
             DomainEvents::publishEvent('sprint.completed.event', $this->id);
+            // alternativa
+            // $this->domainEvents[] = new SprintCompletedEvent($this->id);
+            // in super clasa (AbstractAggregateRoot dintr-un framework)
+            // adaugi eventul tau, si ulterior, cand faci $sprintRepo->save($spring); din applicationService,
+            // frameworkul (sau Repoul tau) poate inspecta campul domainEvents mostenit si daca sunt elemente
+            // sa le faca publish in framework. IDEE_CREATA
         }
     }
     // NICIODATA private MailingListService $mailingListService;// DOAMNEFERESTE de COrder
