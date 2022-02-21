@@ -4,8 +4,11 @@ namespace victor\training\ddd\agile;
 
 
 use DateTime;
+use DateTimeImmutable;
+use Exception;
 
 
+// @Entity
 class Sprint
 {
     const STATUS_CREATED = 'CREATED';
@@ -14,92 +17,97 @@ class Sprint
 
     private int $id;
     private int $iteration;
-    private Product $product;
-    private DateTime $start;
-    private DateTime $plannedEnd;
-    private DateTime $end;
+    private Product $product; // ILLEGAL reference to another Aggregate
+    private DateTimeImmutable $start;
+    private DateTimeImmutable $plannedEnd;
+    private DateTimeImmutable $end;
 
     private string $status = self::STATUS_CREATED;
 
-   /** @var BacklogItem[] */
-   private array $items = [];
+    /** @var BacklogItem[] */
+    private array $items = [];
+
+    public function __construct(Product $product, DateTimeImmutable $plannedEnd)
+    {
+        $this->product = $product;
+        $this->iteration = $product->incrementAndGetIteration();
+        $this->plannedEnd = $plannedEnd;
+    }
 
 
     public function getId(): int
     {
         return $this->id;
     }
+
     public function setId(int $id): Sprint
     {
         $this->id = $id;
         return $this;
     }
+
     public function getIteration(): int
     {
         return $this->iteration;
     }
-    public function setIteration(int $iteration): Sprint
-    {
-        $this->iteration = $iteration;
-        return $this;
-    }
+
+
     public function getProduct(): Product
     {
         return $this->product;
     }
-    public function setProduct(Product $product): Sprint
-    {
-        $this->product = $product;
-        return $this;
-    }
-    public function getStart(): DateTime
+
+
+    public function getStart(): DateTimeImmutable
     {
         return $this->start;
     }
-    public function setStart(DateTime $start): Sprint
-    {
-        $this->start = $start;
-        return $this;
-    }
-    public function getPlannedEnd(): DateTime
+
+
+    public function getPlannedEnd(): DateTimeImmutable
     {
         return $this->plannedEnd;
     }
-    public function setPlannedEnd(DateTime $plannedEnd): Sprint
-    {
-        $this->plannedEnd = $plannedEnd;
-        return $this;
-    }
-    public function getEnd(): DateTime
+
+
+    public function getEnd(): DateTimeImmutable
     {
         return $this->end;
     }
-    public function setEnd(DateTime $end): Sprint
-    {
-        $this->end = $end;
-        return $this;
-    }
+
     public function getStatus(): string
     {
         return $this->status;
     }
-    public function setStatus(string $status): Sprint
-    {
-        $this->status = $status;
-        return $this;
-    }
+
     public function getItems(): array
     {
         return $this->items;
-    }
-    public function setItems(array $items): Sprint
-    {
-        $this->items = $items;
-        return $this;
     }
 
     public function addItem(BacklogItem $backlogItem)
     {
         $this->items [] = $backlogItem;
+    }
+
+    public function start(): void
+    {
+        if ($this->status !== Sprint::STATUS_CREATED) {
+            throw new Exception("Illegal State");
+        }
+        $this->status=Sprint::STATUS_STARTED;
+        $this->start = new DateTimeImmutable();
+
+        $this->product->setCurrentIteration(-1);
+
+    }
+
+    public function end(): void
+    {
+        if ($this->status !== Sprint::STATUS_STARTED) {
+            throw new Exception("Illegal State");
+        }
+        $this->end = new DateTimeImmutable();
+        $this->status = Sprint::STATUS_FINISHED;
     }
 }

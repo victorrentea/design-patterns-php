@@ -17,10 +17,9 @@ class BacklogItem
     private string $description;
     private string $status = self::STATUS_CREATED;
 
-
-    private Sprint $sprint; // ⚠ not NULL when assigned to a sprint
-    private int $fpEstimation; // ⚠ not NULL when assigned to a sprint
-    private int $hoursConsumed; // ⚠ not NULL when assigned to a sprint
+    private ?Sprint $sprint; // ⚠ not NULL when assigned to a sprint
+    private ?int $fpEstimation; // ⚠ not NULL when assigned to a sprint
+    private int $hoursConsumed = 0;
 
     private int $version; // for optimistic locking
 
@@ -89,22 +88,11 @@ class BacklogItem
         return $this->sprint;
     }
 
-    public function setSprint(Sprint $sprint): BacklogItem
-    {
-        $this->sprint = $sprint;
-        return $this;
-    }
-
     public function getFpEstimation(): int
     {
         return $this->fpEstimation;
     }
 
-    public function setFpEstimation(int $fpEstimation): BacklogItem
-    {
-        $this->fpEstimation = $fpEstimation;
-        return $this;
-    }
 
     public function getHoursConsumed(): int
     {
@@ -126,5 +114,11 @@ class BacklogItem
     {
         $this->version = $version;
         return $this;
+    }
+
+    public function assignToSprint(Sprint $sprint, int $fpEstimation): void
+    {
+        $this->sprint = $sprint;
+        $this->fpEstimation = $fpEstimation;
     }
 }
