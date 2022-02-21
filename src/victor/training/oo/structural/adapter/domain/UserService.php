@@ -17,16 +17,16 @@ include "LdapUserWSAdapter.php"; // SOLUTION
 
 class UserService // DOMAIN LOGIC.
 {
-    private LdapUserAdapterInterface $ldapUserAdapter;
+    private ExternalUserProviderInterface $externalUserProvider;
 
-    public function __construct(LdapUserAdapterInterface $ldapUserAdapter)
+    public function __construct(ExternalUserProviderInterface $ldapUserAdapter)
     {
-        $this->ldapUserAdapter = $ldapUserAdapter;
+        $this->externalUserProvider = $ldapUserAdapter;
     }
 
     public function importUserFromLdap(string $username)
     {
-        $user = $this->ldapUserAdapter->getUserByUsername($username);
+        $user = $this->externalUserProvider->getByUsername($username);
 
         if ($user->getWorkEmail() !== null) {
             printf('Send welcome email to ' . $user->getWorkEmail() . "\n");

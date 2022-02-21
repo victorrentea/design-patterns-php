@@ -2,10 +2,10 @@
 
 namespace victor\training\oo\structural\adapter\external;
 
-use victor\training\oo\structural\adapter\domain\LdapUserAdapterInterface;
+use victor\training\oo\structural\adapter\domain\ExternalUserProviderInterface;
 use victor\training\oo\structural\adapter\domain\User;
 
-class LdapUserAdapter implements LdapUserAdapterInterface
+class LdapUserAdapter implements ExternalUserProviderInterface
 {
     private LdapUserWebServiceClient $wsClient;
 
@@ -14,7 +14,7 @@ class LdapUserAdapter implements LdapUserAdapterInterface
         $this->wsClient = $wsClient;
     }
 
-    public function getUserByUsername(string $username): User
+    public function getByUsername(string $username): User
     {
         $list = $this->wsClient->search(strtoupper($username), null, null);
         if (count($list) !== 1) {
