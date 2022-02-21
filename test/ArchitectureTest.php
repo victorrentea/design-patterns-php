@@ -7,7 +7,7 @@ use J6s\PhpArch\Validation\MustBeSelfContained;
 use J6s\PhpArch\Validation\MustOnlyDependOn;
 
 // class Test1 extends \J6s\PhpArch\Tests\TestCase
-class Test1 extends \PHPUnit\Framework\TestCase
+class ArchitectureTest extends \PHPUnit\Framework\TestCase
 {
 
     public function testSimpleNamespaces()
