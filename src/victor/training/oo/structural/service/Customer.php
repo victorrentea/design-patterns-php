@@ -6,7 +6,7 @@
  * Time: 12:51 PM
  */
 
-namespace victor\training\oo\structural\facade;
+namespace victor\training\oo\structural\service;
 
 // @Entity
 class Customer
@@ -15,6 +15,15 @@ class Customer
     private string $email;
     private string $address;
     private bool $genius;
+
+    public function __construct(string $email)
+    {
+        if (!$email) {
+            throw new \Exception("Bum");
+        }
+        $this->email = $email;
+    }
+
 
     public function getName(): string
     {
@@ -32,11 +41,6 @@ class Customer
         return $this->email;
     }
 
-    public function setEmail(string $email): Customer
-    {
-        $this->email = $email;
-        return $this;
-    }
 
     public function getAddress(): string
     {
@@ -60,6 +64,15 @@ class Customer
         return $this;
     }
 
+    public function getDiscountPercentage(): int
+    {
+        // Feature Envy code smell: logica mica de biz care lucreaza doar pe date ale unei entitati
+        $discountPercentage = 3;
+        if ($this->isGenius()) {
+            $discountPercentage = 4;
+        }
+        return $discountPercentage;
+    }
 
 
 }

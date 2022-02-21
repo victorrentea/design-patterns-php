@@ -7,7 +7,7 @@ use J6s\PhpArch\Validation\MustBeSelfContained;
 use J6s\PhpArch\Validation\MustOnlyDependOn;
 
 // class Test1 extends \J6s\PhpArch\Tests\TestCase
-class Test1 extends \PHPUnit\Framework\TestCase
+class ArchitectureTest extends \PHPUnit\Framework\TestCase
 {
 
     public function testSimpleNamespaces()
@@ -20,6 +20,9 @@ class Test1 extends \PHPUnit\Framework\TestCase
             ->validate(new ForbiddenDependency(
                 'victor\\training\\oo\\structural\\adapter\\domain\\',
                 'victor\\training\\oo\\structural\\adapter\\external\\'))
+            ->validate(new ForbiddenDependency(
+                'victor\\training\\oo\\structural\\service\\',
+                'victor\\training\\oo\\structural\\facade\\'))
             // ->validate(new MustBeSelfContained('App\\Utility'))
             // ->validate(new MustOnlyDependOn('App\\Mailing', 'PHPMailer\\PHPMailer'))
             ->assertHasNoErrors();

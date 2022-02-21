@@ -3,11 +3,21 @@
 namespace victor\training\oo\structural\facade\dto;
 
 // JSON
+use victor\training\oo\structural\service\Customer;
+
 class CustomerDto
 {
     private string $name;
     private string $email;
     private string $address;
+
+    public function __construct(Customer $customer)
+    {
+        $this->setName($customer->getName());
+        $this->setEmail($customer->getEmail());
+        $this->setAddress($customer->getAddress());
+    }
+
 
     public function getName(): string
     {
@@ -40,6 +50,14 @@ class CustomerDto
     {
         $this->address = $address;
         return $this;
+    }
+
+    public function toEntity(): Customer
+    {
+        $customer = new Customer($this->email);
+        $customer->setName($this->getName());
+        $customer->setAddress($this->getAddress());
+        return $customer;
     }
 
 }

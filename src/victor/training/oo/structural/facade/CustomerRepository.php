@@ -10,6 +10,7 @@ namespace victor\training\oo\structural\facade;
 
 
 use victor\training\oo\structural\facade\dto\CustomerSearchResult;
+use victor\training\oo\structural\service\Customer;
 
 class CustomerRepository
 {
