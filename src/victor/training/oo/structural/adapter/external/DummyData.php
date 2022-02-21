@@ -11,16 +11,16 @@ namespace victor\training\oo\structural\adapter\external;
 
 class DummyData
 {
-    /* @return LdapUser[] */
+    /* @return LdapUserDto[] */
     public static function getData() {
-        $ldapUser1 = (new LdapUser())
+        $ldapUser1 = (new LdapUserDto())
             ->setfName("John")
             ->setlName("DOE")
             ->setuId("jdoe")
             ->setCreationDate(new \DateTime())
             ->setWorkEmail("0123456789")
             ->setEmailAddresses(array(new LdapUserPhone("WORK", "0123456789")));
-        $ldapUser2 = (new LdapUser())
+        $ldapUser2 = (new LdapUserDto())
             ->setfName("Jane")
             ->setlName("DOE")
             ->setuId("janedoe")

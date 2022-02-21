@@ -9,59 +9,34 @@
 namespace victor\training\oo\structural\adapter\domain;
 
 
-use victor\training\oo\structural\adapter\external\LdapUserWebServiceClient;
 
 foreach (glob("../external/*.php") as $filename) require_once $filename;
 include "User.php";
 include "LdapUserWSAdapter.php"; // SOLUTION
 
-class UserService
-{
-    private LdapUserWebServiceClient $wsClient;
 
-    public function __construct(LdapUserWebServiceClient $wsClient)
+class UserService // DOMAIN LOGIC.
+{
+    private LdapUserAdapterInterface $ldapUserAdapter;
+
+    public function __construct(LdapUserAdapterInterface $ldapUserAdapter)
     {
-        $this->wsClient = $wsClient;
+        $this->ldapUserAdapter = $ldapUserAdapter;
     }
 
     public function importUserFromLdap(string $username)
     {
-        $list = $this->wsClient->search(strtoupper($username), null, null);
-        if (count($list) !== 1)
-        {
-            throw new \Exception('There is no single user matching username ' . $username);
-        }
-
-        $ldapUser = $list[0];
-        $fullName = $ldapUser->getfName() . ' ' . strtoupper($ldapUser->getlName());
-        $user = new User();
-        $user->setUsername($ldapUser->getUId());
-        $user->setFullName($fullName);
-        $user->setWorkEmail($ldapUser->getWorkEmail());
+        $user = $this->ldapUserAdapter->getUserByUsername($username);
 
         if ($user->getWorkEmail() !== null) {
             printf('Send welcome email to ' . $user->getWorkEmail() . "\n");
         }
-        printf("Insert user in my database\n");
-    }
+        // biz rules BR-1231
+        // biz rules BR-1231
+        // biz rules BR-1231
 
-    public function searchUserInLdap(string $username) {
-        $list = $this->wsClient->search(strtoupper($username), null, null);
-        $results = array();
-        foreach ($list as $ldapUser) {
-            $fullName = $ldapUser->getfName() . ' ' . strtoupper($ldapUser->getlName());
-            $user = new User();
-            $user->setUsername($ldapUser->getUId());
-            $user->setFullName($fullName);
-            $user->setWorkEmail($ldapUser->getWorkEmail());
-            $results[] = $user;
-        }
-        return $results;
+        printf("Insert user in my database\n");
     }
 
 }
 
-$userService = new UserService(new LdapUserWebServiceClient()); // INITIAL
-
-printf(implode(",",$userService->searchUserInLdap("jdoe")) . "\n");
-$userService->importUserFromLdap('jdoe');

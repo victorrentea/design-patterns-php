@@ -16,9 +16,14 @@ class Test1 extends \PHPUnit\Framework\TestCase
         echo "Reading from $directory";
         (new PhpArch())
             ->fromDirectory($directory)
-            ->validate(new ForbiddenDependency('victor\\training\\ddd\\agile\\b\\', 'victor\\training\\ddd\\agile\\a\\'))
+            // ->validate(new ForbiddenDependency('victor\\training\\ddd\\agile\\b\\', 'victor\\training\\ddd\\agile\\a\\'))
+            ->validate(new ForbiddenDependency(
+                'victor\\training\\oo\\structural\\adapter\\domain\\',
+                'victor\\training\\oo\\structural\\adapter\\external\\'))
             // ->validate(new MustBeSelfContained('App\\Utility'))
             // ->validate(new MustOnlyDependOn('App\\Mailing', 'PHPMailer\\PHPMailer'))
             ->assertHasNoErrors();
+
+        // Draga developere, daca pica testul asta si nu intelegi de ce pica, cauta-l pe Catalin sau Bogdan, ca ei stiu si-ti explica
     }
 }

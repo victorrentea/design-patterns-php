@@ -15,15 +15,20 @@ class User
     private string $fullName;
     private ?string $workEmail;
 
+    public function __construct(string $username, string $fullName, ?string $workEmail)
+    {
+        if (strlen($username) < 4) {
+            throw new \Exception("Username prea mic");
+        }
+        $this->username = $username;
+        $this->fullName = $fullName;
+        $this->workEmail = $workEmail;
+    }
+
+
     public function getUsername(): string
     {
         return $this->username;
-    }
-
-    public function setUsername(string $username): User
-    {
-        $this->username = $username;
-        return $this;
     }
 
     public function getFullName(): string
@@ -31,28 +36,9 @@ class User
         return $this->fullName;
     }
 
-    public function setFullName(string $fullName): User
-    {
-        $this->fullName = $fullName;
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getWorkEmail()
+    public function getWorkEmail(): ?string
     {
         return $this->workEmail;
-    }
-
-    /**
-     * @param mixed $workEmail
-     * @return User
-     */
-    public function setWorkEmail($workEmail)
-    {
-        $this->workEmail = $workEmail;
-        return $this;
     }
 
     public function __toString()

@@ -9,7 +9,7 @@
 namespace victor\training\oo\structural\adapter\external;
 
 
-class LdapUser
+class LdapUserDto
 {
     private string $fName;
     private string $lName;
@@ -24,7 +24,7 @@ class LdapUser
         return $this->fName;
     }
 
-    public function setFName(string $fName): LdapUser
+    public function setFName(string $fName): LdapUserDto
     {
         $this->fName = $fName;
         return $this;
@@ -35,7 +35,7 @@ class LdapUser
         return $this->lName;
     }
 
-    public function setLName(string $lName): LdapUser
+    public function setLName(string $lName): LdapUserDto
     {
         $this->lName = $lName;
         return $this;
@@ -46,7 +46,7 @@ class LdapUser
         return $this->creationDate;
     }
 
-    public function setCreationDate(\DateTime $creationDate): LdapUser
+    public function setCreationDate(\DateTime $creationDate): LdapUserDto
     {
         $this->creationDate = $creationDate;
         return $this;
@@ -57,7 +57,7 @@ class LdapUser
         return $this->uId;
     }
 
-    public function setUId(string $uId): LdapUser
+    public function setUId(string $uId): LdapUserDto
     {
         $this->uId = $uId;
         return $this;
@@ -73,7 +73,7 @@ class LdapUser
 
     /**
      * @param mixed $workEmail
-     * @return LdapUser
+     * @return LdapUserDto
      */
     public function setWorkEmail($workEmail)
     {
@@ -91,9 +91,9 @@ class LdapUser
 
     /**
      * @param LdapUserPhone[] $emailAddresses
-     * @return LdapUser
+     * @return LdapUserDto
      */
-    public function setEmailAddresses(array $emailAddresses): LdapUser
+    public function setEmailAddresses(array $emailAddresses): LdapUserDto
     {
         $this->emailAddresses = $emailAddresses;
         return $this;
