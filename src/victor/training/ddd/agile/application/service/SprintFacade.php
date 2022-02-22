@@ -1,6 +1,6 @@
 <?php /** @noinspection PhpUnused */
 
-namespace victor\training\ddd\agile\application;
+namespace victor\training\ddd\agile\application\service;
 
 
 use victor\training\ddd\agile\application\dto\AddBacklogItemRequest;
@@ -8,7 +8,6 @@ use victor\training\ddd\agile\application\dto\LogHoursRequest;
 use victor\training\ddd\agile\application\dto\SprintDto;
 use victor\training\ddd\agile\domain\repo\ProductRepo;
 use victor\training\ddd\agile\domain\repo\SprintRepo;
-use victor\training\ddd\agile\domain\service\SprintMetricsService;
 use victor\training\ddd\agile\EmailService;
 use victor\training\ddd\agile\Sprint;
 use victor\training\ddd\agile\SprintBacklogItem;

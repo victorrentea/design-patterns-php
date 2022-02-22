@@ -3,6 +3,7 @@
 namespace victor\training\ddd\agile;
 
 // @Entity
+// @DDDAggregateRoot
 class Product
 {
     private int $id;

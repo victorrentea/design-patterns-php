@@ -4,6 +4,7 @@ namespace victor\training\ddd\agile;
 
 use Exception;
 
+// @DDD.Entity part of Product aggregate
 class ProductBacklogItem
 {
     private int $id;

@@ -1,6 +1,6 @@
 <?php
 
-namespace victor\training\ddd\agile\application;
+namespace victor\training\ddd\agile\application\service;
 
 
 use victor\training\ddd\agile\application\dto\ProductDto;

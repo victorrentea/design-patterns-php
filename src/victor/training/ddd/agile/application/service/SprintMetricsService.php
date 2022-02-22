@@ -1,6 +1,6 @@
 <?php
 
-namespace victor\training\ddd\agile\domain\service;
+namespace victor\training\ddd\agile\application\service;
 
 use Exception;
 use victor\training\ddd\agile\domain\repo\SprintRepo;
@@ -31,6 +31,7 @@ class SprintMetricsService
         }
 
         $dto->calendarDays = $sprint->getEnd()->diff($sprint->getStart())->days;
+
         $dto->doneFP = 0;
         foreach ($sprint->getItems() as $item) {
             if ($item->getStatus() === SprintBacklogItem::STATUS_DONE) {

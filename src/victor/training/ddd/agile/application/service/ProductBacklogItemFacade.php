@@ -1,13 +1,13 @@
 <?php
 
-namespace victor\training\ddd\agile\application;
+namespace victor\training\ddd\agile\application\service;
 
 use victor\training\ddd\agile\application\dto\ProductBacklogItemDto;
 use victor\training\ddd\agile\domain\repo\ProductBacklogItemRepo;
 use victor\training\ddd\agile\domain\repo\ProductRepo;
 use victor\training\ddd\agile\ProductBacklogItem;
 
-class ProductBacklogItemService
+class ProductBacklogItemFacade
 {
     private ProductBacklogItemRepo $productBacklogItemRepo;
     private ProductRepo $productRepo;
