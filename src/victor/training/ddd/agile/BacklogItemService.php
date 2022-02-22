@@ -2,24 +2,6 @@
 
 namespace victor\training\ddd\agile;
 
-interface BacklogItemRepo
-{
-    function save(BacklogItem $backlogItem): BacklogItem;
-
-    public function findOneById(int $id): BacklogItem;
-
-    public function deleteById(int $id): void;
-}
-
-class BacklogItemDto
-{
-    public int $id;
-    public int $productId;
-    public string $title;
-    public string $description;
-    public int $version;
-}
-
 class BacklogItemService
 {
     private BacklogItemRepo $backlogItemRepo;
@@ -34,8 +16,7 @@ class BacklogItemService
     public function createBacklogItem(BacklogItemDto $dto): int
     {
         $product = $this->productRepo->findOneById($dto->productId);
-        $backlogItem = (new BacklogItem())
-            ->setProduct($product)
+        $backlogItem = (new BacklogItem($product->getId()))
             ->setDescription($dto->description)
             ->setTitle($dto->title);
         $product->addBacklogItem($backlogItem);
@@ -48,7 +29,7 @@ class BacklogItemService
         $backlogItem = $this->backlogItemRepo->findOneById($id);
         $dto = new BacklogItemDto();
         $dto->id = $backlogItem->getId();
-        $dto->productId = $backlogItem->getProduct()->getId();
+        $dto->productId = $backlogItem->getProductId();
         $dto->description = $backlogItem->getDescription();
         $dto->title = $backlogItem->getTitle();
         $dto->version = $backlogItem->getVersion();
@@ -57,13 +38,20 @@ class BacklogItemService
 
     public function updateBacklogItem(BacklogItemDto $dto): void
     {
-        $backlogItem = (new BacklogItem())
-            ->setId($dto->id)
-            ->setProduct($this->productRepo->findOneById($dto->productId))
-            ->setDescription($dto->description)
-            ->setTitle($dto->title)
-            ->setVersion($dto->version);
-        $this->backlogItemRepo->save($backlogItem);
+        $oldItem = $this->backlogItemRepo->findOneById($dto->id);
+        $oldItem->setDescription($dto->description)
+                ->setTitle($dto->title)
+                ->setVersion($dto->version);
+
+        // $backlogItem = (new BacklogItem())
+        //     ->setId($dto->id)
+        //     ->setProductId($oldItem->getProductId())
+        //     // ->setProductId($dto->productId) // TODO nu are sens, nu are voie din API sa modifice
+        //     ->setDescription($dto->description)
+        //     ->setTitle($dto->title)
+        //     ->setVersion($dto->version);
+
+        // $this->backlogItemRepo->save($oldItem); // necesara doar daca nu Doctrine
     }
 
     public function deleteBacklogItem(int $id): void
