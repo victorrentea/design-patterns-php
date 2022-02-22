@@ -5,6 +5,7 @@ namespace victor\training\ddd\agile;
 
 use DateTimeImmutable;
 use Exception;
+use victor\training\ddd\agile\domain\event\DomainEvents;
 
 
 // @Entity

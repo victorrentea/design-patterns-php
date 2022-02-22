@@ -7,7 +7,7 @@ use victor\training\ddd\agile\application\dto\ProductDto;
 use victor\training\ddd\agile\domain\repo\ProductRepo;
 use victor\training\ddd\agile\Product;
 
-class ProductApplicationService
+class ProductFacade
 {
     private ProductRepo $productRepo;
 

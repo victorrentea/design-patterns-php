@@ -8,7 +8,7 @@ use victor\training\ddd\agile\domain\repo\SprintRepo;
 use victor\training\ddd\agile\ProductBacklogItem;
 use victor\training\ddd\agile\Release;
 
-class ReleaseApplicationService
+class ReleaseFacade
 {
     private ReleaseRepo $releaseRepo;
     private ProductRepo $productRepo;

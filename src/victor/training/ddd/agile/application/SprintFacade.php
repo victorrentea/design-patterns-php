@@ -14,7 +14,7 @@ use victor\training\ddd\agile\Sprint;
 use victor\training\ddd\agile\SprintBacklogItem;
 use victor\training\ddd\agile\SprintMetrics;
 
-class SprintApplicationService
+class SprintFacade
 {
     private SprintRepo $sprintRepo;
     private ProductRepo $productRepo;
