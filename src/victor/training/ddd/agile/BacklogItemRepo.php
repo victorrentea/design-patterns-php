@@ -4,9 +4,9 @@ namespace victor\training\ddd\agile;
 
 interface BacklogItemRepo
 {
-    function save(BacklogItem $backlogItem): BacklogItem;
+    function save(ProductBacklogItem $backlogItem): ProductBacklogItem;
 
-    public function findOneById(int $id): BacklogItem;
+    public function findOneById(int $id): ProductBacklogItem;
 
     public function deleteById(int $id): void;
 }

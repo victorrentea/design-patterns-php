@@ -16,7 +16,7 @@ class BacklogItemService
     public function createBacklogItem(BacklogItemDto $dto): int
     {
         $product = $this->productRepo->findOneById($dto->productId);
-        $backlogItem = (new BacklogItem())
+        $backlogItem = (new ProductBacklogItem())
             ->setDescription($dto->description)
             ->setTitle($dto->title);
         $product->addBacklogItem($backlogItem);
@@ -43,7 +43,7 @@ class BacklogItemService
                 ->setTitle($dto->title)
                 ->setVersion($dto->version);
 
-        // $backlogItem = (new BacklogItem())
+        // $backlogItem = (new ProductBacklogItem())
         //     ->setId($dto->id)
         //     ->setProductId($oldItem->getProductId())
         //     // ->setProductId($dto->productId) // TODO nu are sens, nu are voie din API sa modifice

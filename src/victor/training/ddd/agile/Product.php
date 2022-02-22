@@ -16,7 +16,7 @@ class Product
 
     private string $teamMailingList;
 
-    /** @var BacklogItem[] */
+    /** @var ProductBacklogItem[] */
     private array $backlogItems = [];
     /** @var Sprint[] */
     private array $sprints = [];
@@ -47,7 +47,7 @@ class Product
     }
 
 
-    public function addBacklogItem(BacklogItem $backlogItem)
+    public function addBacklogItem(ProductBacklogItem $backlogItem)
     {
         $this->backlogItems[] = $backlogItem;
     }

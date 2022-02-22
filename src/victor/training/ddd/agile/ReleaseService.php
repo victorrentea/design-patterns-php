@@ -37,7 +37,7 @@ class ReleaseService
         $toIteration = $sprint->getIteration();
         $sprints = $product->getSprints();
         usort($sprints, fn(Sprint $s1, Sprint $s2) => $s2->getIteration() - $s1->getIteration());
-        /** @var BacklogItem[] releasedItems */
+        /** @var ProductBacklogItem[] releasedItems */
         $releasedItems = [];
         foreach ($sprints as $sprint) {
             if ($sprint->getIteration() >= $fromIteration && $sprint->getIteration() <= $toIteration) {

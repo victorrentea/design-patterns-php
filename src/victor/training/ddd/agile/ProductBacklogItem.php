@@ -2,33 +2,28 @@
 
 namespace victor\training\ddd\agile;
 
-
-
-
 use Exception;
 
-class BacklogItem
+class ProductBacklogItem
 {
-    const STATUS_CREATED = 'CREATED';
-    const STATUS_STARTED = 'STARTED';
-    const STATUS_DONE = 'DONE';
+    // const STATUS_CREATED = 'CREATED';
+    // const STATUS_STARTED = 'STARTED';
+    // const STATUS_DONE = 'DONE';
 
     private int $id;
     private string $title;
     private string $description;
-    private string $status = self::STATUS_CREATED;
+    // private string $status = self::STATUS_CREATED;
 
-    private ?Sprint $sprint; // ⚠ not NULL when assigned to a sprint
-    private ?int $fpEstimation; // ⚠ not NULL when assigned to a sprint
-    private int $hoursConsumed = 0;
+    // private ?Sprint $sprint; // ⚠ not NULL when assigned to a sprint
+    // private ?int $fpEstimation; // ⚠ not NULL when assigned to a sprint
+    // private int $hoursConsumed = 0;
 
     private int $version; // for optimistic locking
 
-
-
     public function addHours(int $hours)
     {
-        if ($this->status !== BacklogItem::STATUS_STARTED) {
+        if ($this->status !== ProductBacklogItem::STATUS_STARTED) {
             throw new Exception("Item not started");
         }
         $this->hoursConsumed += $hours;
@@ -39,7 +34,7 @@ class BacklogItem
         return $this->id;
     }
 
-    public function setId(int $id): BacklogItem
+    public function setId(int $id): ProductBacklogItem
     {
         $this->id = $id;
         return $this;
@@ -51,7 +46,7 @@ class BacklogItem
         return $this->title;
     }
 
-    public function setTitle(string $title): BacklogItem
+    public function setTitle(string $title): ProductBacklogItem
     {
         $this->title = $title;
         return $this;
@@ -62,7 +57,7 @@ class BacklogItem
         return $this->description;
     }
 
-    public function setDescription(string $description): BacklogItem
+    public function setDescription(string $description): ProductBacklogItem
     {
         $this->description = $description;
         return $this;
@@ -73,7 +68,7 @@ class BacklogItem
         return $this->status;
     }
 
-    public function setStatus(string $status): BacklogItem
+    public function setStatus(string $status): ProductBacklogItem
     {
         $this->status = $status;
         return $this;
@@ -100,7 +95,7 @@ class BacklogItem
         return $this->version;
     }
 
-    public function setVersion(int $version): BacklogItem
+    public function setVersion(int $version): ProductBacklogItem
     {
         $this->version = $version;
         return $this;
@@ -114,17 +109,17 @@ class BacklogItem
 
     public function start(): void
     {
-        if ($this->getStatus() != BacklogItem::STATUS_CREATED) {
+        if ($this->getStatus() != ProductBacklogItem::STATUS_CREATED) {
             throw new Exception("Item already started");
         }
-        $this->setStatus(BacklogItem::STATUS_STARTED);
+        $this->setStatus(ProductBacklogItem::STATUS_STARTED);
     }
 
     public function complete(): void
     {
-        if ($this->getStatus() != BacklogItem::STATUS_STARTED) {
+        if ($this->getStatus() != ProductBacklogItem::STATUS_STARTED) {
             throw new Exception("Cannot complete an Item before starting it");
         }
-        $this->setStatus(BacklogItem::STATUS_DONE);
+        $this->setStatus(ProductBacklogItem::STATUS_DONE);
     }
 }

@@ -11,7 +11,7 @@ class Release
     private \DateTime $date;
     private Sprint $sprint;
 
-    /** @var BacklogItem[] */
+    /** @var ProductBacklogItem[] */
     private array $releasedItems; // only used for release notes
 
     public function getReleaseNotes(): string

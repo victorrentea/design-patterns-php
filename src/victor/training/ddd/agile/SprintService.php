@@ -87,7 +87,7 @@ class SprintService
 
         $notDoneItems = [];
         foreach ($sprint->getItems() as $backlogItem) {
-            if ($backlogItem->getStatus() !== BacklogItem::STATUS_DONE) {
+            if ($backlogItem->getStatus() !== ProductBacklogItem::STATUS_DONE) {
                 $notDoneItems [] = $backlogItem;
             }
         }
@@ -113,7 +113,7 @@ class SprintService
         $dto->calendarDays = $sprint->getEnd()->diff($sprint->getStart())->days;
         $dto->doneFP = 0;
         foreach ($sprint->getItems() as $item) {
-            if ($item->getStatus() === BacklogItem::STATUS_DONE) {
+            if ($item->getStatus() === ProductBacklogItem::STATUS_DONE) {
                 $dto->doneFP += $item->getFpEstimation();
             }
         }
@@ -121,7 +121,7 @@ class SprintService
 
         $dto->hoursConsumedForNotDone = 0;
         foreach ($sprint->getItems() as $item) {
-            if ($item->getStatus() !== BacklogItem::STATUS_DONE) {
+            if ($item->getStatus() !== ProductBacklogItem::STATUS_DONE) {
                 $dto->hoursConsumedForNotDone += $item->getHoursConsumed();
             }
         }

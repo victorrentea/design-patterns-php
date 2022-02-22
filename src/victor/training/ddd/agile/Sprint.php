@@ -28,7 +28,7 @@ class Sprint
 
     private string $status = self::STATUS_CREATED;
 
-    /** @var BacklogItem[] */
+    /** @var ProductBacklogItem[] */
     private array $items = [];
 
     public function __construct(int $productId, DateTimeImmutable $plannedEnd, int $iteration)
@@ -87,7 +87,7 @@ class Sprint
         return $this->items;
     }
 
-    public function addItem(BacklogItem $backlogItem, int $fpEstimation)
+    public function addItem(ProductBacklogItem $backlogItem, int $fpEstimation)
     {
         $this->items [] = $backlogItem;
         $backlogItem->assignToSprint($this, $fpEstimation);
@@ -130,10 +130,10 @@ class Sprint
         $backlogItem->start();
     }
 
-    private function findItemById(int $backlogId): BacklogItem
+    private function findItemById(int $backlogId): ProductBacklogItem
     {
         $backlogItem = array_filter($this->items,
-            fn(BacklogItem $item) => $item->getId() === $backlogId)[0];
+            fn(ProductBacklogItem $item) => $item->getId() === $backlogId)[0];
         return $backlogItem;
     }
 
@@ -162,7 +162,7 @@ class Sprint
     public function allItemsAreDone(): bool
     {
         foreach ($this->items as $backlogItem) {
-            if ($backlogItem->getStatus() !== BacklogItem::STATUS_DONE) {
+            if ($backlogItem->getStatus() !== ProductBacklogItem::STATUS_DONE) {
                 return false;
             }
         }
