@@ -16,7 +16,7 @@ class BacklogItemService
     public function createBacklogItem(BacklogItemDto $dto): int
     {
         $product = $this->productRepo->findOneById($dto->productId);
-        $backlogItem = (new BacklogItem($product->getId()))
+        $backlogItem = (new BacklogItem())
             ->setDescription($dto->description)
             ->setTitle($dto->title);
         $product->addBacklogItem($backlogItem);
@@ -29,7 +29,7 @@ class BacklogItemService
         $backlogItem = $this->backlogItemRepo->findOneById($id);
         $dto = new BacklogItemDto();
         $dto->id = $backlogItem->getId();
-        $dto->productId = $backlogItem->getProductId();
+        $dto->productId = $backlogItem->getSprint()->getProductId();
         $dto->description = $backlogItem->getDescription();
         $dto->title = $backlogItem->getTitle();
         $dto->version = $backlogItem->getVersion();

@@ -14,7 +14,6 @@ class BacklogItem
     const STATUS_DONE = 'DONE';
 
     private int $id;
-    private int $productId;
     private string $title;
     private string $description;
     private string $status = self::STATUS_CREATED;
@@ -25,16 +24,7 @@ class BacklogItem
 
     private int $version; // for optimistic locking
 
-    public function __construct(int $productId)
-    {
-        $this->productId = $productId;
-    }
 
-
-    public function getProductId(): int
-    {
-        return $this->productId;
-    }
 
     public function addHours(int $hours)
     {
