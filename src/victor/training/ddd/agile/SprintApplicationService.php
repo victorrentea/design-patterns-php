@@ -3,47 +3,6 @@
 namespace victor\training\ddd\agile;
 
 
-use Exception;
-
-interface SprintRepo
-{
-
-    public function save(Sprint $sprint): Sprint;
-
-    public function findOneById(int $id): Sprint;
-}
-
-class SprintDto
-{
-    public int $productId;
-    public \DateTimeImmutable $plannedEnd;
-}
-
-
-class SprintMetrics
-{
-    public int $consumedHours;
-    public int $doneFP;
-    public float $fpVelocity;
-    public int $hoursConsumedForNotDone;
-    public int $calendarDays;
-    public int $delayDays;
-}
-
-
-class AddBacklogItemRequest
-{
-    public int $productBacklogId;
-    public int $fpEstimation;
-}
-
-class LogHoursRequest
-{
-    public int $sprintBacklogItemId;
-    public int $hours;
-}
-
-
 class SprintApplicationService
 {
     private SprintRepo $sprintRepo;

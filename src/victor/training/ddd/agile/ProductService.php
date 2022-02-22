@@ -3,22 +3,6 @@
 namespace victor\training\ddd\agile;
 
 
-class ProductDto
-{
-    public int $id;
-    public string $code;
-    public string $name;
-    public string $mailingList;
-}
-
-interface ProductRepo
-{
-    public function findOneById(int $productId): Product;
-
-    public function save(Product $product): Product;
-
-    public function existsByCode(string $code): bool;
-}
 class ProductService
 {
     private ProductRepo $productRepo;

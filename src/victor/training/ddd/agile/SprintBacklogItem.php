@@ -7,9 +7,9 @@ use Exception;
 // uneori cand lucrezi masiv cu ID-uri din exterior,
 // decizi sa creezi un Value Object cu un singur camp ID
 // "ID Types"
-class ProductBacklogItemId {
-    private int $id;
-}
+// class ProductBacklogItemId {
+//     private int $id;
+// }
 
 class SprintBacklogItem
 {
