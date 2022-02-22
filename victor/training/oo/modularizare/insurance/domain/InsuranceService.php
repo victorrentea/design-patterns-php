@@ -29,6 +29,7 @@ class InsuranceService
         if ($command->newAddress === "Pakistan") {
             $policy->value += 100;
         }
+        // $policy->customerAddress = $command->newAddress;
     }
 
     function displayPolicy(int $id): InsurancePolicyDto

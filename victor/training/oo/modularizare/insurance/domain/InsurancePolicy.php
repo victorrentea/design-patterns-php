@@ -9,6 +9,7 @@ class InsurancePolicy
     // public Customer $customer; // 1) Entity links !??
     // tai link si pui ID doar
     public int $customerId;
+    // public string $customerAddress;
 
     // daca insa ai de accesat des anumite campuri din Customer si asta cere network call.
     // ... sau cache
