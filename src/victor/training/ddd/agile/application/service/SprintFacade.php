@@ -8,7 +8,6 @@ use victor\training\ddd\agile\application\dto\LogHoursRequest;
 use victor\training\ddd\agile\application\dto\SprintDto;
 use victor\training\ddd\agile\domain\repo\ProductRepo;
 use victor\training\ddd\agile\domain\repo\SprintRepo;
-use victor\training\ddd\agile\EmailService;
 use victor\training\ddd\agile\Sprint;
 use victor\training\ddd\agile\SprintBacklogItem;
 use victor\training\ddd\agile\SprintMetrics;
@@ -17,14 +16,14 @@ class SprintFacade
 {
     private SprintRepo $sprintRepo;
     private ProductRepo $productRepo;
-    private EmailService $emailService;
+    private EmailSenderInterface $emailSender;
     private SprintMetricsService $metricsService;
 
-    public function __construct(SprintRepo $sprintRepo, ProductRepo $productRepo, EmailService $emailService, SprintMetricsService $metricsService)
+    public function __construct(SprintRepo $sprintRepo, ProductRepo $productRepo, EmailSenderInterface $emailSender, SprintMetricsService $metricsService)
     {
         $this->sprintRepo = $sprintRepo;
         $this->productRepo = $productRepo;
-        $this->emailService = $emailService;
+        $this->emailSender = $emailSender;
         $this->metricsService = $metricsService;
     }
 
@@ -60,7 +59,7 @@ class SprintFacade
         }
         if (sizeof($notDoneItems) >= 1) {
             $product = $this->productRepo->findOneById($sprint->getProductId());
-            $this->emailService->sendNotDoneItemsDebrief(
+            $this->emailSender->sendNotDoneItemsDebrief(
                 $product->getOwner()->getEmail(), $notDoneItems);
         }
     }

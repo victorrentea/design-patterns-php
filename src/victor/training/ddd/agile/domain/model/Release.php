@@ -5,38 +5,36 @@ namespace victor\training\ddd\agile;
 class Release
 {
     private int $id;
-    private Product $product;
+    // private int $productId;
+    // private string $productCode; // date care nu se modifica
+    // private Product $product;
 
     private string $version;  // eg 1.0, 2.0 ...
     private \DateTime $date;
-    private Sprint $sprint;
-
-    /** @var ProductBacklogItem[] */
-    private array $releasedItems; // only used for release notes
-
-    public function getReleaseNotes(): string
-    {
-        $releaseNotes = "";
-        foreach ($this->releasedItems as $backlogItem) {
-            $this->releasedItems .= $backlogItem->getTitle() . "\n";
-        }
-        return $releaseNotes;
-    }
+    private Sprint $sprint; // sprintul care a fost releaseuit. TODO la fel rupt linkul
+    private string $releaseNotes;
 
     public function getId(): int
     {
         return $this->id;
     }
 
+    public function getReleaseNotes(): string
+    {
+        return $this->releaseNotes;
+    }
+
+    public function setReleaseNotes(string $releaseNotes): Release
+    {
+        $this->releaseNotes = $releaseNotes;
+        return $this;
+    }
+
+
     public function setId(int $id): Release
     {
         $this->id = $id;
         return $this;
-    }
-
-    public function getProduct(): Product
-    {
-        return $this->product;
     }
 
     public function setProduct(Product $product): Release
@@ -75,17 +73,6 @@ class Release
     public function setSprint(Sprint $sprint): Release
     {
         $this->sprint = $sprint;
-        return $this;
-    }
-
-    public function getReleasedItems(): array
-    {
-        return $this->releasedItems;
-    }
-
-    public function setReleasedItems(array $releasedItems): Release
-    {
-        $this->releasedItems = $releasedItems;
         return $this;
     }
 

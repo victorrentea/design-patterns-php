@@ -23,8 +23,10 @@ class ProductBacklogItemFacade
         $product = $this->productRepo->findOneById($dto->productId);
         $productBacklogItem = (new ProductBacklogItem($dto->productId))
             ->setDescription($dto->description)
-            ->setTitle($dto->title);
-        $product->addBacklogItem($productBacklogItem);
+            ->setTitle($dto->title)
+        // ->setProductId($product->getId()) TODO maine
+        ;
+        $product->addBacklogItem($productBacklogItem); // TODO maine delete
 
         return $this->productBacklogItemRepo->save($productBacklogItem)->getId();
     }
@@ -48,15 +50,6 @@ class ProductBacklogItemFacade
                 ->setTitle($dto->title)
                 ->setVersion($dto->version);
 
-        // $backlogItem = (new ProductBacklogItem())
-        //     ->setId($dto->id)
-        //     ->setProductId($oldItem->getProductId())
-        //     // ->setProductId($dto->productId) // TODO nu are sens, nu are voie din API sa modifice
-        //     ->setDescription($dto->description)
-        //     ->setTitle($dto->title)
-        //     ->setVersion($dto->version);
-
-        // $this->backlogItemRepo->save($oldItem); // necesara doar daca nu Doctrine
     }
 
     public function deleteBacklogItem(int $id): void

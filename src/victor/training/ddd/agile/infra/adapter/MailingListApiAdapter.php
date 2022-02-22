@@ -1,8 +1,10 @@
 <?php
 
-namespace victor\training\ddd\agile;
+namespace victor\training\ddd\agile\infra;
 
-class MailingListService
+use victor\training\ddd\agile\domain\service\MailingListServiceInterface;
+
+class MailingListApiAdapter implements MailingListServiceInterface
 {
     /** @return string[] */
     public function retrieveEmails(string $mailingList): array
