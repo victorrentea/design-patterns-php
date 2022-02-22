@@ -87,9 +87,10 @@ class Sprint
         return $this->items;
     }
 
-    public function addItem(BacklogItem $backlogItem)
+    public function addItem(BacklogItem $backlogItem, int $fpEstimation)
     {
         $this->items [] = $backlogItem;
+        $backlogItem->assignToSprint($this, $fpEstimation);
     }
 
     public function start(): void

@@ -140,9 +140,7 @@ class SprintService
         if ($sprint->getStatus() != Sprint::STATUS_CREATED) {
             throw new Exception("Can only add items to Sprint before it starts");
         }
-        $sprint->addItem($backlogItem);
-        $backlogItem->assignToSprint($sprint, $request->fpEstimation);
-
+        $sprint->addItem($backlogItem, $request->fpEstimation);
     }
 
     // POST /sprint/{$sprintId}/item/${backlogId}/start
