@@ -1,8 +1,12 @@
 <?php
 
-namespace victor\training\ddd\agile;
+namespace victor\training\ddd\agile\domain\service;
 
 use Exception;
+use victor\training\ddd\agile\domain\repo\SprintRepo;
+use victor\training\ddd\agile\Sprint;
+use victor\training\ddd\agile\SprintBacklogItem;
+use victor\training\ddd\agile\SprintMetrics;
 
 class SprintMetricsService
 {

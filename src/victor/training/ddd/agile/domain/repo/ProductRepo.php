@@ -1,6 +1,8 @@
 <?php
 
-namespace victor\training\ddd\agile;
+namespace victor\training\ddd\agile\domain\repo;
+
+use victor\training\ddd\agile\Product;
 
 interface ProductRepo
 {

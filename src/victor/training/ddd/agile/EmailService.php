@@ -2,6 +2,9 @@
 
 namespace victor\training\ddd\agile;
 
+use victor\training\ddd\agile\domain\repo\ProductRepo;
+use victor\training\ddd\agile\domain\repo\SprintRepo;
+
 class EmailService
 {
     private SprintRepo $sprintRepo;

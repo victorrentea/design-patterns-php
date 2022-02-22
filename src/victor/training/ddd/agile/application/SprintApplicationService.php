@@ -1,7 +1,18 @@
 <?php /** @noinspection PhpUnused */
 
-namespace victor\training\ddd\agile;
+namespace victor\training\ddd\agile\application;
 
+
+use victor\training\ddd\agile\application\dto\AddBacklogItemRequest;
+use victor\training\ddd\agile\application\dto\LogHoursRequest;
+use victor\training\ddd\agile\application\dto\SprintDto;
+use victor\training\ddd\agile\domain\repo\ProductRepo;
+use victor\training\ddd\agile\domain\repo\SprintRepo;
+use victor\training\ddd\agile\domain\service\SprintMetricsService;
+use victor\training\ddd\agile\EmailService;
+use victor\training\ddd\agile\Sprint;
+use victor\training\ddd\agile\SprintBacklogItem;
+use victor\training\ddd\agile\SprintMetrics;
 
 class SprintApplicationService
 {

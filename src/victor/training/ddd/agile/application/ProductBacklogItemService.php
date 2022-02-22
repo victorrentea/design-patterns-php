@@ -1,6 +1,11 @@
 <?php
 
-namespace victor\training\ddd\agile;
+namespace victor\training\ddd\agile\application;
+
+use victor\training\ddd\agile\application\dto\ProductBacklogItemDto;
+use victor\training\ddd\agile\domain\repo\ProductBacklogItemRepo;
+use victor\training\ddd\agile\domain\repo\ProductRepo;
+use victor\training\ddd\agile\ProductBacklogItem;
 
 class ProductBacklogItemService
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace victor\training\ddd\agile;
+namespace victor\training\ddd\agile\application\dto;
 
 class ProductBacklogItemDto
 {

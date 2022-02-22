@@ -1,9 +1,13 @@
 <?php
 
-namespace victor\training\ddd\agile;
+namespace victor\training\ddd\agile\application;
 
 
-class ProductService
+use victor\training\ddd\agile\application\dto\ProductDto;
+use victor\training\ddd\agile\domain\repo\ProductRepo;
+use victor\training\ddd\agile\Product;
+
+class ProductApplicationService
 {
     private ProductRepo $productRepo;
 

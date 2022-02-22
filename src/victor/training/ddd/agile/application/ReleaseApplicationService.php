@@ -1,8 +1,14 @@
 <?php
 
-namespace victor\training\ddd\agile;
+namespace victor\training\ddd\agile\application;
 
-class ReleaseService
+use victor\training\ddd\agile\domain\repo\ProductRepo;
+use victor\training\ddd\agile\domain\repo\ReleaseRepo;
+use victor\training\ddd\agile\domain\repo\SprintRepo;
+use victor\training\ddd\agile\ProductBacklogItem;
+use victor\training\ddd\agile\Release;
+
+class ReleaseApplicationService
 {
     private ReleaseRepo $releaseRepo;
     private ProductRepo $productRepo;
