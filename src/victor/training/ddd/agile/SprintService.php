@@ -96,7 +96,8 @@ class SprintService
             }
         }
         if (sizeof($notDoneItems) >= 1) {
-            $this->emailService->sendNotDoneItemsDebrief($sprint->getProduct()->getOwnerEmail(), $notDoneItems);
+            $this->emailService->sendNotDoneItemsDebrief(
+                $sprint->getProduct()->getOwner()->getEmail(), $notDoneItems);
         }
     }
 

@@ -2,8 +2,7 @@
 
 namespace victor\training\ddd\agile;
 
-
-
+// @Entity
 class Product
 {
     private int $id;
@@ -12,9 +11,8 @@ class Product
     private string $code;
     private string $name;
 
-    private string $ownerEmail;
-    private string $ownerName;
-    private string $ownerPhone;
+    private PersonContact $owner;
+
     private string $teamMailingList;
 
     /** @var BacklogItem[] */
@@ -23,6 +21,16 @@ class Product
     private array $sprints = [];
     /** @var Release[] */
     private array $releases = [];
+
+    public function __construct(PersonContact $owner)
+    {
+        $this->owner = $owner;
+    }
+
+    public function getOwner(): PersonContact
+    {
+        return $this->owner;
+    }
 
     public function incrementAndGetIteration(): int
     {
@@ -105,39 +113,6 @@ class Product
     public function setName(string $name): Product
     {
         $this->name = $name;
-        return $this;
-    }
-
-    public function getOwnerEmail(): string
-    {
-        return $this->ownerEmail;
-    }
-
-    public function setOwnerEmail(string $ownerEmail): Product
-    {
-        $this->ownerEmail = $ownerEmail;
-        return $this;
-    }
-
-    public function getOwnerName(): string
-    {
-        return $this->ownerName;
-    }
-
-    public function setOwnerName(string $ownerName): Product
-    {
-        $this->ownerName = $ownerName;
-        return $this;
-    }
-
-    public function getOwnerPhone(): string
-    {
-        return $this->ownerPhone;
-    }
-
-    public function setOwnerPhone(string $ownerPhone): Product
-    {
-        $this->ownerPhone = $ownerPhone;
         return $this;
     }
 
