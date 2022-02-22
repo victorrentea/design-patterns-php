@@ -33,38 +33,36 @@ class SprintMetrics
 
 class AddBacklogItemRequest
 {
-    public int $backlogId;
+    public int $productBacklogId;
     public int $fpEstimation;
 }
 
 class LogHoursRequest
 {
-    public int $backlogId;
+    public int $sprintBacklogItemId;
     public int $hours;
 }
 
 
-class SprintService
+class SprintApplicationService
 {
     private SprintRepo $sprintRepo;
     private ProductRepo $productRepo;
-    private BacklogItemRepo $backlogItemRepo;
     private EmailService $emailService;
+    private SprintMetricsService $metricsService;
 
-    public function __construct(SprintRepo $sprintRepo, ProductRepo $productRepo, BacklogItemRepo $backlogItemRepo, EmailService $emailService)
+    public function __construct(SprintRepo $sprintRepo, ProductRepo $productRepo, EmailService $emailService, SprintMetricsService $metricsService)
     {
         $this->sprintRepo = $sprintRepo;
         $this->productRepo = $productRepo;
-        $this->backlogItemRepo = $backlogItemRepo;
         $this->emailService = $emailService;
+        $this->metricsService = $metricsService;
     }
 
     public function createSprint(SprintDto $dto): int
     {
         $product = $this->productRepo->findOneById($dto->productId);
-
         $sprint = new Sprint($product->getId(), $dto->plannedEnd, $product->incrementAndGetIteration());
-
         return $this->sprintRepo->save($sprint)->getId();
     }
 
@@ -87,7 +85,7 @@ class SprintService
 
         $notDoneItems = [];
         foreach ($sprint->getItems() as $backlogItem) {
-            if ($backlogItem->getStatus() !== ProductBacklogItem::STATUS_DONE) {
+            if ($backlogItem->getStatus() !== SprintBacklogItem::STATUS_DONE) {
                 $notDoneItems [] = $backlogItem;
             }
         }
@@ -100,60 +98,27 @@ class SprintService
 
     public function getSprintMetrics(int $id): SprintMetrics
     {
-        $sprint = $this->sprintRepo->findOneById($id);
-        if ($sprint->getStatus() !== Sprint::STATUS_FINISHED) {
-            throw new Exception("Illegal state");
-        }
-        $dto = new SprintMetrics();
-        $dto->consumedHours = 0;
-        foreach ($sprint->getItems() as $backlogItem) {
-            $dto->consumedHours += $backlogItem->getHoursConsumed();
-        }
-
-        $dto->calendarDays = $sprint->getEnd()->diff($sprint->getStart())->days;
-        $dto->doneFP = 0;
-        foreach ($sprint->getItems() as $item) {
-            if ($item->getStatus() === ProductBacklogItem::STATUS_DONE) {
-                $dto->doneFP += $item->getFpEstimation();
-            }
-        }
-        $dto->fpVelocity = 1.0 * $dto->doneFP / $dto->consumedHours;
-
-        $dto->hoursConsumedForNotDone = 0;
-        foreach ($sprint->getItems() as $item) {
-            if ($item->getStatus() !== ProductBacklogItem::STATUS_DONE) {
-                $dto->hoursConsumedForNotDone += $item->getHoursConsumed();
-            }
-        }
-
-        if ($sprint->getEnd()->getTimestamp() > $sprint->getPlannedEnd()->getTimestamp()) {
-            $dto->delayDays = $sprint->getEnd()->diff($sprint->getPlannedEnd())->days;
-        }
-        return $dto;
+        return $this->metricsService->generateSprintMetricsService($id);
     }
-
 
     public function addItem(int $sprintId, AddBacklogItemRequest $request): void
     {
-        $backlogItem = $this->backlogItemRepo->findOneById($request->backlogId);
         $sprint = $this->sprintRepo->findOneById($sprintId);
-        if ($sprint->getStatus() != Sprint::STATUS_CREATED) {
-            throw new Exception("Can only add items to Sprint before it starts");
-        }
-        $sprint->addItem($backlogItem, $request->fpEstimation);
+        $sprintItem = new SprintBacklogItem($request->productBacklogId, $request->fpEstimation);
+        $sprint->addItem($sprintItem);
     }
 
     // POST /sprint/{$sprintId}/item/${backlogId}/start
-    public function startItem(int $sprintId, int $backlogId): void
+    public function startItem(int $sprintId, int $sprintBacklogItemId): void
     {
         $sprint = $this->sprintRepo->findOneById($sprintId);
-        $sprint->startItem($backlogId);
+        $sprint->startItem($sprintBacklogItemId);
     }
 
-    public function completeItem(int $sprintId, int $backlogId): void
+    public function completeItem(int $sprintId, int $sprintBacklogItemId): void
     {
         $sprint = $this->sprintRepo->findOneById($sprintId);
-        $sprint->completeItem($backlogId);
+        $sprint->completeItem($sprintBacklogItemId);
         $this->sprintRepo->save($sprint); // IDEE_CREATA: automatic domain events publishing
     }
 
@@ -165,8 +130,10 @@ class SprintService
 
         $sprint = $this->sprintRepo->findOneById($sprintId);
 
-        $sprint->addHoursToItem($request->backlogId, $request->hours);
+        $sprint->addHoursToItem($request->sprintBacklogItemId, $request->hours);
     }
+
+
 
 }
 

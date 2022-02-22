@@ -2,43 +2,43 @@
 
 namespace victor\training\ddd\agile;
 
-class BacklogItemService
+class ProductBacklogItemService
 {
-    private BacklogItemRepo $backlogItemRepo;
+    private ProductBacklogItemRepo $productBacklogItemRepo;
     private ProductRepo $productRepo;
 
-    public function __construct(BacklogItemRepo $backlogItemRepo, ProductRepo $productRepo)
+    public function __construct(ProductBacklogItemRepo $backlogItemRepo, ProductRepo $productRepo)
     {
-        $this->backlogItemRepo = $backlogItemRepo;
+        $this->productBacklogItemRepo = $backlogItemRepo;
         $this->productRepo = $productRepo;
     }
 
-    public function createBacklogItem(BacklogItemDto $dto): int
+    public function createBacklogItem(ProductBacklogItemDto $dto): int
     {
         $product = $this->productRepo->findOneById($dto->productId);
-        $backlogItem = (new ProductBacklogItem())
+        $productBacklogItem = (new ProductBacklogItem($dto->productId))
             ->setDescription($dto->description)
             ->setTitle($dto->title);
-        $product->addBacklogItem($backlogItem);
+        $product->addBacklogItem($productBacklogItem);
 
-        return $this->backlogItemRepo->save($backlogItem)->getId();
+        return $this->productBacklogItemRepo->save($productBacklogItem)->getId();
     }
 
-    public function getBacklogItem(int $id): BacklogItemDto
+    public function getBacklogItem(int $id): ProductBacklogItemDto
     {
-        $backlogItem = $this->backlogItemRepo->findOneById($id);
-        $dto = new BacklogItemDto();
+        $backlogItem = $this->productBacklogItemRepo->findOneById($id);
+        $dto = new ProductBacklogItemDto();
         $dto->id = $backlogItem->getId();
-        $dto->productId = $backlogItem->getSprint()->getProductId();
+        $dto->productId = $backlogItem->getProductId();
         $dto->description = $backlogItem->getDescription();
         $dto->title = $backlogItem->getTitle();
         $dto->version = $backlogItem->getVersion();
         return $dto;
     }
 
-    public function updateBacklogItem(BacklogItemDto $dto): void
+    public function updateBacklogItem(ProductBacklogItemDto $dto): void
     {
-        $oldItem = $this->backlogItemRepo->findOneById($dto->id);
+        $oldItem = $this->productBacklogItemRepo->findOneById($dto->id);
         $oldItem->setDescription($dto->description)
                 ->setTitle($dto->title)
                 ->setVersion($dto->version);
@@ -56,6 +56,6 @@ class BacklogItemService
 
     public function deleteBacklogItem(int $id): void
     {
-        $this->backlogItemRepo->deleteById($id);
+        $this->productBacklogItemRepo->deleteById($id);
     }
 }

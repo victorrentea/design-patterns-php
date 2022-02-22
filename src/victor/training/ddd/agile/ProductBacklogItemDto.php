@@ -2,7 +2,7 @@
 
 namespace victor\training\ddd\agile;
 
-class BacklogItemDto
+class ProductBacklogItemDto
 {
     public int $id;
     public int $productId;

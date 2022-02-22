@@ -1,1 +1,1 @@
-{"version":1,"defects":{"Test1::testSimpleNamespaces":3,"ArchitectureTest::testSimpleNamespaces":3},"times":{"Test1::testSimpleNamespaces":0.274,"ArchitectureTest::testSimpleNamespaces":0.57}}
+{"version":1,"defects":{"Test1::testSimpleNamespaces":3,"ArchitectureTest::testSimpleNamespaces":3},"times":{"Test1::testSimpleNamespaces":0.274,"ArchitectureTest::testSimpleNamespaces":0.465}}

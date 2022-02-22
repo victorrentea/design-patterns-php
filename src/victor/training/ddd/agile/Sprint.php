@@ -28,7 +28,7 @@ class Sprint
 
     private string $status = self::STATUS_CREATED;
 
-    /** @var ProductBacklogItem[] */
+    /** @var SprintBacklogItem[] */
     private array $items = [];
 
     public function __construct(int $productId, DateTimeImmutable $plannedEnd, int $iteration)
@@ -87,10 +87,12 @@ class Sprint
         return $this->items;
     }
 
-    public function addItem(ProductBacklogItem $backlogItem, int $fpEstimation)
+    public function addItem(SprintBacklogItem $backlogItem)
     {
+        if ($this->status != Sprint::STATUS_CREATED) {
+            throw new Exception("Can only add items to Sprint before it starts");
+        }
         $this->items [] = $backlogItem;
-        $backlogItem->assignToSprint($this, $fpEstimation);
     }
 
     public function start(): void
@@ -130,10 +132,10 @@ class Sprint
         $backlogItem->start();
     }
 
-    private function findItemById(int $backlogId): ProductBacklogItem
+    private function findItemById(int $backlogId): SprintBacklogItem
     {
         $backlogItem = array_filter($this->items,
-            fn(ProductBacklogItem $item) => $item->getId() === $backlogId)[0];
+            fn(SprintBacklogItem $item) => $item->getId() === $backlogId)[0];
         return $backlogItem;
     }
 
@@ -162,7 +164,7 @@ class Sprint
     public function allItemsAreDone(): bool
     {
         foreach ($this->items as $backlogItem) {
-            if ($backlogItem->getStatus() !== ProductBacklogItem::STATUS_DONE) {
+            if ($backlogItem->getStatus() !== SprintBacklogItem::STATUS_DONE) {
                 return false;
             }
         }

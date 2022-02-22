@@ -2,7 +2,7 @@
 
 namespace victor\training\ddd\agile;
 
-interface BacklogItemRepo
+interface ProductBacklogItemRepo
 {
     function save(ProductBacklogItem $backlogItem): ProductBacklogItem;
 
