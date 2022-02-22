@@ -2,6 +2,10 @@
 
 namespace victor\training\ddd\agile;
 
+$personContact = new PersonContact("a","a@b.com", "141985918");
+$personContact = $personContact->withName("New NAME");
+
+//@Embeddable
 class PersonContact // Value Object
 {
     private string $name;
@@ -17,6 +21,12 @@ class PersonContact // Value Object
         $this->email = $email;
         $this->phone = $phone;
     }
+
+    function withName(string $newName): PersonContact // "wither"
+    {
+        return new PersonContact($newName, $this->email, $this->phone);
+    }
+
 
     function equals(PersonContact $contact): bool
     {

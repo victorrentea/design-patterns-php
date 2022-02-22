@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection PhpUnused */
 
 namespace victor\training\ddd\agile;
 
@@ -50,24 +50,20 @@ class SprintService
     private ProductRepo $productRepo;
     private BacklogItemRepo $backlogItemRepo;
     private EmailService $emailService;
-    private MailingListService $mailingListService;
 
-    public function __construct(SprintRepo $sprintRepo, ProductRepo $productRepo, BacklogItemRepo $backlogItemRepo, EmailService $emailService, MailingListService $mailingListService
-    )
+    public function __construct(SprintRepo $sprintRepo, ProductRepo $productRepo, BacklogItemRepo $backlogItemRepo, EmailService $emailService)
     {
-
         $this->sprintRepo = $sprintRepo;
         $this->productRepo = $productRepo;
         $this->backlogItemRepo = $backlogItemRepo;
         $this->emailService = $emailService;
-        $this->mailingListService = $mailingListService;
     }
 
     public function createSprint(SprintDto $dto): int
     {
         $product = $this->productRepo->findOneById($dto->productId);
 
-        $sprint = new Sprint($product, $dto->plannedEnd);
+        $sprint = new Sprint($product->getId(), $dto->plannedEnd, $product->incrementAndGetIteration());
 
         return $this->sprintRepo->save($sprint)->getId();
     }
@@ -96,8 +92,9 @@ class SprintService
             }
         }
         if (sizeof($notDoneItems) >= 1) {
+            $product = $this->productRepo->findOneById($sprint->getProductId());
             $this->emailService->sendNotDoneItemsDebrief(
-                $sprint->getProduct()->getOwner()->getEmail(), $notDoneItems);
+                $product->getOwner()->getEmail(), $notDoneItems);
         }
     }
 
@@ -149,9 +146,9 @@ class SprintService
     }
 
     // POST /sprint/{$sprintId}/item/${backlogId}/start
-    public function startItem(int $startId, int $backlogId): void
+    public function startItem(int $sprintId, int $backlogId): void
     {
-        $sprint = $this->sprintRepo->findOneById($startId);
+        $sprint = $this->sprintRepo->findOneById($sprintId);
         $sprint->startItem($backlogId);
     }
 
@@ -159,15 +156,7 @@ class SprintService
     {
         $sprint = $this->sprintRepo->findOneById($sprintId);
         $sprint->completeItem($backlogId);
-
-        // SOLUTIA1 : oRchestrare din Application Service
-        if ($sprint->allItemsAreDone()) {
-            echo "Sending CONGRATS email to team of product " . $sprint->getProduct()->getCode() . ": They finished the items earlier. They have time to refactor! (OMG!)";
-            $emails = $this->mailingListService->retrieveEmails($sprint->getProduct()->getTeamMailingList());
-            $this->emailService->sendCongratsEmail($emails);
-        }
-
-        $this->sprintRepo->save($sprint) ;; // IDEE_CREATA: automatic domain events publishing
+        $this->sprintRepo->save($sprint); // IDEE_CREATA: automatic domain events publishing
     }
 
     public function logHours(int $sprintId, LogHoursRequest $request): void

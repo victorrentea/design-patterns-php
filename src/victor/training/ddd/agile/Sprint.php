@@ -16,7 +16,12 @@ class Sprint
 
     private int $id;
     private int $iteration;
-    private Product $product; // ILLEGAL reference to another Aggregate
+
+    private int $productId; // FK din DB
+
+    // transient "volatil" = CODE SMELL : temporary field.
+    // private ?ProductVO $productVO;
+
     private DateTimeImmutable $start;
     private DateTimeImmutable $plannedEnd;
     private DateTimeImmutable $end;
@@ -26,13 +31,17 @@ class Sprint
     /** @var BacklogItem[] */
     private array $items = [];
 
-    public function __construct(Product $product, DateTimeImmutable $plannedEnd)
+    public function __construct(int $productId, DateTimeImmutable $plannedEnd, int $iteration)
     {
-        $this->product = $product;
-        $this->iteration = $product->incrementAndGetIteration();
+        $this->productId = $productId;
+        $this->iteration = $iteration;
         $this->plannedEnd = $plannedEnd;
     }
 
+    public function getProductId(): int
+    {
+        return $this->productId;
+    }
 
     public function getId(): int
     {
@@ -48,12 +57,6 @@ class Sprint
     public function getIteration(): int
     {
         return $this->iteration;
-    }
-
-
-    public function getProduct(): Product
-    {
-        return $this->product;
     }
 
 

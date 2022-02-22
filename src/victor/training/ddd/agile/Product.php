@@ -11,6 +11,7 @@ class Product
     private string $code;
     private string $name;
 
+    // @Embedded
     private PersonContact $owner;
 
     private string $teamMailingList;

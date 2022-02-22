@@ -104,12 +104,6 @@ class BacklogItem
         return $this->hoursConsumed;
     }
 
-    public function setHoursConsumed(int $hoursConsumed): BacklogItem
-    {
-        $this->hoursConsumed = $hoursConsumed;
-        return $this;
-    }
-
     public function getVersion(): int
     {
         return $this->version;
@@ -127,10 +121,6 @@ class BacklogItem
         $this->fpEstimation = $fpEstimation;
     }
 
-    /**
-     * @return void
-     * @throws Exception
-     */
     public function start(): void
     {
         if ($this->getStatus() != BacklogItem::STATUS_CREATED) {
