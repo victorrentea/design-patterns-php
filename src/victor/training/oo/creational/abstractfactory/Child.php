@@ -9,7 +9,7 @@
 namespace victor\training\oo\creational\abstractfactory;
 
 
-use victor\training\oo\creational\abstractfactory\spi\BlockFactory;
+use victor\training\patterns\creational\abstractfactory\spi\BlockFactory;
 
 class Child
 {
