@@ -22,6 +22,7 @@ class ArchitectureTest extends \PHPUnit\Framework\TestCase
         (new PhpArch())
             ->fromDirectory($directory)
             ->validate(new ForbiddenDependency('victor\\training\\architecture\\domain\\', 'victor\\training\\architecture\\infra\\'))
+            ->validate(new ForbiddenDependency('victor\\training\\architecture\\domain\\', 'victor\\training\\architecture\\application\\'))
 //            ->validate(new ForbiddenDependency('victor\\training\\ddd\\agile\\b\\', 'victor\\training\\ddd\\agile\\a\\'))
             // ->validate(new MustBeSelfContained('App\\Utility'))
             // ->validate(new MustOnlyDependOn('App\\Mailing', 'PHPMailer\\PHPMailer'))
