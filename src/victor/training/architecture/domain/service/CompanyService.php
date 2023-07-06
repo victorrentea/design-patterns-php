@@ -7,17 +7,13 @@ use victor\training\architecture\domain\model\Company;
 
 readonly class CompanyService
 {
-    private ONRCClientInterface $onrcClient;
-
-    public function __construct(ONRCClientInterface $onrcClient)
+    public function __construct(private CompanyProvider $companyProvider)
     {
-        $this->onrcClient = $onrcClient;
     }
-
 
     public function placeCorporateOrder(string $cif): void
     {
-        $company = $this->onrcClient->findCompanyByCIF($cif);
+        $company = $this->companyProvider->findCompanyByCIF($cif);
 
         echo "send 'Thank you' email to " . $company->getEmail();
 

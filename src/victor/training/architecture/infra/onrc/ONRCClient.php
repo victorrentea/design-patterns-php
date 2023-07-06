@@ -3,10 +3,10 @@
 namespace victor\training\architecture\infra\onrc;
 
 use victor\training\architecture\domain\model\Company;
-use victor\training\architecture\domain\service\ONRCClientInterface;
+use victor\training\architecture\domain\service\CompanyProvider;
 
 // ADapter pattern care intermediaza apelurile catre exterior
-class ONRCClient implements ONRCClientInterface
+class ONRCClient implements CompanyProvider
 {
     private ONRCApiClient $apiClient;
 
