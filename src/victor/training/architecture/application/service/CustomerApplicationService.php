@@ -13,6 +13,7 @@ use victor\training\architecture\application\dto\CustomerDto;
 use victor\training\architecture\application\dto\CustomerSearchCriteria;
 use victor\training\architecture\application\dto\CustomerSearchResult;
 use victor\training\architecture\domain\model\Customer;
+use victor\training\architecture\domain\model\CustomerHelper;
 use victor\training\architecture\domain\repo\CustomerRepo;
 use victor\training\architecture\domain\service\InsuranceService;
 
@@ -59,13 +60,12 @@ class CustomerApplicationService
         // business logic
         // business logic
         // business logic
-        $discountPercentage = 3;
-        if ($customer->isGenius()) {
-            $discountPercentage = 4;
-        }
-        echo "Biz logic with $discountPercentage";
+        $d = $customer->getDiscountPercentage();
+        echo "Biz logic with $d";
         // business logic
         // business logic
+        //sigur in alta parte mai e inca o data:
+        $d = CustomerHelper::getDiscountPercentage($customer);
         // business logic
 
         $this->insuranceService->requoteCustomer($customer);

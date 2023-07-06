@@ -3,56 +3,37 @@
 namespace victor\training\architecture\domain\service;
 
 use Exception;
+use victor\training\architecture\domain\model\Company;
 use victor\training\architecture\infra\onrc\ONRCApiClient;
 use victor\training\architecture\infra\onrc\ONRCLegalEntity;
 
 readonly class CompanyService
 {
-    private ONRCApiClient $apiClient;
+    private ONRCClient $onrcClient;
 
-    public function __construct(ONRCApiClient $apiClient)
+    public function __construct(ONRCClient $onrcClient)
     {
-        $this->apiClient = $apiClient;
+        $this->onrcClient = $onrcClient;
     }
+
 
     public function placeCorporateOrder(string $cif): void
     {
-        $list = $this->apiClient->search(null, null, strtoupper($cif));
-        if (count($list) !== 1) {
-            throw new Exception('There is no single user matching username ' . $cif);
-        }
+        $company = $this->onrcClient->findCompanyByCIF($cif);
 
-        $onrcle = $list[0];
+        echo "send 'Thank you' email to " . $company->getEmail();
 
-        $this->deepDomainLogic($onrcle);
-    }
-
-    private function deepDomainLogic(ONRCLegalEntity $dto) // ⚠️ useless fields
-    {
-        echo "send 'Thank you' email to " . $dto->getMainEml();  // ⚠️ bad attribute name
-
-        $year = $dto->getRegistrationDate()->format('Y');  // ⚠️ pending NullPointerException
-        if (date('Y') - $year < 2) {
+        if ($company->isNew()) {
             throw new Exception("Too young");
         }
 
-        $this->innocentHack($dto);
-        $this->deeper($dto);
+        $this->deeper($company);
 
-        $name = $dto->getExtendedFullName() != null ? $dto->getExtendedFullName() : $dto->getShortName(); // ⚠️ data mapping mixed with biz logic
-        echo "set order placed by $name";
+        echo "set order placed by {$company->getName()}";
     }
 
-    private function innocentHack(ONRCLegalEntity $dto): void
+    private function deeper(Company $company) // ⚠️ useless fields
     {
-        if ($dto->getEuregno() == null) {
-            $dto->setEuregno("RO" . $dto->getOnrcId()); // ⚠️ mutability risks
-        }
-    }
-
-    private function deeper(ONRCLegalEntity $dto) // ⚠️ useless fields
-    {
-        $name = $dto->getExtendedFullName() != null ? $dto->getExtendedFullName() : $dto->getShortName(); // ⚠️ repeated logic
-        echo "set shipped to $name, having EU reg: " . $dto->getEuregno();
+        echo "set shipped to {$company->getName()}, having EU reg: " . $company->getEuropeanRegNumber();
     }
 }

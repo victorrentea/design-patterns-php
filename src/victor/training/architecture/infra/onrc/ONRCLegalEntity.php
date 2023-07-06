@@ -11,6 +11,7 @@ namespace victor\training\architecture\infra\onrc;
 
 use DateTime;
 
+// uneori generam clase din swaggere LOR pe care ii chema
 class ONRCLegalEntity
 {
     private ?string $onrcId;
