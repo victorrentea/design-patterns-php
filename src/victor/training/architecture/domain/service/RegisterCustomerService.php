@@ -5,7 +5,7 @@ namespace victor\training\architecture\domain\service;
 use victor\training\architecture\domain\model\Customer;
 use victor\training\architecture\domain\model\CustomerHelper;
 
-class CustomerDomainService
+class RegisterCustomerService // clase NU sunt mereu substantive. ci si actiuni daca contin logica suficient decomplere
 {
     // nici un picior de api model aici, doar structuri -ale mele
 

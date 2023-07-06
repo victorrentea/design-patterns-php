@@ -15,15 +15,16 @@ use victor\training\architecture\application\dto\CustomerSearchResult;
 use victor\training\architecture\domain\model\Customer;
 use victor\training\architecture\domain\model\CustomerHelper;
 use victor\training\architecture\domain\repo\CustomerRepo;
+use victor\training\architecture\domain\service\RegisterCustomerService;
 use victor\training\architecture\domain\service\InsuranceService;
 
 class CustomerApplicationService
 {
     private CustomerRepo $customerRepository;
     private InsuranceService $insuranceService;
-    private CustomerDomainService $customerDomainService;
+    private RegisterCustomerService $customerDomainService;
 
-    public function __construct(CustomerRepo $customerRepository, \victor\training\architecture\domain\service\InsuranceService $insuranceService, CustomerDomainService $customerDomainService)
+    public function __construct(CustomerRepo $customerRepository, \victor\training\architecture\domain\service\InsuranceService $insuranceService, RegisterCustomerService $customerDomainService)
     {
         $this->customerRepository = $customerRepository;
         $this->insuranceService = $insuranceService;
