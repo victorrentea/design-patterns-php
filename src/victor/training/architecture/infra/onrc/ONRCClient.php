@@ -1,13 +1,12 @@
 <?php
 
-namespace victor\training\architecture\domain\service;
+namespace victor\training\architecture\infra\onrc;
 
 use victor\training\architecture\domain\model\Company;
-use victor\training\architecture\infra\onrc\ONRCApiClient;
-use victor\training\architecture\infra\onrc\ONRCLegalEntity;
+use victor\training\architecture\domain\service\ONRCClientInterface;
 
 // ADapter pattern care intermediaza apelurile catre exterior
-class ONRCClient
+class ONRCClient implements ONRCClientInterface
 {
     private ONRCApiClient $apiClient;
 
@@ -25,7 +24,7 @@ class ONRCClient
         return $this->fromDto($list[0]);
     }
 
-    public function fromDto(ONRCLegalEntity $dto): Company
+    private function fromDto(ONRCLegalEntity $dto): Company
     {
         $name = $dto->getExtendedFullName() != null ? $dto->getExtendedFullName() : $dto->getShortName(); // ⚠️ data mapping mixed with biz logic
         $isNew = true;

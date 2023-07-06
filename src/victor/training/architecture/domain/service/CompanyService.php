@@ -7,9 +7,9 @@ use victor\training\architecture\domain\model\Company;
 
 readonly class CompanyService
 {
-    private ONRCClient $onrcClient;
+    private ONRCClientInterface $onrcClient;
 
-    public function __construct(ONRCClient $onrcClient)
+    public function __construct(ONRCClientInterface $onrcClient)
     {
         $this->onrcClient = $onrcClient;
     }
