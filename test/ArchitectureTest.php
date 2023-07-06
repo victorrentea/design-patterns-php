@@ -11,6 +11,9 @@ class ArchitectureTest extends \PHPUnit\Framework\TestCase
 // sau deptrac commit hook si CI test
 {
 
+    // lucruri fine (design) pazite cu teste frustrante care pica
+
+    // daca nu intelegi de ce nu poti sa faci push, suna-ma: 07200019564 si vb, anarchitect
     public function testSimpleNamespaces()
     {
         $directory = __DIR__ . '/../src/victor';
