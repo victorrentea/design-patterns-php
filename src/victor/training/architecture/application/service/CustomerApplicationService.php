@@ -21,11 +21,13 @@ class CustomerApplicationService
 {
     private CustomerRepo $customerRepository;
     private InsuranceService $insuranceService;
+    private CustomerDomainService $customerDomainService;
 
-    public function __construct(CustomerRepo $customerRepository, \victor\training\architecture\domain\service\InsuranceService $insuranceService)
+    public function __construct(CustomerRepo $customerRepository, \victor\training\architecture\domain\service\InsuranceService $insuranceService, CustomerDomainService $customerDomainService)
     {
         $this->customerRepository = $customerRepository;
         $this->insuranceService = $insuranceService;
+        $this->customerDomainService = $customerDomainService;
     }
 
     /** @return CustomerSearchResult[] */
@@ -37,38 +39,24 @@ class CustomerApplicationService
     function getCustomerById(int $customerId): CustomerDto
     {
         $customer = $this->customerRepository->findById($customerId);
-        $dto = new CustomerDto();
-        $dto->setName($customer->getName());
-        $dto->setEmail($customer->getEmail());
-        $dto->setAddress($customer->getAddress());
+//        $dto = $this->transformer->toDto($customer);// #1 Transformer / Factory cu cod simplu nu logica grea
+//        $dto = $customer->toDto(); // #2 conversia in #[Entity] method -> REJECT LA PR: cuplezi ce-ai mai sfant (Entity) la API Model
+        $dto = new CustomerDto($customer); // #3 conversia in ctor de DTO
+            // + stergi 90% din transformeri
+            // - nu poti pune DTO in composer packages. ok doar daca le dai swaggere la clienti
         return $dto;
     }
 
 
     function registerCustomer(CustomerDto $customerDto): CustomerDto
     {
-        $customer = new Customer();
-        $customer->setName($customerDto->getName());
-        $customer->setEmail($customerDto->getEmail());
+        $customer = new Customer($customerDto->getName(), $customerDto->getEmail());
         $customer->setAddress($customerDto->getAddress());
+        $this->customerDomainService->registerCustomerDomain($customer);
 
-        if (! $customer->getEmail()) {
-            throw new \Exception("Bum");
-        }
-
-        // business logic
-        // business logic
-        // business logic
-        // business logic
-        $d = $customer->getDiscountPercentage();
-        echo "Biz logic with $d";
-        // business logic
-        // business logic
-        //sigur in alta parte mai e inca o data:
-        $d = CustomerHelper::getDiscountPercentage($customer);
-        // business logic
-
+        // ---- pana aici scot intr-un Domain Service
         $this->insuranceService->requoteCustomer($customer);
-    }
 
+        return $customerDto;
+    }
 }

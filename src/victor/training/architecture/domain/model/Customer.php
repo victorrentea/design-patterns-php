@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping\Embedded;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
+use victor\training\architecture\application\dto\CustomerDto;
 
 // NON OOP:
 class CustomerHelper
@@ -165,6 +166,11 @@ class Customer
         $this->genius = $genius;
         return $this;
     }
+
+//    public function toDto():CustomerDto
+//    {
+//        return new CustomerDto() // niciodata nu pui logica de presentation in ENtity
+//    }
 
 
 }
