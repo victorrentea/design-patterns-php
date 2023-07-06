@@ -4,8 +4,6 @@ namespace victor\training\architecture\domain\service;
 
 use Exception;
 use victor\training\architecture\domain\model\Company;
-use victor\training\architecture\infra\onrc\ONRCApiClient;
-use victor\training\architecture\infra\onrc\ONRCLegalEntity;
 
 readonly class CompanyService
 {
