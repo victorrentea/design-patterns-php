@@ -11,29 +11,48 @@ namespace victor\training\patterns\behavioral\template;
 use phpDocumentor\Reflection\Types\Callable_;
 
 include "Email.php";
-include "EmailContext.php";
+include "EmailClient.php";
 
 class EmailSender
 {
     private const MAX_RETRIES = 3;
 
-    public function sendOrderReceivedEmail(string $emailAddress): void
+    public function sendEmail(string $emailAddress): void
     {
-        $context = new EmailContext(/*smtpConfig,etc*/);
+        $context = new EmailClient(/*smtpConfig,etc*/);
         for ($i = 0; $i < self::MAX_RETRIES; $i++) {
             $email = new Email();
             $email->setSender('noreply@corp.com');
             $email->setReplyTo('/dev/null');
             $email->setTo($emailAddress);
-            $email->setSubject('Order Received');
-            $email->setBody('Thank you for your order');
+
+            $this->composeEmail($email);
+
             $success = $context->send($email);
             if ($success) break;
         }
     }
+    public function composeEmail(Email $email): void
+    {
+        $email->setSubject('Order Received');
+        $email->digitallySign();
+        $email->setBody('Thank you for your order');
+    }
 }
+class Hackareala extends  EmailSender
+{
+    public function composeEmail(Email $email): void
+    {
+        $email->setSubject('Order Shipped');
+        $email->setBody('Ti-am trimis, speram s-ajunga');
+    }
+}
+//interface EmailComposer
+//class OrderShippedEmailComposer implements EmailComposer
+//class OrderPlacedEmailComposer implements EmailComposer
 
-$emailService = new EmailSender();
-$emailService->sendOrderReceivedEmail('a@b.com');
+(new EmailSender())->sendEmail('a@b.com');
+
+(new Hackareala())->sendEmail('a@b.com');
 
 //CHANGE request: implement sendOrderShippedEmail

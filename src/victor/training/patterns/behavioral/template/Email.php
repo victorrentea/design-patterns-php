@@ -77,4 +77,9 @@ class Email
     {
         return "Email " . $this->subject;
     }
+
+    public function digitallySign()
+    {
+
+    }
 }
