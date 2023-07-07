@@ -11,69 +11,62 @@ namespace victor\training\patterns\behavioral\template;
 
 class Email
 {
-    private string $sender;
-    private string $body;
-    private string $replyTo;
-    private string $to;
-    private string $subject;
+    private ?string $sender = null;
+    private ?string $body = null;
+    private ?string $replyTo = null;
+    private ?string $to = null;
+    private ?string $subject = null;
 
-    /**
-     * @return mixed
-     */
     public function getSender()
     {
         return $this->sender;
     }
 
-    /**
-     * @param mixed $sender
-     * @return Email
-     */
     public function setSender($sender)
     {
         $this->sender = $sender;
         return $this;
     }
 
-    public function getBody(): string
+    public function getBody(): ?string
     {
         return $this->body;
     }
 
-    public function setBody(string $body): Email
+    public function setBody(?string $body): Email
     {
         $this->body = $body;
         return $this;
     }
 
-    public function getReplyTo(): string
+    public function getReplyTo(): ?string
     {
         return $this->replyTo;
     }
 
-    public function setReplyTo(string $replyTo): Email
+    public function setReplyTo(?string $replyTo): Email
     {
         $this->replyTo = $replyTo;
         return $this;
     }
 
-    public function getTo(): string
+    public function getTo(): ?string
     {
         return $this->to;
     }
 
-    public function setTo(string $to): Email
+    public function setTo(?string $to): Email
     {
         $this->to = $to;
         return $this;
     }
 
-    public function getSubject(): string
+    public function getSubject(): ?string
     {
         return $this->subject;
     }
 
-    public function setSubject(string $subject): Email
+    public function setSubject(?string $subject): Email
     {
         $this->subject = $subject;
         return $this;
