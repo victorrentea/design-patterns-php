@@ -13,9 +13,15 @@ use phpDocumentor\Reflection\Types\Callable_;
 include "Email.php";
 include "EmailClient.php";
 
-abstract class AbstractEmailSender
+class EmailSender
 {
     private const MAX_RETRIES = 3;
+    public function __construct(
+        readonly private EmailComposer $emailComposer
+    )
+    {
+    }
+
 
     public function sendEmail(string $emailAddress): void
     {
@@ -26,41 +32,37 @@ abstract class AbstractEmailSender
             $email->setReplyTo('/dev/null');
             $email->setTo($emailAddress);
 
-            $this->composeEmail($email);
+            $this->emailComposer->composeEmail($email);
 
             $success = $context->send($email);
             if ($success) break;
         }
     }
-    protected abstract function composeEmail(Email $email): void;
-    protected function getAttachment() {return null;} // hook method
 }
 
-class OrderReceivedEmailSender extends AbstractEmailSender {
-    protected function composeEmail(Email $email): void
+interface EmailComposer {function composeEmail(Email $email);}
+
+class OrderShippedEmailComposer implements EmailComposer
+{
+    function composeEmail(Email $email): void
+    {
+        $email->setSubject('Order Shipped');
+        $email->setBody('Ti-am trimis, speram s-ajunga');
+    }
+}
+
+class OrderPlacedEmailComposer implements EmailComposer
+{
+    function composeEmail(Email $email): void
     {
         $email->setSubject('Order Received');
         $email->digitallySign();
         $email->setBody('Thank you for your order');
     }
 }
-class OrderShippedEmailSender extends AbstractEmailSender
-{
-    protected function composeEmail(Email $email): void
-    {
-        $email->setSubject('Order Shipped');
-        $email->setBody('Ti-am trimis, speram s-ajunga');
-    }
-    protected function getAttachment() {
-        return "AWB: ";
-    }
-}
-//interface EmailComposer {function composeEmail(Email $email);}
-//class OrderShippedEmailComposer implements EmailComposer
-//class OrderPlacedEmailComposer implements EmailComposer
 
-(new OrderReceivedEmailSender())->sendEmail('a@b.com');
+(new EmailSender(new OrderShippedEmailComposer()))->sendEmail('a@b.com');
 
-(new OrderShippedEmailSender())->sendEmail('a@b.com');
+(new EmailSender(new OrderPlacedEmailComposer()))->sendEmail('a@b.com');
 
 //CHANGE request: implement sendOrderShippedEmail
