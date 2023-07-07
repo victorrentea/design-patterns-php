@@ -15,35 +15,55 @@ class CustomsService
                                            float $tobaccoValue,
                                            float $otherValue): float { // UGLY API we CANNOT change
         switch ($originCountry) {
-            case 'UK': return $this->computeUKTax($tobaccoValue, $otherValue);
-            case 'CN': return $this->computeChinaTax($tobaccoValue, $otherValue);
+            case 'UK': $taxCalculator= new UKTaxCalculator(); break;
+            case 'CN': $taxCalculator= new ChinaTaxCalculator(); break;
             case 'FR':
             case 'ES': // other EU country codes...
-            case 'RO': return $this->computeEUTax($tobaccoValue);
+            case 'RO': $taxCalculator= new EUTaxCalculator(); break;
             default: throw new \RuntimeException("Not a valid country ISO2 code: {$originCountry}");
         }
+        return $taxCalculator->compute($tobaccoValue, $otherValue);
     }
+}
+interface TaxCalculator {
+    function compute(float $tobaccoValue, float $otherValue): float;
+}
 
-    public function computeUKTax(float $tobaccoValue, float $otherValue): float
+
+// Idee#2: sa dau value+tabaco pe constructor
+// ori de cate ori poti evita sa tii date pe campuri (privaet...) si prefera in schimb
+// daca le-ai pus pe atribute traiesc prea mult, si-ti dau emotii (mai ales daca nu sunt readonly),
+
+// #Ideea#3: sa grupez cele 2 param intr-o clasa NOUA (HEAVY?) readonly Value Object aka ParameterObject
+// panica tot acolo ramane
+//readonly class TaxCalculationInput {
+//    public function __construct(public ?float $otherValue = null, public  ?float $regularValue = null)
+//    {
+//    }
+//}
+//$t = new TaxCalculationInput();
+//echo $t->otherValue;
+
+class UKTaxCalculator implements TaxCalculator {
+    public function compute(float $tobaccoValue, float $otherValue): float
     {
-        // chestii
-        // logic
-        // mai multalogic
-        // mai multa logic
-        // mai multa logic
+        // cod mult
         return $tobaccoValue / 2 + $otherValue / 2;
     }
-
-    public function computeChinaTax(float $tobaccoValue, float $otherValue): float
+}
+class ChinaTaxCalculator implements TaxCalculator {
+    public function compute(float $tobaccoValue, float $otherValue): float
     {
+        // cod mult
         return $tobaccoValue + $otherValue;
     }
-
-    public function computeEUTax(float $tobaccoValue): float
+}
+class EUTaxCalculator implements TaxCalculator {
+    public function compute(float $tobaccoValue, float $otherValue_DEGEABA): float
     {
+        // cod mult > 20 linii
         return $tobaccoValue / 3;
     }
-
 }
 
 
