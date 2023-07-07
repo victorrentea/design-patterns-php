@@ -13,15 +13,12 @@ use phpDocumentor\Reflection\Types\Callable_;
 include "Email.php";
 include "EmailClient.php";
 
-class EmailSender
+class EmailSender // poate fi singleton manageuit de symphony ? NU pt ca depinde de fluxul pe care esti ce Composer ii dai.
+    // STATEFUL DESIGN e rau
 {
     private const MAX_RETRIES = 3;
-    public function __construct(
-        readonly private EmailComposer $emailComposer
-    )
-    {
-    }
 
+    public function __construct(readonly private EmailComposer $emailComposer) {}
 
     public function sendEmail(string $emailAddress): void
     {
