@@ -16,7 +16,7 @@ class InvoiceService
     {
         $this->dispatcher = $dispatcher;
 
-        $dispatcher->addListener('order.create', [$this, 'onOrderCreate']);
+        $dispatcher->addListener('order.stock.reserved.event', [$this, 'onOrderCreate']);
     }
 
     public function onOrderCreate(OrderCreateEvent $event)

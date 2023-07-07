@@ -40,5 +40,6 @@ class OrderService implements OrderServiceInterface
 // drame
 // drame
         $this->dispatcher->dispatch('order.create', new OrderCreateEvent($order));
+        return $order;
     }
 }
