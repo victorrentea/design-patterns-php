@@ -19,7 +19,7 @@ class EmailSender // poate fi singleton manageuit de symphony : DA
 
 //    public function __construct(readonly private EmailComposer $emailComposer) {} // code smell : temporary field
 
-    public function sendEmail(string $emailAddress, EmailComposer $emailComposer): void
+    public function sendEmail(string $emailAddress, callable $emailComposer): void
     {
         $context = new EmailClient(/*smtpConfig,etc*/);
         for ($i = 0; $i < self::MAX_RETRIES; $i++) {
@@ -28,7 +28,7 @@ class EmailSender // poate fi singleton manageuit de symphony : DA
             $email->setReplyTo('/dev/null');
             $email->setTo($emailAddress);
 
-            $emailComposer->composeEmail($email);
+            $emailComposer($email);
 
             $success = $context->send($email);
             if ($success) break;
@@ -36,20 +36,15 @@ class EmailSender // poate fi singleton manageuit de symphony : DA
     }
 }
 
-interface EmailComposer {function composeEmail(Email $email);}
 
-class OrderShippedEmailComposer implements EmailComposer
+class Emails // manageuit de symp
 {
-    function composeEmail(Email $email): void
+    function composeShippedEmail(Email $email): void
     {
         $email->setSubject('Order Shipped');
         $email->setBody('Ti-am trimis, speram s-ajunga');
     }
-}
-
-class OrderPlacedEmailComposer implements EmailComposer
-{
-    function composeEmail(Email $email): void
+    function composePlacedEmail(Email $email): void
     {
         $email->setSubject('Order Received');
         $email->digitallySign();
@@ -57,9 +52,10 @@ class OrderPlacedEmailComposer implements EmailComposer
     }
 }
 
+$emails = new Emails();
 $emailSender = new EmailSender(); // singleton
 
-$emailSender->sendEmail('a@b.com', new OrderShippedEmailComposer());
-$emailSender->sendEmail('a@b.com', new OrderPlacedEmailComposer());
+$emailSender->sendEmail('a@b.com', [$emails, 'composePlacedEmail']); // function references
+$emailSender->sendEmail('a@b.com', [$emails, 'composeShippedEmail']);
 
 //CHANGE request: implement sendOrderShippedEmail
