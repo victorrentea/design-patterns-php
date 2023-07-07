@@ -9,7 +9,6 @@ use Psr\Log\LoggerInterface;
 class OrderServiceWithLogger implements OrderServiceInterface
 {
     protected DefaultOrderService $orderService;
-
     protected LoggerInterface $loggerService;
 
     public function __construct(DefaultOrderService $defaultOrderService, LoggerInterface $loggerService)

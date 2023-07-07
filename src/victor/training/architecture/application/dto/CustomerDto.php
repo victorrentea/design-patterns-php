@@ -11,6 +11,7 @@ class CustomerDto
     private string $email;
     private string $address;
 
+
     public function __construct(Customer $customer) // am cuplat gunoiu (API MODEL) la cele sfinte (ENTITY MODEL)
     {
         $this->name = $customer->getName();

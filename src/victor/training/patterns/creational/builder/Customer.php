@@ -27,20 +27,17 @@ class Customer
         $this->labels = [];
     }
 
-    public function getName(): String
+    public function getName(): string
     {
         return $this->name;
     }
 
-    public function setName(String $name): void
+    public function setName(string $name): Customer
     {
         $this->name = $name;
+        return $this;
     }
 
-    public function getPhone(): String
-    {
-        return $this->phone;
-    }
 
     public function setPhone(String $phone): void
     {
@@ -58,9 +55,10 @@ class Customer
     /**
      * @param String[] $labels
      */
-    public function setLabels(array $labels): void
+    public function setLabels(array $labels): Customer
     {
         $this->labels = $labels;
+        return $this;
     }
 
     public function getAddress(): Address
@@ -68,10 +66,13 @@ class Customer
         return $this->address;
     }
 
-    public function setAddress(Address $address): void
+    public function setAddress(Address $address): Customer
     {
         $this->address = $address;
+        return $this;
     }
+
+
 
     public function getCreateDate(): \DateTime
     {
