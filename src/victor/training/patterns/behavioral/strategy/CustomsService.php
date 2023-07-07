@@ -10,22 +10,46 @@ namespace victor\training\patterns\behavioral\strategy;
 
 class CustomsService
 {
+    /** @var TaxCalculator[] $taxCalculators */  // kung fu de Symphony injectez aici toate implem de taxCalculator
+    public function __construct(private readonly array $taxCalculators)
+    {
+    }
+
 
     public function computeAddedCustomsTax(string $originCountry,
-                                           float $tobaccoValue,
-                                           float $otherValue): float { // UGLY API we CANNOT change
-        switch ($originCountry) {
-            case 'UK': $taxCalculator= new UKTaxCalculator(); break;
-            case 'CN': $taxCalculator= new ChinaTaxCalculator(); break;
-            case 'FR':
-            case 'ES': // other EU country codes...
-            case 'RO': $taxCalculator= new EUTaxCalculator(); break;
-            default: throw new \RuntimeException("Not a valid country ISO2 code: {$originCountry}");
+                                           float  $tobaccoValue,
+                                           float  $otherValue): float
+    {
+        foreach ($this->taxCalculators as $taxCalculator) {
+            if ($taxCalculator->accepts($originCountry)) {
+                $taxCalculator->compute($tobaccoValue, $otherValue);
+            }
         }
-        return $taxCalculator->compute($tobaccoValue, $otherValue);
+        // UGLY API we CANNOT change
+//        $taxCalculator = match ($originCountry) { // genial arata
+//            'UK' => new UKTaxCalculator(),
+//            'CN' => new ChinaTaxCalculator(),
+//            'FR', 'ES', 'RO' => new EUTaxCalculator(),
+//            default => throw new \RuntimeException("Not a valid country ISO2 code: {$originCountry}"),
+//        };
+        throw new \Exception();
     }
 }
-interface TaxCalculator {
+
+class CountryContext
+{
+    private string $country;
+
+    public function getCountry(): string
+    {
+        return $this->country;
+    }
+}
+
+interface TaxCalculator
+{
+    function accepts(string $originCountry): bool;
+
     function compute(float $tobaccoValue, float $otherValue): float;
 }
 
@@ -44,30 +68,50 @@ interface TaxCalculator {
 //$t = new TaxCalculationInput();
 //echo $t->otherValue;
 
-class UKTaxCalculator implements TaxCalculator {
+class UKTaxCalculator implements TaxCalculator
+{
     public function compute(float $tobaccoValue, float $otherValue): float
     {
         // cod mult
         return $tobaccoValue / 2 + $otherValue / 2;
     }
+
+    function accepts(string $originCountry): bool
+    {
+        return $originCountry === "UK";
+    }
 }
-class ChinaTaxCalculator implements TaxCalculator {
+
+class ChinaTaxCalculator implements TaxCalculator
+{
     public function compute(float $tobaccoValue, float $otherValue): float
     {
         // cod mult
         return $tobaccoValue + $otherValue;
     }
+
+    function accepts(string $originCountry): bool
+    {
+        return $originCountry === "CN";
+    }
 }
-class EUTaxCalculator implements TaxCalculator {
+
+class EUTaxCalculator implements TaxCalculator
+{
     public function compute(float $tobaccoValue, float $otherValue_DEGEABA): float
     {
         // cod mult > 20 linii
         return $tobaccoValue / 3;
     }
+
+    function accepts(string $originCountry): bool
+    {
+        return in_array($originCountry, ["RO", "ES", "FR"]);
+    }
 }
 
 
-$customsService = new CustomsService();
+$customsService = new CustomsService([new ChinaTaxCalculator(), new EUTaxCalculator(), new UKTaxCalculator()]);
 printf('Tax for (RO,100,100) = ' . $customsService->computeAddedCustomsTax("RO", 100, 100) . "\n");
 printf('Tax for (CN,100,100) = ' . $customsService->computeAddedCustomsTax("CN", 100, 100) . "\n");
 printf('Tax for (UK,100,100) = ' . $customsService->computeAddedCustomsTax("UK", 100, 100) . "\n");
