@@ -9,7 +9,7 @@
 namespace victor\training\patterns\behavioral\template;
 
 
-class EmailContext
+class EmailClient
 {
     public function send(Email $email): bool
     {

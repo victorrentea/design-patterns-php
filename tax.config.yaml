@@ -1,0 +1,6 @@
+#daca se schibma des asocierile
+
+tax.config:
+  RO: \victor\training\patterns\behavioral\strategy\EUTaxCalculator
+  FR: \victor\training\patterns\behavioral\strategy\EUTaxCalculator
+  UK: \victor\training\patterns\behavioral\strategy\UKTaxCalculator

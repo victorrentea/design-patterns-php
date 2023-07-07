@@ -22,7 +22,7 @@ class CustomsService
     {
         foreach ($this->taxCalculators as $taxCalculator) {
             if ($taxCalculator->accepts($originCountry)) {
-                $taxCalculator->compute($tobaccoValue, $otherValue);
+               return  $taxCalculator->compute($tobaccoValue, $otherValue);
             }
         }
         // UGLY API we CANNOT change
@@ -110,8 +110,21 @@ class EUTaxCalculator implements TaxCalculator
     }
 }
 
+class DefaultCalculator implements TaxCalculator
+{
+    public function compute(float $tobaccoValue, float $otherValue_DEGEABA): float
+    {
+        return 10;
+    }
 
-$customsService = new CustomsService([new ChinaTaxCalculator(), new EUTaxCalculator(), new UKTaxCalculator()]);
+    function accepts(string $originCountry): bool
+    {
+        return true;
+    }
+}
+
+
+$customsService = new CustomsService([new ChinaTaxCalculator(), new EUTaxCalculator(), new UKTaxCalculator(),/*risk*/ new DefaultCalculator()]);
 printf('Tax for (RO,100,100) = ' . $customsService->computeAddedCustomsTax("RO", 100, 100) . "\n");
 printf('Tax for (CN,100,100) = ' . $customsService->computeAddedCustomsTax("CN", 100, 100) . "\n");
 printf('Tax for (UK,100,100) = ' . $customsService->computeAddedCustomsTax("UK", 100, 100) . "\n");
