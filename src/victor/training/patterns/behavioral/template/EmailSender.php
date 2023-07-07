@@ -17,7 +17,7 @@ class EmailSender
 {
     private const MAX_RETRIES = 3;
 
-    public function sendOrderReceivedEmail(string $emailAddress): void
+    public function sendOrderReceivedEmail(string $emailAddress, $orderPlacedEmail = true): void
     {
         $client = new EmailClient(/*smtpConfig,etc*/);
         for ($i = 0; $i < self::MAX_RETRIES; $i++) {
@@ -25,22 +25,13 @@ class EmailSender
             $email->setSender('noreply@corp.com');
             $email->setReplyTo('/dev/null');
             $email->setTo($emailAddress);
-            $email->setSubject('Order Received');
-            $email->setBody('Thank you for your order');
-            $success = $client->send($email);
-            if ($success) break;
-        }
-    }
-    public function sendOrderShippedEmail(string $emailAddress): void
-    {
-        $client = new EmailClient(/*smtpConfig,etc*/);
-        for ($i = 0; $i < self::MAX_RETRIES; $i++) {
-            $email = new Email();
-            $email->setSender('noreply@corp.com');
-            $email->setReplyTo('/dev/null');
-            $email->setTo($emailAddress);
-            $email->setSubject('Order Shipped');
-            $email->setBody('Ti-am trimis, speram s-ajunga!');
+            if ($orderPlacedEmail) {
+                $email->setSubject('Order Received');
+                $email->setBody('Thank you for your order');
+            } else {
+                $email->setSubject('Order Shipped');
+                $email->setBody('Ti-am trimis, speram s-ajunga!');
+            }
             $success = $client->send($email);
             if ($success) break;
         }
@@ -49,6 +40,7 @@ class EmailSender
 
 $emailService = new EmailSender();
 $emailService->sendOrderReceivedEmail('a@b.com');
+$emailService->sendOrderReceivedEmail('a@b.com', false);
 
 //$emailService->sendOrderShippedEmail('a@b.com');
 
