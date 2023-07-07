@@ -39,6 +39,15 @@ class EmailSender
         $email->setBody('Thank you for your order');
     }
 }
+
+
+
+
+
+
+
+
+
 class Hackareala extends  EmailSender
 {
     public function composeEmail(Email $email): void
