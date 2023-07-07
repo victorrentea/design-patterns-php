@@ -13,14 +13,13 @@ use phpDocumentor\Reflection\Types\Callable_;
 include "Email.php";
 include "EmailClient.php";
 
-class EmailSender // poate fi singleton manageuit de symphony ? NU pt ca depinde de fluxul pe care esti ce Composer ii dai.
-    // STATEFUL DESIGN e rau
+class EmailSender // poate fi singleton manageuit de symphony : DA
 {
     private const MAX_RETRIES = 3;
 
-    public function __construct(readonly private EmailComposer $emailComposer) {}
+//    public function __construct(readonly private EmailComposer $emailComposer) {} // code smell : temporary field
 
-    public function sendEmail(string $emailAddress): void
+    public function sendEmail(string $emailAddress, EmailComposer $emailComposer): void
     {
         $context = new EmailClient(/*smtpConfig,etc*/);
         for ($i = 0; $i < self::MAX_RETRIES; $i++) {
@@ -29,7 +28,7 @@ class EmailSender // poate fi singleton manageuit de symphony ? NU pt ca depinde
             $email->setReplyTo('/dev/null');
             $email->setTo($emailAddress);
 
-            $this->emailComposer->composeEmail($email);
+            $emailComposer->composeEmail($email);
 
             $success = $context->send($email);
             if ($success) break;
@@ -58,8 +57,9 @@ class OrderPlacedEmailComposer implements EmailComposer
     }
 }
 
-(new EmailSender(new OrderShippedEmailComposer()))->sendEmail('a@b.com');
+$emailSender = new EmailSender(); // singleton
 
-(new EmailSender(new OrderPlacedEmailComposer()))->sendEmail('a@b.com');
+$emailSender->sendEmail('a@b.com', new OrderShippedEmailComposer());
+$emailSender->sendEmail('a@b.com', new OrderPlacedEmailComposer());
 
 //CHANGE request: implement sendOrderShippedEmail
