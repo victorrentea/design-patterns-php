@@ -53,4 +53,7 @@ class StockService
 
         // Eventual Consistency
     }
+
+    // woman = time * money  = money ^ 2 = evil ^ 2
+
 }
