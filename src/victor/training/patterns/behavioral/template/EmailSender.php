@@ -33,6 +33,7 @@ abstract class AbstractEmailSender
         }
     }
     protected abstract function composeEmail(Email $email): void;
+    protected function getAttachment() {return null;} // hook method
 }
 
 class OrderReceivedEmailSender extends AbstractEmailSender {
@@ -50,8 +51,11 @@ class OrderShippedEmailSender extends AbstractEmailSender
         $email->setSubject('Order Shipped');
         $email->setBody('Ti-am trimis, speram s-ajunga');
     }
+    protected function getAttachment() {
+        return "AWB: ";
+    }
 }
-//interface EmailComposer
+//interface EmailComposer {function composeEmail(Email $email);}
 //class OrderShippedEmailComposer implements EmailComposer
 //class OrderPlacedEmailComposer implements EmailComposer
 
