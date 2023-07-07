@@ -13,7 +13,7 @@ use phpDocumentor\Reflection\Types\Callable_;
 include "Email.php";
 include "EmailClient.php";
 
-class EmailSender
+abstract class AbstractEmailSender
 {
     private const MAX_RETRIES = 3;
 
@@ -32,25 +32,20 @@ class EmailSender
             if ($success) break;
         }
     }
-    public function composeEmail(Email $email): void
+    protected abstract function composeEmail(Email $email): void;
+}
+
+class OrderReceivedEmailSender extends AbstractEmailSender {
+    protected function composeEmail(Email $email): void
     {
         $email->setSubject('Order Received');
         $email->digitallySign();
         $email->setBody('Thank you for your order');
     }
 }
-
-
-
-
-
-
-
-
-
-class Hackareala extends  EmailSender
+class OrderShippedEmailSender extends AbstractEmailSender
 {
-    public function composeEmail(Email $email): void
+    protected function composeEmail(Email $email): void
     {
         $email->setSubject('Order Shipped');
         $email->setBody('Ti-am trimis, speram s-ajunga');
@@ -60,8 +55,8 @@ class Hackareala extends  EmailSender
 //class OrderShippedEmailComposer implements EmailComposer
 //class OrderPlacedEmailComposer implements EmailComposer
 
-(new EmailSender())->sendEmail('a@b.com');
+(new OrderReceivedEmailSender())->sendEmail('a@b.com');
 
-(new Hackareala())->sendEmail('a@b.com');
+(new OrderShippedEmailSender())->sendEmail('a@b.com');
 
 //CHANGE request: implement sendOrderShippedEmail
