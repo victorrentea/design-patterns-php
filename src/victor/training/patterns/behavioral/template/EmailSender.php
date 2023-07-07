@@ -17,7 +17,24 @@ class EmailSender
 {
     private const MAX_RETRIES = 3;
 
-    public function sendOrderReceivedEmail(string $emailAddress, Email $email): void
+
+    function sendOrderPlacedEmail(string $emailAddress)
+    {
+        $email = $this->getEmailTemplate();
+        $email->setSubject('Order Received');
+        $email->setBody('Thank you for your order');
+        $this->sendEmail($emailAddress, $email);
+    }
+
+    function sendOrderShippedEmail(string $emailAddress)
+    {
+        $email = $this->getEmailTemplate();
+        $email->setSubject('Order Shipped');
+        $email->setBody('Ti-am trimis, speram s-ajunga!');
+        $this->sendEmail($emailAddress, $email);
+    }
+
+    private function sendEmail(string $emailAddress, Email $email): void
     {
         $client = new EmailClient(/*smtpConfig,etc*/);
         for ($i = 0; $i < self::MAX_RETRIES; $i++) {
@@ -25,19 +42,12 @@ class EmailSender
 //            $email->setSender('noreply@emag.bg');
 //            $email->setReplyTo('/dev/null');
 //            $email->setTo($emailAddress);
-//            if ($orderPlacedEmail) {
-//                $email->setSubject('Order Received');
-//                $email->setBody('Thank you for your order');
-//            } else {
-//                $email->setSubject('Order Shipped');
-//                $email->setBody('Ti-am trimis, speram s-ajunga!');
-//            }
             $success = $client->send($email);
             if ($success) break;
         }
     }
 
-    function getEmailTemplate(): Email {
+    private function getEmailTemplate(): Email {
         $email = new Email();
         $email->setSender('noreply@emag.bg');
         $email->setReplyTo('/dev/null');
@@ -47,15 +57,13 @@ class EmailSender
 
 $emailService = new EmailSender();
 
-$email = $emailService->getEmailTemplate();
-$email->setSubject('Order Received');
-$email->setBody('Thank you for your order');
-$emailService->sendOrderReceivedEmail('a@b.com', $email);
+//class PlaceOrderService {
+    $emailService->sendOrderPlacedEmail("a@b.com");
+//}
 
-$email = $emailService->getEmailTemplate();
-$email->setSubject('Order Shipped');
-$email->setBody('Ti-am trimis, speram s-ajunga!');
-$emailService->sendOrderReceivedEmail('a@b.com', $email);
+//class ShipOrderService {
+    $emailService->sendOrderShippedEmail("a@b.com");
+//}
 
 //$emailService->sendOrderShippedEmail('a@b.com');
 
